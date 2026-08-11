@@ -1,5 +1,5 @@
 import THEME from "./theme.js";
-import { getCountryName } from "../geo.js";
+import { getCountryName, getCountryFlag } from "../geo.js";
 
 /**
  * Format a number with commas.
@@ -18,27 +18,30 @@ function renderTopCities(cities, totalViews, x, y, width, height) {
   let items = "";
   cities.slice(0, 5).forEach((c, i) => {
     const itemY = 28 + i * 28;
-    const pct = totalViews > 0 ? ((c.count / totalViews) * 100).toFixed(1) : 0;
+    const pct = totalViews > 0 ? ((c.count / totalViews) * 100).toFixed(1) : "0.0";
     const barWidth = Math.max(4, (c.count / maxCount) * barMaxWidth);
 
     // Extract country code from "City, CC"
     const parts = c.name.split(", ");
     const cityName = parts[0] || c.name;
     const countryCode = parts[1] || "";
+    const flag = countryCode ? getCountryFlag(countryCode) : "📍";
 
     items += `
       <g transform="translate(0,${itemY})">
         <text x="8" y="12" fill="${THEME.textMuted}" font-size="10" font-family="${THEME.fontFamily}">${i + 1}</text>
-        <text x="24" y="12" fill="${THEME.text}" font-size="11" font-family="${THEME.fontFamily}">
+        <text x="20" y="12" font-size="11" font-family="${THEME.fontFamily}">${flag}</text>
+        <text x="38" y="12" fill="${THEME.text}" font-size="11" font-family="${THEME.fontFamily}">
           ${cityName}${countryCode ? `, ${countryCode}` : ""}</text>
         <text x="${width - 95}" y="12" fill="${THEME.textSecondary}" font-size="11" 
           font-family="${THEME.fontFamily}" text-anchor="end">${formatNumber(c.count)}</text>
         <rect x="${width - 90}" y="2" width="${barWidth}" height="12" rx="3" 
-          fill="${THEME.green}" opacity="0.8"/>
+          fill="${THEME.green}" opacity="0.85"/>
         <text x="${width - 8}" y="12" fill="${THEME.textMuted}" font-size="10" 
           font-family="${THEME.fontFamily}" text-anchor="end">${pct}%</text>
       </g>`;
   });
+
 
   return `
     <g transform="translate(${x},${y})">
