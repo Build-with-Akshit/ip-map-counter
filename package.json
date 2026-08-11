@@ -1,0 +1,19 @@
+{
+  "name": "ip-map-counter",
+  "version": "1.0.0",
+  "description": "Dynamic SVG analytics dashboard with visitor location tracking for GitHub READMEs",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "@upstash/redis": "^1.34.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "author": "Build-with-Akshit",
+  "license": "MIT"
+}
