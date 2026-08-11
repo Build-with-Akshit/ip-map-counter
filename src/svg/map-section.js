@@ -16,7 +16,7 @@ function formatNumber(n) {
 }
 
 /**
- * Render the world map with clean dark land polygons and glowing green location nodes.
+ * Render the world map with clean dark land polygons and soft, borderless glowing green location nodes.
  */
 function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
   const countryMap = data.countryMap || {};
@@ -26,19 +26,19 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
   let paths = "";
   for (const [code, pathData] of Object.entries(WORLD_MAP_PATHS)) {
     const isVisited = (countryMap[code] || 0) > 0;
-    const strokeColor = isVisited ? "#3a4659" : "#262d37";
+    const strokeColor = isVisited ? "#354254" : "#232b36";
     const strokeWidth = isVisited ? "0.6" : "0.4";
 
     paths += `<path id="country-${code}" d="${pathData}" 
-      fill="#171d26" opacity="0.9" 
+      fill="#151b23" opacity="0.95" 
       stroke="${strokeColor}" stroke-width="${strokeWidth}"/>\n`;
   }
 
-  // 2. Render glowing location nodes (dots)
+  // 2. Render glowing location nodes (dots with soft, seamless radial glow)
   let dots = "";
   const renderedCoords = new Set();
 
-  // First render dots for top cities if available
+  // Render dots for top cities if available
   if (data.topCities && data.topCities.length > 0) {
     const cityMax = Math.max(...data.topCities.map(c => c.count), 1);
     for (const city of data.topCities) {
@@ -49,21 +49,18 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
       renderedCoords.add(`${Math.round(x)},${Math.round(y)}`);
 
       const ratio = city.count / cityMax;
-      const radius = Math.max(5, Math.min(16, ratio * 20));
+      const radius = Math.max(4, Math.min(14, ratio * 18));
 
       dots += `
-        <circle cx="${x}" cy="${y}" r="${radius * 2.5}" 
-          fill="${THEME.green}" opacity="0.2" filter="url(#dotGlow)"/>
-        <circle cx="${x}" cy="${y}" r="${radius * 1.4}" 
-          fill="${THEME.green}" opacity="0.45"/>
-        <circle cx="${x}" cy="${y}" r="${radius}" 
-          fill="${THEME.green}" opacity="0.95"/>
-        <circle cx="${x}" cy="${y}" r="${radius * 0.35}" 
-          fill="#ffffff" opacity="1"/>\n`;
+        <!-- Soft seamless radial glow aura (no hard borders) -->
+        <circle cx="${x}" cy="${y}" r="${radius * 3.5}" fill="url(#neonGlow)" filter="url(#blurGlow)"/>
+        <!-- Crisp central glowing dot -->
+        <circle cx="${x}" cy="${y}" r="${radius}" fill="#39d353"/>
+        <circle cx="${x}" cy="${y}" r="${Math.max(1.5, radius * 0.4)}" fill="#ffffff"/>\n`;
     }
   }
 
-  // Then render dots for any remaining visited countries
+  // Render dots for any remaining visited countries
   for (const [code, count] of Object.entries(countryMap)) {
     if (count <= 0) continue;
     const coords = COUNTRY_CENTERS[code];
@@ -74,18 +71,29 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
     if (renderedCoords.has(coordKey)) continue;
 
     const ratio = count / maxCount;
-    const radius = Math.max(5, Math.min(18, ratio * 22));
+    const radius = Math.max(4, Math.min(16, ratio * 20));
 
     dots += `
-      <circle cx="${x}" cy="${y}" r="${radius * 2.5}" 
-        fill="${THEME.green}" opacity="0.2" filter="url(#dotGlow)"/>
-      <circle cx="${x}" cy="${y}" r="${radius * 1.4}" 
-        fill="${THEME.green}" opacity="0.45"/>
-      <circle cx="${x}" cy="${y}" r="${radius}" 
-        fill="${THEME.green}" opacity="0.95"/>
-      <circle cx="${x}" cy="${y}" r="${radius * 0.35}" 
-        fill="#ffffff" opacity="1"/>\n`;
+      <!-- Soft seamless radial glow aura (no hard borders) -->
+      <circle cx="${x}" cy="${y}" r="${radius * 3.5}" fill="url(#neonGlow)" filter="url(#blurGlow)"/>
+      <!-- Crisp central glowing dot -->
+      <circle cx="${x}" cy="${y}" r="${radius}" fill="#39d353"/>
+      <circle cx="${x}" cy="${y}" r="${Math.max(1.5, radius * 0.4)}" fill="#ffffff"/>\n`;
   }
+
+  // Defs for smooth, borderless radial glow
+  const defs = `
+    <defs>
+      <radialGradient id="neonGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#39d353" stop-opacity="0.85"/>
+        <stop offset="25%" stop-color="#39d353" stop-opacity="0.5"/>
+        <stop offset="60%" stop-color="#2ea043" stop-opacity="0.18"/>
+        <stop offset="100%" stop-color="#39d353" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="blurGlow" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="8" result="blur"/>
+      </filter>
+    </defs>`;
 
   // Map legend
   const legend = `
@@ -113,6 +121,7 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
     <g transform="translate(${mapX},${mapY})">
       <svg viewBox="0 0 1000 500" width="${mapWidth}" height="${mapHeight}" 
         preserveAspectRatio="xMidYMid meet">
+        ${defs}
         ${paths}
         ${dots}
       </svg>
