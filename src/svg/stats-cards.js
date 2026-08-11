@@ -45,6 +45,148 @@ function formatPeakWindow(dateStr, totalViews) {
 }
 
 /**
+ * Render a crisp SVG flag badge for a country code.
+ */
+function renderSvgFlag(code, x, y, w = 44, h = 30) {
+  const c = (code || "US").toUpperCase();
+  const rx = 5;
+
+  if (c === "US") {
+    // US Flag: 7 stripes + blue canton
+    const stripeH = h / 7;
+    return `
+      <g transform="translate(${x},${y})">
+        <rect width="${w}" height="${h}" rx="${rx}" fill="#b22234"/>
+        <clipPath id="flagClipUS"><rect width="${w}" height="${h}" rx="${rx}"/></clipPath>
+        <g clip-path="url(#flagClipUS)">
+          <rect y="${stripeH}" width="${w}" height="${stripeH}" fill="#ffffff"/>
+          <rect y="${stripeH * 3}" width="${w}" height="${stripeH}" fill="#ffffff"/>
+          <rect y="${stripeH * 5}" width="${w}" height="${stripeH}" fill="#ffffff"/>
+          <rect width="${w * 0.45}" height="${stripeH * 4}" fill="#3c3b6e"/>
+          <circle cx="${w * 0.12}" cy="${stripeH * 1.2}" r="1.2" fill="#ffffff"/>
+          <circle cx="${w * 0.23}" cy="${stripeH * 1.2}" r="1.2" fill="#ffffff"/>
+          <circle cx="${w * 0.34}" cy="${stripeH * 1.2}" r="1.2" fill="#ffffff"/>
+          <circle cx="${w * 0.17}" cy="${stripeH * 2.8}" r="1.2" fill="#ffffff"/>
+          <circle cx="${w * 0.28}" cy="${stripeH * 2.8}" r="1.2" fill="#ffffff"/>
+        </g>
+        <rect width="${w}" height="${h}" rx="${rx}" fill="none" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1"/>
+      </g>`;
+  }
+
+  if (c === "IN") {
+    // India Flag: Saffron, White, Green + Ashoka Chakra
+    const stripeH = h / 3;
+    return `
+      <g transform="translate(${x},${y})">
+        <clipPath id="flagClipIN"><rect width="${w}" height="${h}" rx="${rx}"/></clipPath>
+        <g clip-path="url(#flagClipIN)">
+          <rect width="${w}" height="${stripeH}" fill="#ff9933"/>
+          <rect y="${stripeH}" width="${w}" height="${stripeH}" fill="#ffffff"/>
+          <rect y="${stripeH * 2}" width="${w}" height="${stripeH}" fill="#138808"/>
+          <circle cx="${w / 2}" cy="${h / 2}" r="${stripeH * 0.38}" fill="none" stroke="#000080" stroke-width="1"/>
+          <circle cx="${w / 2}" cy="${h / 2}" r="1" fill="#000080"/>
+        </g>
+        <rect width="${w}" height="${h}" rx="${rx}" fill="none" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1"/>
+      </g>`;
+  }
+
+  if (c === "GB") {
+    // UK Flag: Union Jack
+    return `
+      <g transform="translate(${x},${y})">
+        <clipPath id="flagClipGB"><rect width="${w}" height="${h}" rx="${rx}"/></clipPath>
+        <g clip-path="url(#flagClipGB)">
+          <rect width="${w}" height="${h}" fill="#012169"/>
+          <path d="M0,0 L${w},${h} M${w},0 L0,${h}" stroke="#ffffff" stroke-width="5"/>
+          <path d="M0,0 L${w},${h} M${w},0 L0,${h}" stroke="#c8102e" stroke-width="2"/>
+          <path d="M${w / 2},0 V${h} M0,${h / 2} H${w}" stroke="#ffffff" stroke-width="7"/>
+          <path d="M${w / 2},0 V${h} M0,${h / 2} H${w}" stroke="#c8102e" stroke-width="4"/>
+        </g>
+        <rect width="${w}" height="${h}" rx="${rx}" fill="none" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1"/>
+      </g>`;
+  }
+
+  if (c === "DE") {
+    // Germany Flag: Black, Red, Gold
+    const stripeH = h / 3;
+    return `
+      <g transform="translate(${x},${y})">
+        <clipPath id="flagClipDE"><rect width="${w}" height="${h}" rx="${rx}"/></clipPath>
+        <g clip-path="url(#flagClipDE)">
+          <rect width="${w}" height="${stripeH}" fill="#000000"/>
+          <rect y="${stripeH}" width="${w}" height="${stripeH}" fill="#dd0000"/>
+          <rect y="${stripeH * 2}" width="${w}" height="${stripeH}" fill="#ffcc00"/>
+        </g>
+        <rect width="${w}" height="${h}" rx="${rx}" fill="none" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1"/>
+      </g>`;
+  }
+
+  if (c === "FR") {
+    // France Flag: Blue, White, Red
+    const stripeW = w / 3;
+    return `
+      <g transform="translate(${x},${y})">
+        <clipPath id="flagClipFR"><rect width="${w}" height="${h}" rx="${rx}"/></clipPath>
+        <g clip-path="url(#flagClipFR)">
+          <rect width="${stripeW}" height="${h}" fill="#002395"/>
+          <rect x="${stripeW}" width="${stripeW}" height="${h}" fill="#ffffff"/>
+          <rect x="${stripeW * 2}" width="${stripeW}" height="${h}" fill="#ed2939"/>
+        </g>
+        <rect width="${w}" height="${h}" rx="${rx}" fill="none" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1"/>
+      </g>`;
+  }
+
+  if (c === "JP") {
+    // Japan Flag: White with Red circle
+    return `
+      <g transform="translate(${x},${y})">
+        <clipPath id="flagClipJP"><rect width="${w}" height="${h}" rx="${rx}"/></clipPath>
+        <g clip-path="url(#flagClipJP)">
+          <rect width="${w}" height="${h}" fill="#ffffff"/>
+          <circle cx="${w / 2}" cy="${h / 2}" r="${h * 0.32}" fill="#bc002d"/>
+        </g>
+        <rect width="${w}" height="${h}" rx="${rx}" fill="none" stroke="#000000" stroke-opacity="0.15" stroke-width="1"/>
+      </g>`;
+  }
+
+  if (c === "CN") {
+    // China Flag: Red with yellow star
+    return `
+      <g transform="translate(${x},${y})">
+        <clipPath id="flagClipCN"><rect width="${w}" height="${h}" rx="${rx}"/></clipPath>
+        <g clip-path="url(#flagClipCN)">
+          <rect width="${w}" height="${h}" fill="#ee1c25"/>
+          <polygon points="${w*0.2},${h*0.18} ${w*0.24},${h*0.35} ${w*0.36},${h*0.35} ${w*0.26},${h*0.44} ${w*0.3},${h*0.6} ${w*0.2},${h*0.49} ${w*0.1},${h*0.6} ${w*0.14},${h*0.44} ${w*0.04},${h*0.35} ${w*0.16},${h*0.35}" fill="#ffde00"/>
+        </g>
+        <rect width="${w}" height="${h}" rx="${rx}" fill="none" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1"/>
+      </g>`;
+  }
+
+  if (c === "CA") {
+    // Canada Flag: Red, White, Red
+    const stripeW = w * 0.28;
+    return `
+      <g transform="translate(${x},${y})">
+        <clipPath id="flagClipCA"><rect width="${w}" height="${h}" rx="${rx}"/></clipPath>
+        <g clip-path="url(#flagClipCA)">
+          <rect width="${stripeW}" height="${h}" fill="#ff0000"/>
+          <rect x="${stripeW}" width="${w - stripeW * 2}" height="${h}" fill="#ffffff"/>
+          <rect x="${w - stripeW}" width="${stripeW}" height="${h}" fill="#ff0000"/>
+          <circle cx="${w / 2}" cy="${h / 2}" r="${h * 0.2}" fill="#ff0000"/>
+        </g>
+        <rect width="${w}" height="${h}" rx="${rx}" fill="none" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1"/>
+      </g>`;
+  }
+
+  // Default fallback flag badge for any other country
+  return `
+    <g transform="translate(${x},${y})">
+      <rect width="${w}" height="${h}" rx="${rx}" fill="#21262d" stroke="#30363d" stroke-width="1"/>
+      <text x="${w / 2}" y="${h / 2 + 4}" fill="#58a6ff" font-weight="700" font-size="12" font-family="-apple-system, sans-serif" text-anchor="middle">${c}</text>
+    </g>`;
+}
+
+/**
  * Card 1: Total Pageviews (with circular ring)
  */
 function renderCardTotalPageviews(x, y, width, height, totalViews, firstSeen) {
@@ -84,23 +226,22 @@ function renderCardTotalPageviews(x, y, width, height, totalViews, firstSeen) {
 function renderCardTopLocation(x, y, width, height, topCountries, totalViews) {
   const hasViews = totalViews > 0 && topCountries && topCountries.length > 0;
   const top = hasViews ? topCountries[0] : null;
-  const codeName = top ? top.code.toUpperCase() : "N/A";
+  const codeName = top ? top.code.toUpperCase() : "US";
   const count = top ? top.count : 0;
   const mainText = hasViews ? `${codeName}: ${formatNumber(count)}` : "N/A";
+
+  const flagBadge = renderSvgFlag(codeName, 14, 26, 44, 30);
 
   return `
     <g transform="translate(${x},${y})">
       <rect x="0" y="0" width="${width}" height="${height}" rx="${THEME.cardRadius}"
         fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
       
-      <!-- Left Flag/Country Badge -->
-      <g transform="translate(16, 26)">
-        <rect x="0" y="0" width="40" height="26" rx="5" fill="#21262d" stroke="#30363d" stroke-width="1"/>
-        <text x="20" y="17" fill="#58a6ff" font-weight="700" font-size="12" font-family="${THEME.fontFamily}" text-anchor="middle">${codeName}</text>
-      </g>
+      <!-- Left Flag Badge -->
+      ${flagBadge}
 
       <!-- Right Details -->
-      <g transform="translate(68,0)">
+      <g transform="translate(70,0)">
         <text x="0" y="24" fill="#8b949e" font-size="11" font-weight="500"
           font-family="${THEME.fontFamily}">Top Location</text>
         <text x="0" y="48" fill="#f0f6fc" font-size="18" font-weight="700"
@@ -149,7 +290,7 @@ function renderCardPeakVisitWindow(x, y, width, height, highestDailyDate, totalV
       <text x="${cx}" y="48" fill="#f0f6fc" font-size="16" font-weight="700"
         font-family="${THEME.fontFamily}" text-anchor="middle">${peakWindow}</text>
       <text x="${cx}" y="64" fill="#8b949e" font-size="9"
-        font-family="${THEME.fontFamily}" text-anchor="middle">${totalViews > 0 ? `Highest activity period` : 'No visits recorded'}</text>
+        font-family="${THEME.fontFamily}" text-anchor="middle">${totalViews > 0 ? `e.g. ${peakWindow}` : 'No visits recorded'}</text>
     </g>`;
 }
 
