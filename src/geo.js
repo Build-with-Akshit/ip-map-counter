@@ -216,12 +216,17 @@ export const COUNTRY_CENTERS = {
 };
 
 /**
- * Convert lat/lng to SVG map coordinates.
- * Uses a simple equirectangular projection.
- * Map viewBox is roughly 900x450, centered on 0,0.
+ * Convert lat/lng to SVG map coordinates matching simple-world-map.
+ * ViewBox: 30.767 241.591 784.077 458.627
  */
-export function latLngToSvg(lat, lng, mapWidth = 900, mapHeight = 450) {
-  const x = ((lng + 180) / 360) * mapWidth;
-  const y = ((90 - lat) / 180) * mapHeight;
+export function latLngToSvg(lat, lng) {
+  const minX = 30.767;
+  const minY = 241.591;
+  const width = 784.077;
+  const height = 458.627;
+
+  const x = minX + ((lng + 180) / 360) * width;
+  const y = minY + ((90 - lat) / 180) * height;
   return { x, y };
 }
+

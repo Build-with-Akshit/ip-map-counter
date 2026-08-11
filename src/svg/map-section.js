@@ -35,13 +35,15 @@ function renderWorldMap(countryMap, mapX, mapY, mapWidth, mapHeight) {
   for (const [code, pathData] of Object.entries(WORLD_MAP_PATHS)) {
     const count = countryMap[code] || 0;
     const fillColor =
-      count > 0 ? getIntensityColor(count / maxCount) : "#161b22";
-    const opacity = count > 0 ? 1 : 0.6;
+      count > 0 ? getIntensityColor(count / maxCount) : "#21262d";
+    const opacity = count > 0 ? 1 : 0.85;
+    const strokeColor = count > 0 ? THEME.green : "#30363d";
+    const strokeWidth = count > 0 ? "1" : "0.5";
     const glowFilter = count / maxCount > 0.3 ? ' filter="url(#glow)"' : "";
 
     paths += `<path id="country-${code}" d="${pathData}" 
       fill="${fillColor}" opacity="${opacity}" 
-      stroke="${THEME.border}" stroke-width="0.5"${glowFilter}/>\n`;
+      stroke="${strokeColor}" stroke-width="${strokeWidth}"${glowFilter}/>\n`;
   }
 
   // Render glow dots for top countries
@@ -50,20 +52,20 @@ function renderWorldMap(countryMap, mapX, mapY, mapWidth, mapHeight) {
     const coords = COUNTRY_CENTERS[code];
     if (!coords) continue;
 
-    const { x, y } = latLngToSvg(coords[0], coords[1], 900, 450);
+    const { x, y } = latLngToSvg(coords[0], coords[1]);
     const ratio = count / maxCount;
-    const dotRadius = Math.max(3, Math.min(12, ratio * 15));
-    const dotOpacity = Math.max(0.4, ratio);
+    const dotRadius = Math.max(4, Math.min(16, ratio * 20));
+    const dotOpacity = Math.max(0.6, ratio);
 
     dots += `
-      <circle cx="${x}" cy="${y}" r="${dotRadius * 2.5}" 
-        fill="${THEME.green}" opacity="${dotOpacity * 0.15}"/>
-      <circle cx="${x}" cy="${y}" r="${dotRadius * 1.5}" 
-        fill="${THEME.green}" opacity="${dotOpacity * 0.3}"/>
+      <circle cx="${x}" cy="${y}" r="${dotRadius * 3}" 
+        fill="${THEME.green}" opacity="${dotOpacity * 0.2}" filter="url(#dotGlow)"/>
+      <circle cx="${x}" cy="${y}" r="${dotRadius * 1.8}" 
+        fill="${THEME.green}" opacity="${dotOpacity * 0.4}"/>
       <circle cx="${x}" cy="${y}" r="${dotRadius}" 
-        fill="${THEME.green}" opacity="${dotOpacity * 0.8}"/>
+        fill="${THEME.green}" opacity="${dotOpacity * 0.9}"/>
       <circle cx="${x}" cy="${y}" r="${dotRadius * 0.4}" 
-        fill="#ffffff" opacity="0.9"/>`;
+        fill="#ffffff" opacity="1"/>`;
   }
 
   // Map legend
@@ -90,7 +92,7 @@ function renderWorldMap(countryMap, mapX, mapY, mapWidth, mapHeight) {
 
   return `
     <g transform="translate(${mapX},${mapY})">
-      <svg viewBox="0 0 900 450" width="${mapWidth}" height="${mapHeight}" 
+      <svg viewBox="30.767 241.591 784.077 458.627" width="${mapWidth}" height="${mapHeight}" 
         preserveAspectRatio="xMidYMid meet">
         ${paths}
         ${dots}
