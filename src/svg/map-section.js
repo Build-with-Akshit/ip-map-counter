@@ -4,6 +4,7 @@ import {
   getCountryName,
   getCountryFlag,
   COUNTRY_CENTERS,
+  CITY_CENTERS,
   latLngToSvg,
 } from "../geo.js";
 
@@ -15,58 +16,75 @@ function formatNumber(n) {
 }
 
 /**
- * Get a green shade based on visit intensity (0.0 - 1.0).
+ * Render the world map with clean dark land polygons and glowing green location nodes.
  */
-function getIntensityColor(ratio) {
-  if (ratio > 0.7) return THEME.greenScale[3];
-  if (ratio > 0.4) return THEME.greenScale[2];
-  if (ratio > 0.15) return THEME.greenScale[1];
-  return THEME.greenScale[0];
-}
-
-/**
- * Render the world map with highlighted countries and glowing nodes.
- */
-function renderWorldMap(countryMap, mapX, mapY, mapWidth, mapHeight) {
+function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
+  const countryMap = data.countryMap || {};
   const maxCount = Math.max(...Object.values(countryMap), 1);
 
-  // Render all country paths (from amCharts viewBox 0 0 1000 500)
+  // 1. Render all country land polygons (clean, dark theme continent shapes)
   let paths = "";
   for (const [code, pathData] of Object.entries(WORLD_MAP_PATHS)) {
-    const count = countryMap[code] || 0;
-    const isVisited = count > 0;
-    const fillColor = isVisited ? getIntensityColor(count / maxCount) : "#1c2128";
-    const opacity = isVisited ? 1 : 0.75;
-    const strokeColor = isVisited ? THEME.green : "#30363d";
-    const strokeWidth = isVisited ? "0.8" : "0.4";
-    const glowFilter = count / maxCount > 0.3 ? ' filter="url(#glow)"' : "";
+    const isVisited = (countryMap[code] || 0) > 0;
+    const strokeColor = isVisited ? "#3a4659" : "#262d37";
+    const strokeWidth = isVisited ? "0.6" : "0.4";
 
     paths += `<path id="country-${code}" d="${pathData}" 
-      fill="${fillColor}" opacity="${opacity}" 
-      stroke="${strokeColor}" stroke-width="${strokeWidth}"${glowFilter}/>\n`;
+      fill="#171d26" opacity="0.9" 
+      stroke="${strokeColor}" stroke-width="${strokeWidth}"/>\n`;
   }
 
-  // Render glowing nodes for locations
+  // 2. Render glowing location nodes (dots)
   let dots = "";
-  
-  // Render nodes for visited countries
+  const renderedCoords = new Set();
+
+  // First render dots for top cities if available
+  if (data.topCities && data.topCities.length > 0) {
+    const cityMax = Math.max(...data.topCities.map(c => c.count), 1);
+    for (const city of data.topCities) {
+      const coords = CITY_CENTERS[city.name] || COUNTRY_CENTERS[city.name.split(", ")[1]];
+      if (!coords) continue;
+
+      const { x, y } = latLngToSvg(coords[0], coords[1]);
+      renderedCoords.add(`${Math.round(x)},${Math.round(y)}`);
+
+      const ratio = city.count / cityMax;
+      const radius = Math.max(5, Math.min(16, ratio * 20));
+
+      dots += `
+        <circle cx="${x}" cy="${y}" r="${radius * 2.5}" 
+          fill="${THEME.green}" opacity="0.2" filter="url(#dotGlow)"/>
+        <circle cx="${x}" cy="${y}" r="${radius * 1.4}" 
+          fill="${THEME.green}" opacity="0.45"/>
+        <circle cx="${x}" cy="${y}" r="${radius}" 
+          fill="${THEME.green}" opacity="0.95"/>
+        <circle cx="${x}" cy="${y}" r="${radius * 0.35}" 
+          fill="#ffffff" opacity="1"/>\n`;
+    }
+  }
+
+  // Then render dots for any remaining visited countries
   for (const [code, count] of Object.entries(countryMap)) {
+    if (count <= 0) continue;
     const coords = COUNTRY_CENTERS[code];
     if (!coords) continue;
 
     const { x, y } = latLngToSvg(coords[0], coords[1]);
+    const coordKey = `${Math.round(x)},${Math.round(y)}`;
+    if (renderedCoords.has(coordKey)) continue;
+
     const ratio = count / maxCount;
-    const dotRadius = Math.max(6, Math.min(22, ratio * 28));
+    const radius = Math.max(5, Math.min(18, ratio * 22));
 
     dots += `
-      <circle cx="${x}" cy="${y}" r="${dotRadius * 3}" 
-        fill="${THEME.green}" opacity="0.15" filter="url(#dotGlow)"/>
-      <circle cx="${x}" cy="${y}" r="${dotRadius * 1.8}" 
-        fill="${THEME.green}" opacity="0.35"/>
-      <circle cx="${x}" cy="${y}" r="${dotRadius}" 
-        fill="${THEME.green}" opacity="0.9"/>
-      <circle cx="${x}" cy="${y}" r="${dotRadius * 0.4}" 
-        fill="#ffffff" opacity="1"/>`;
+      <circle cx="${x}" cy="${y}" r="${radius * 2.5}" 
+        fill="${THEME.green}" opacity="0.2" filter="url(#dotGlow)"/>
+      <circle cx="${x}" cy="${y}" r="${radius * 1.4}" 
+        fill="${THEME.green}" opacity="0.45"/>
+      <circle cx="${x}" cy="${y}" r="${radius}" 
+        fill="${THEME.green}" opacity="0.95"/>
+      <circle cx="${x}" cy="${y}" r="${radius * 0.35}" 
+        fill="#ffffff" opacity="1"/>\n`;
   }
 
   // Map legend
@@ -187,7 +205,7 @@ export function renderMapSection(data, startX, startY, totalWidth) {
 
   // World map
   const map = renderWorldMap(
-    data.countryMap,
+    data,
     startX + 10,
     startY + 45,
     mapWidth - 10,

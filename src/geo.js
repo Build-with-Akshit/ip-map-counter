@@ -216,6 +216,36 @@ export const COUNTRY_CENTERS = {
 };
 
 /**
+ * Approximate lat/lng for major global cities.
+ */
+export const CITY_CENTERS = {
+  "Delhi, IN": [28.61, 77.21],
+  "Mumbai, IN": [19.07, 72.87],
+  "Bangalore, IN": [12.97, 77.59],
+  "Hyderabad, IN": [17.38, 78.48],
+  "Chennai, IN": [13.08, 80.27],
+  "Kolkata, IN": [22.57, 88.36],
+  "Pune, IN": [18.52, 73.85],
+  "New York, US": [40.71, -74.0],
+  "San Francisco, US": [37.77, -122.41],
+  "Los Angeles, US": [34.05, -118.24],
+  "Chicago, US": [41.87, -87.62],
+  "London, GB": [51.5, -0.12],
+  "Paris, FR": [48.85, 2.35],
+  "Berlin, DE": [52.52, 13.4],
+  "Tokyo, JP": [35.67, 139.65],
+  "Singapore, SG": [1.35, 103.81],
+  "Hong Kong, HK": [22.31, 114.16],
+  "Sydney, AU": [-33.86, 151.2],
+  "Toronto, CA": [43.65, -79.38],
+  "Beijing, CN": [39.9, 116.4],
+  "Shanghai, CN": [31.23, 121.47],
+  "Shenzhen, CN": [22.54, 114.05],
+  "Sao Paulo, BR": [-23.55, -46.63],
+  "Rio de Janeiro, BR": [-22.9, -43.17],
+};
+
+/**
  * Convert lat/lng to SVG map coordinates matching amCharts world map (1000x500).
  * ViewBox: 0 0 1000 500
  */
@@ -224,5 +254,6 @@ export function latLngToSvg(lat, lng) {
   const y = ((90 - lat) / 180) * 500;
   return { x, y };
 }
+
 
 
