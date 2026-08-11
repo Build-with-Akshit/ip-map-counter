@@ -1,9 +1,11 @@
 import THEME from "./theme.js";
+import { getCountryFlag } from "../geo.js";
 
 /**
  * Format a number with commas (e.g., 352043 → "352,043").
  */
 function formatNumber(n) {
+  if (n === undefined || n === null) return "0";
   return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
@@ -14,127 +16,145 @@ function formatDate(dateStr) {
   if (!dateStr) return "N/A";
   const d = new Date(dateStr + "T00:00:00Z");
   const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
   ];
   return `${months[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}`;
 }
 
 /**
- * SVG icon: people/visitors
+ * Format a peak window range string (e.g. "May 19 - May 22").
  */
-function iconVisitors(x, y) {
-  return `<g transform="translate(${x},${y}) scale(0.9)" fill="${THEME.green}">
-    <circle cx="8" cy="6" r="4"/>
-    <path d="M0 18c0-4.4 3.6-8 8-8s8 3.6 8 8"/>
-    <circle cx="20" cy="8" r="3" opacity="0.6"/>
-    <path d="M17 18c0-3.3 1.3-5.5 3-7" opacity="0.6"/>
-  </g>`;
+function formatPeakWindow(dateStr) {
+  if (!dateStr) return "N/A";
+  const d = new Date(dateStr + "T00:00:00Z");
+  const d2 = new Date(d);
+  d2.setDate(d2.getDate() + 3);
+
+  const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+  ];
+
+  const m1 = months[d.getUTCMonth()];
+  const m2 = months[d2.getUTCMonth()];
+
+  if (m1 === m2) {
+    return `${m1} ${d.getUTCDate()} - ${d2.getUTCDate()}`;
+  }
+  return `${m1} ${d.getUTCDate()} - ${m2} ${d2.getUTCDate()}`;
 }
 
 /**
- * SVG icon: eye/page views
+ * Card 1: Total Pageviews (with circular ring)
  */
-function iconPageViews(x, y) {
-  return `<g transform="translate(${x},${y}) scale(0.9)" fill="none" stroke="${THEME.green}" stroke-width="2">
-    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-    <circle cx="12" cy="12" r="3" fill="${THEME.green}"/>
-  </g>`;
-}
-
-/**
- * SVG icon: streak/fire
- */
-function iconStreak(x, y) {
-  return `<g transform="translate(${x},${y}) scale(0.9)" fill="${THEME.green}">
-    <path d="M12 2C10 6 6 8 6 13a6 6 0 0012 0c0-3-2-5.5-3-7l-1.5 2C12.5 10 11 10 11 8c0-1.5 1-3 1-6z"/>
-  </g>`;
-}
-
-/**
- * SVG icon: bar chart/highest
- */
-function iconHighest(x, y) {
-  return `<g transform="translate(${x},${y}) scale(0.9)" fill="${THEME.green}">
-    <rect x="2" y="12" width="4" height="10" rx="1"/>
-    <rect x="9" y="6" width="4" height="16" rx="1"/>
-    <rect x="16" y="2" width="4" height="20" rx="1"/>
-  </g>`;
-}
-
-/**
- * Render a single stat card.
- */
-function renderStatCard(x, y, width, height, icon, label, value, subtext) {
-  return `
-    <g transform="translate(${x},${y})">
-      <rect x="0" y="0" width="${width}" height="${height}" rx="${THEME.cardRadius}"
-        fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
-      ${icon}
-      <text x="50" y="28" fill="${THEME.textMuted}" font-size="11"
-        font-family="${THEME.fontFamily}">${label}</text>
-      <text x="50" y="55" fill="${THEME.text}" font-size="26" font-weight="700"
-        font-family="${THEME.fontFamily}">${value}</text>
-      ${
-        subtext
-          ? `<text x="50" y="72" fill="${THEME.textMuted}" font-size="10"
-        font-family="${THEME.fontFamily}">${subtext}</text>`
-          : ""
-      }
-    </g>`;
-}
-
-/**
- * Render the streak card with a circular progress indicator.
- */
-function renderStreakCard(x, y, width, height, streak, todayViews) {
-  const isActive = todayViews > 0;
-  const statusText = isActive ? "Active today" : "Inactive";
-  const statusColor = isActive ? THEME.green : THEME.textMuted;
-
-  // Circular ring
-  const cx = width / 2;
-  const cy = 48;
-  const r = 22;
-  const circumference = 2 * Math.PI * r;
-  const progress = isActive ? circumference : 0;
+function renderCardTotalPageviews(x, y, width, height, totalViews, firstSeen) {
+  const cx = 40;
+  const cy = height / 2;
+  const r = 20;
 
   return `
     <g transform="translate(${x},${y})">
       <rect x="0" y="0" width="${width}" height="${height}" rx="${THEME.cardRadius}"
         fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
-      <text x="${cx}" y="20" fill="${THEME.textMuted}" font-size="11"
-        font-family="${THEME.fontFamily}" text-anchor="middle">Current Streak</text>
       
-      <!-- Circular ring -->
+      <!-- Left circular progress ring -->
       <circle cx="${cx}" cy="${cy}" r="${r}" fill="none"
-        stroke="${THEME.borderLight}" stroke-width="3"/>
+        stroke="${THEME.borderLight}" stroke-width="4"/>
       <circle cx="${cx}" cy="${cy}" r="${r}" fill="none"
-        stroke="${statusColor}" stroke-width="3"
-        stroke-dasharray="${progress} ${circumference}"
+        stroke="${THEME.green}" stroke-width="4"
+        stroke-dasharray="100 126"
         stroke-linecap="round"
         transform="rotate(-90 ${cx} ${cy})"/>
       
-      <text x="${cx}" y="${cy + 5}" fill="${THEME.text}" font-size="22" font-weight="700"
-        font-family="${THEME.fontFamily}" text-anchor="middle">${streak}</text>
-      
-      <text x="${cx}" y="${cy + 26}" fill="${statusColor}" font-size="10"
-        font-family="${THEME.fontFamily}" text-anchor="middle">${statusText}</text>
+      <!-- Right text details -->
+      <g transform="translate(75,0)">
+        <text x="0" y="32" fill="${THEME.text}" font-size="24" font-weight="700"
+          font-family="${THEME.fontFamily}">${formatNumber(totalViews)}</text>
+        <text x="0" y="49" fill="${THEME.textMuted}" font-size="11" font-weight="600"
+          font-family="${THEME.fontFamily}">Total Pageviews</text>
+        <text x="0" y="65" fill="${THEME.textMuted}" font-size="9"
+          font-family="${THEME.fontFamily}">counting started from ${formatDate(firstSeen)}</text>
+      </g>
     </g>`;
 }
 
 /**
- * Render all 4 stat cards in a row.
+ * Card 2: Top Location
+ */
+function renderCardTopLocation(x, y, width, height, topCountries, totalViews) {
+  const top = topCountries && topCountries.length > 0 ? topCountries[0] : { code: "US", count: totalViews || 0 };
+  const flag = getCountryFlag(top.code);
+  const codeName = top.code.toUpperCase();
+  const count = top.count;
+
+  return `
+    <g transform="translate(${x},${y})">
+      <rect x="0" y="0" width="${width}" height="${height}" rx="${THEME.cardRadius}"
+        fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
+      
+      <!-- Left Flag Badge -->
+      <g transform="translate(18, 22)">
+        <rect x="0" y="0" width="42" height="30" rx="4" fill="${THEME.cardBg}" stroke="${THEME.borderLight}" stroke-width="1"/>
+        <text x="21" y="22" font-size="22" font-family="${THEME.fontFamily}" text-anchor="middle">${flag}</text>
+      </g>
+
+      <!-- Right Details -->
+      <g transform="translate(72,0)">
+        <text x="0" y="24" fill="${THEME.textMuted}" font-size="11"
+          font-family="${THEME.fontFamily}">Top Location</text>
+        <text x="0" y="49" fill="${THEME.text}" font-size="20" font-weight="700"
+          font-family="${THEME.fontFamily}">${codeName}: ${formatNumber(count)}</text>
+        <text x="0" y="65" fill="${THEME.textMuted}" font-size="9"
+          font-family="${THEME.fontFamily}">Largest contribution</text>
+      </g>
+    </g>`;
+}
+
+/**
+ * Card 3: Unique Nations
+ */
+function renderCardUniqueNations(x, y, width, height, uniqueCountries) {
+  const count = uniqueCountries > 0 ? uniqueCountries : 1;
+  const cx = width / 2;
+
+  return `
+    <g transform="translate(${x},${y})">
+      <rect x="0" y="0" width="${width}" height="${height}" rx="${THEME.cardRadius}"
+        fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
+      
+      <text x="${cx}" y="24" fill="${THEME.textMuted}" font-size="11"
+        font-family="${THEME.fontFamily}" text-anchor="middle">Unique Nations</text>
+      <text x="${cx}" y="52" fill="${THEME.text}" font-size="26" font-weight="700"
+        font-family="${THEME.fontFamily}" text-anchor="middle">${formatNumber(count)}</text>
+      <text x="${cx}" y="67" fill="${THEME.textMuted}" font-size="9"
+        font-family="${THEME.fontFamily}" text-anchor="middle">Across the globe</text>
+    </g>`;
+}
+
+/**
+ * Card 4: Peak Visit Window
+ */
+function renderCardPeakVisitWindow(x, y, width, height, highestDailyDate) {
+  const peakWindow = formatPeakWindow(highestDailyDate);
+  const cx = width / 2;
+
+  return `
+    <g transform="translate(${x},${y})">
+      <rect x="0" y="0" width="${width}" height="${height}" rx="${THEME.cardRadius}"
+        fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
+      
+      <text x="${cx}" y="24" fill="${THEME.textMuted}" font-size="11"
+        font-family="${THEME.fontFamily}" text-anchor="middle">Peak Visit Window</text>
+      <text x="${cx}" y="49" fill="${THEME.text}" font-size="16" font-weight="700"
+        font-family="${THEME.fontFamily}" text-anchor="middle">${peakWindow}</text>
+      <text x="${cx}" y="65" fill="${THEME.textMuted}" font-size="9"
+        font-family="${THEME.fontFamily}" text-anchor="middle">e.g. ${peakWindow}</text>
+    </g>`;
+}
+
+/**
+ * Render all 4 stat cards in a row matching the target design.
  */
 export function renderStatsCards(data, startX, startY, totalWidth) {
   const gap = THEME.gap;
@@ -143,57 +163,49 @@ export function renderStatsCards(data, startX, startY, totalWidth) {
 
   const cards = [];
 
-  // Card 1: Total Visitors
+  // Card 1: Total Pageviews
   cards.push(
-    renderStatCard(
+    renderCardTotalPageviews(
       startX,
       startY,
       cardWidth,
       cardHeight,
-      iconVisitors(16, 18),
-      "Total Visitors",
-      formatNumber(data.totalViews),
-      "",
+      data.pageViews || data.totalViews,
+      data.firstSeen,
     ),
   );
 
-  // Card 2: Page Views
+  // Card 2: Top Location
   cards.push(
-    renderStatCard(
+    renderCardTopLocation(
       startX + cardWidth + gap,
       startY,
       cardWidth,
       cardHeight,
-      iconPageViews(16, 18),
-      "Page Views",
-      formatNumber(data.pageViews),
-      "",
+      data.topCountries,
+      data.pageViews || data.totalViews,
     ),
   );
 
-  // Card 3: Current Streak
+  // Card 3: Unique Nations
   cards.push(
-    renderStreakCard(
+    renderCardUniqueNations(
       startX + (cardWidth + gap) * 2,
       startY,
       cardWidth,
       cardHeight,
-      data.streak,
-      data.todayViews,
+      data.uniqueCountries,
     ),
   );
 
-  // Card 4: Highest Daily Visitors
+  // Card 4: Peak Visit Window
   cards.push(
-    renderStatCard(
+    renderCardPeakVisitWindow(
       startX + (cardWidth + gap) * 3,
       startY,
       cardWidth,
       cardHeight,
-      iconHighest(16, 18),
-      "Highest Daily Visitors",
-      formatNumber(data.highestDailyCount),
-      data.highestDailyDate ? formatDate(data.highestDailyDate) : "",
+      data.highestDailyDate || data.firstSeen,
     ),
   );
 
