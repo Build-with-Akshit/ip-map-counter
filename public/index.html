@@ -370,6 +370,14 @@
       border-radius: 8px;
       backdrop-filter: blur(6px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* Active Focus Indicator when user clicks inside Map Card */
+    .map-active-focus .web-map-pan-right,
+    .map-active-focus .web-map-zoom-left .web-ctrl-btn {
+      border-color: var(--green);
+      box-shadow: 0 0 10px rgba(57, 211, 83, 0.35);
     }
 
     .pan-row {
@@ -617,8 +625,35 @@
       updateMapTransform();
     }
 
+    let isMapFocused = false;
+
+    // Track click-to-focus on the World Map card
+    document.addEventListener("click", (e) => {
+      const zoomLeft = document.getElementById("zoomWidgetLeft");
+      const panRight = document.getElementById("panWidgetRight");
+      const mapSvg = document.getElementById("worldMapSvg") || document.querySelector("#svgWrapper svg");
+      const wrapper = document.getElementById("svgWrapper");
+
+      const isInsideMap = 
+        (zoomLeft && zoomLeft.contains(e.target)) ||
+        (panRight && panRight.contains(e.target)) ||
+        (mapSvg && mapSvg.contains(e.target)) ||
+        (e.target.closest && (e.target.closest("#worldMapSvg") || e.target.closest("#svgWrapper")));
+
+      if (isInsideMap) {
+        isMapFocused = true;
+        if (wrapper) wrapper.classList.add("map-active-focus");
+      } else {
+        isMapFocused = false;
+        if (wrapper) wrapper.classList.remove("map-active-focus");
+      }
+    });
+
     // Keyboard Shortcuts for Interactive Map Navigation (+, -, R, Arrow Keys)
+    // ONLY ACTIVE WHEN USER CLICKS INSIDE MAP CARD
     window.addEventListener("keydown", (e) => {
+      if (!isMapFocused) return;
+
       const activeTag = document.activeElement ? document.activeElement.tagName.toUpperCase() : "";
       if (activeTag === "INPUT" || activeTag === "TEXTAREA") return;
 
