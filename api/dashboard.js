@@ -23,9 +23,12 @@ export default async function handler(req, res) {
     // Fetch analytics data from Redis
     const data = await getAnalytics(username);
 
-    // Hide contribute pill when viewing directly on Vercel web app (source=web)
+    // Hide inner header and contribute pill when viewing directly on Vercel web app (source=web)
     const isWeb = source === "web";
-    const svg = renderDashboard(data, username, { showContributePill: !isWeb });
+    const svg = renderDashboard(data, username, {
+      showContributePill: !isWeb,
+      showHeader: !isWeb,
+    });
 
     // Return SVG with no-cache headers for instant real-time updates
     res.setHeader("Content-Type", "image/svg+xml");
