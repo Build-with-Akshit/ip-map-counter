@@ -122,7 +122,7 @@ export function renderDashboard(data, username, options = {}) {
         <!-- Full-Width Top Contribute Banner -->
         <g transform="translate(0, -4)">
           <rect x="0" y="0" width="${contentWidth}" height="50" rx="12" 
-            fill="url(#pillGradient)" stroke="#39d353" stroke-width="1.5"/>
+            fill="#0d2818" stroke="#2ea043" stroke-width="1.2"/>
           <g transform="translate(${contentWidth / 2}, 0)">
             <g transform="translate(-305, 0)">
               <circle cx="0" cy="25" r="11" fill="#39d353" opacity="0.35"/>
