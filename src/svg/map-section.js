@@ -19,41 +19,45 @@ function formatNumber(n) {
 
 /**
  * Helper to calculate dot size, colors, and glow tier based on visitor count.
+ * Calibrated to match reference design: crisp compact dots with soft ambient glow.
  */
 function getDotStyle(count, maxCount) {
   if (count <= 0) return null;
   const ratio = Math.max(0.01, count / maxCount);
   
-  if (ratio > 0.4 || count >= 5000) {
-    // High Intensity: Large bright yellow-green neon glowing dot
-    const radius = Math.max(10, Math.min(16, 10 + ratio * 6));
+  if (ratio > 0.5 || count >= 5000) {
+    // High Intensity (Top traffic node: e.g., US / 80k+ views)
+    const radius = Math.max(7, Math.min(9.5, 7 + ratio * 2.5));
     return {
       radius,
-      glowRadius: radius * 3.6,
+      glowRadius: radius * 2.8,
       dotColor: "#d4ff00",
       coreColor: "#ffffff",
+      coreRadius: 2.2,
       glowId: "highGlow",
       filterId: "blurHigh",
     };
-  } else if (ratio > 0.05 || count >= 50) {
-    // Medium Intensity: Vibrant bright green glowing dot
-    const radius = Math.max(6, Math.min(9.5, 6 + ratio * 8));
+  } else if (ratio > 0.08 || count >= 100) {
+    // Medium Intensity (Medium traffic nodes)
+    const radius = Math.max(4.2, Math.min(6.2, 4.2 + ratio * 3));
     return {
       radius,
-      glowRadius: radius * 3.2,
+      glowRadius: radius * 2.8,
       dotColor: "#39d353",
       coreColor: "#ffffff",
+      coreRadius: 1.4,
       glowId: "medGlow",
       filterId: "blurMed",
     };
   } else {
-    // Low Intensity: Small green dot with subtle glow
-    const radius = Math.max(3.5, Math.min(5.5, 3.5 + ratio * 10));
+    // Low Intensity (Small traffic nodes / individual cities)
+    const radius = Math.max(2.2, Math.min(3.8, 2.2 + ratio * 4));
     return {
       radius,
-      glowRadius: radius * 2.8,
-      dotColor: "#26a641",
-      coreColor: "#a3f7b5",
+      glowRadius: radius * 2.6,
+      dotColor: "#39d353",
+      coreColor: count > 5 ? "#ffffff" : null,
+      coreRadius: 0.8,
       glowId: "lowGlow",
       filterId: "blurLow",
     };
@@ -97,12 +101,16 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
       const style = getDotStyle(city.count, cityMax);
       if (!style) continue;
 
+      const coreDot = style.coreColor
+        ? `<circle cx="${x}" cy="${y}" r="${style.coreRadius}" fill="${style.coreColor}"/>`
+        : "";
+
       dots += `
         <!-- Soft radial glow aura -->
         <circle cx="${x}" cy="${y}" r="${style.glowRadius}" fill="url(#${style.glowId})" filter="url(#${style.filterId})"/>
         <!-- Central glowing dot -->
         <circle cx="${x}" cy="${y}" r="${style.radius}" fill="${style.dotColor}"/>
-        <circle cx="${x}" cy="${y}" r="${Math.max(1.5, style.radius * 0.45)}" fill="${style.coreColor}"/>\n`;
+        ${coreDot}\n`;
     }
   }
 
@@ -120,47 +128,51 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
     const style = getDotStyle(count, maxCount);
     if (!style) continue;
 
+    const coreDot = style.coreColor
+      ? `<circle cx="${x}" cy="${y}" r="${style.coreRadius}" fill="${style.coreColor}"/>`
+      : "";
+
     dots += `
       <!-- Soft radial glow aura -->
       <circle cx="${x}" cy="${y}" r="${style.glowRadius}" fill="url(#${style.glowId})" filter="url(#${style.filterId})"/>
       <!-- Central glowing dot -->
       <circle cx="${x}" cy="${y}" r="${style.radius}" fill="${style.dotColor}"/>
-      <circle cx="${x}" cy="${y}" r="${Math.max(1.5, style.radius * 0.45)}" fill="${style.coreColor}"/>\n`;
+      ${coreDot}\n`;
   }
 
   // Defs for smooth, borderless radial glow for Low, Medium, and High intensities
   const defs = `
     <defs>
-      <!-- High Intensity: Lime-Yellow Glow -->
+      <!-- High Intensity: Soft Lime Glow -->
       <radialGradient id="highGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#d4ff00" stop-opacity="0.95"/>
-        <stop offset="30%" stop-color="#39d353" stop-opacity="0.6"/>
-        <stop offset="70%" stop-color="#2ea043" stop-opacity="0.2"/>
+        <stop offset="0%" stop-color="#d4ff00" stop-opacity="0.85"/>
+        <stop offset="30%" stop-color="#39d353" stop-opacity="0.45"/>
+        <stop offset="70%" stop-color="#2ea043" stop-opacity="0.15"/>
         <stop offset="100%" stop-color="#39d353" stop-opacity="0"/>
       </radialGradient>
 
-      <!-- Medium Intensity: Bright Emerald Glow -->
+      <!-- Medium Intensity: Soft Emerald Glow -->
       <radialGradient id="medGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#39d353" stop-opacity="0.85"/>
-        <stop offset="40%" stop-color="#2ea043" stop-opacity="0.35"/>
+        <stop offset="0%" stop-color="#39d353" stop-opacity="0.75"/>
+        <stop offset="45%" stop-color="#2ea043" stop-opacity="0.25"/>
         <stop offset="100%" stop-color="#39d353" stop-opacity="0"/>
       </radialGradient>
 
-      <!-- Low Intensity: Soft Green Glow -->
+      <!-- Low Intensity: Subtle Green Glow -->
       <radialGradient id="lowGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#26a641" stop-opacity="0.75"/>
-        <stop offset="50%" stop-color="#0e4429" stop-opacity="0.25"/>
-        <stop offset="100%" stop-color="#26a641" stop-opacity="0"/>
+        <stop offset="0%" stop-color="#39d353" stop-opacity="0.5"/>
+        <stop offset="60%" stop-color="#2ea043" stop-opacity="0.12"/>
+        <stop offset="100%" stop-color="#2ea043" stop-opacity="0"/>
       </radialGradient>
 
       <filter id="blurHigh" x="-100%" y="-100%" width="300%" height="300%">
-        <feGaussianBlur stdDeviation="8" result="blur"/>
-      </filter>
-      <filter id="blurMed" x="-100%" y="-100%" width="300%" height="300%">
         <feGaussianBlur stdDeviation="5" result="blur"/>
       </filter>
+      <filter id="blurMed" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      </filter>
       <filter id="blurLow" x="-100%" y="-100%" width="300%" height="300%">
-        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feGaussianBlur stdDeviation="2" result="blur"/>
       </filter>
     </defs>`;
 
@@ -169,10 +181,10 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
     <g transform="translate(${mapX + 15},${mapY + mapHeight - 25})">
       <text x="0" y="10" fill="${THEME.textMuted}" font-size="9" font-family="${THEME.fontFamily}">
         Fewer visitors</text>
-      <circle cx="70" cy="7" r="3" fill="#26a641"/>
-      <circle cx="83" cy="7" r="4.5" fill="#39d353"/>
-      <circle cx="97" cy="7" r="6" fill="#56d364"/>
-      <circle cx="113" cy="7" r="8" fill="#d4ff00"/>
+      <circle cx="70" cy="7" r="2.5" fill="#26a641"/>
+      <circle cx="83" cy="7" r="4" fill="#39d353"/>
+      <circle cx="97" cy="7" r="5.5" fill="#56d364"/>
+      <circle cx="113" cy="7" r="7.5" fill="#d4ff00"/>
       <text x="126" y="10" fill="${THEME.textMuted}" font-size="9" font-family="${THEME.fontFamily}">
         More visitors</text>
     </g>`;

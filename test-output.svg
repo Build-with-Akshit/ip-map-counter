@@ -213,36 +213,36 @@
         preserveAspectRatio="xMidYMid meet">
         
     <defs>
-      <!-- High Intensity: Lime-Yellow Glow -->
+      <!-- High Intensity: Soft Lime Glow -->
       <radialGradient id="highGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#d4ff00" stop-opacity="0.95"/>
-        <stop offset="30%" stop-color="#39d353" stop-opacity="0.6"/>
-        <stop offset="70%" stop-color="#2ea043" stop-opacity="0.2"/>
+        <stop offset="0%" stop-color="#d4ff00" stop-opacity="0.85"/>
+        <stop offset="30%" stop-color="#39d353" stop-opacity="0.45"/>
+        <stop offset="70%" stop-color="#2ea043" stop-opacity="0.15"/>
         <stop offset="100%" stop-color="#39d353" stop-opacity="0"/>
       </radialGradient>
 
-      <!-- Medium Intensity: Bright Emerald Glow -->
+      <!-- Medium Intensity: Soft Emerald Glow -->
       <radialGradient id="medGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#39d353" stop-opacity="0.85"/>
-        <stop offset="40%" stop-color="#2ea043" stop-opacity="0.35"/>
+        <stop offset="0%" stop-color="#39d353" stop-opacity="0.75"/>
+        <stop offset="45%" stop-color="#2ea043" stop-opacity="0.25"/>
         <stop offset="100%" stop-color="#39d353" stop-opacity="0"/>
       </radialGradient>
 
-      <!-- Low Intensity: Soft Green Glow -->
+      <!-- Low Intensity: Subtle Green Glow -->
       <radialGradient id="lowGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#26a641" stop-opacity="0.75"/>
-        <stop offset="50%" stop-color="#0e4429" stop-opacity="0.25"/>
-        <stop offset="100%" stop-color="#26a641" stop-opacity="0"/>
+        <stop offset="0%" stop-color="#39d353" stop-opacity="0.5"/>
+        <stop offset="60%" stop-color="#2ea043" stop-opacity="0.12"/>
+        <stop offset="100%" stop-color="#2ea043" stop-opacity="0"/>
       </radialGradient>
 
       <filter id="blurHigh" x="-100%" y="-100%" width="300%" height="300%">
-        <feGaussianBlur stdDeviation="8" result="blur"/>
-      </filter>
-      <filter id="blurMed" x="-100%" y="-100%" width="300%" height="300%">
         <feGaussianBlur stdDeviation="5" result="blur"/>
       </filter>
+      <filter id="blurMed" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      </filter>
       <filter id="blurLow" x="-100%" y="-100%" width="300%" height="300%">
-        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feGaussianBlur stdDeviation="2" result="blur"/>
       </filter>
     </defs>
         <path id="country-TV" d="M997.8,273.8L997.8,273.5L997.9,273.6L997.8,273.8" 
@@ -1019,238 +1019,238 @@
 
         
         <!-- Soft radial glow aura -->
-        <circle cx="294.44444444444446" cy="136.91666666666666" r="57.6" fill="url(#highGlow)" filter="url(#blurHigh)"/>
+        <circle cx="294.44444444444446" cy="136.91666666666666" r="26.599999999999998" fill="url(#highGlow)" filter="url(#blurHigh)"/>
         <!-- Central glowing dot -->
-        <circle cx="294.44444444444446" cy="136.91666666666666" r="16" fill="#d4ff00"/>
-        <circle cx="294.44444444444446" cy="136.91666666666666" r="7.2" fill="#ffffff"/>
+        <circle cx="294.44444444444446" cy="136.91666666666666" r="9.5" fill="#d4ff00"/>
+        <circle cx="294.44444444444446" cy="136.91666666666666" r="2.2" fill="#ffffff"/>
 
         <!-- Soft radial glow aura -->
-        <circle cx="714.4722222222222" cy="170.52777777777777" r="52.60420819490587" fill="url(#highGlow)" filter="url(#blurHigh)"/>
+        <circle cx="714.4722222222222" cy="170.52777777777777" r="24.98099339649727" fill="url(#highGlow)" filter="url(#blurHigh)"/>
         <!-- Central glowing dot -->
-        <circle cx="714.4722222222222" cy="170.52777777777777" r="14.61228005414052" fill="#d4ff00"/>
-        <circle cx="714.4722222222222" cy="170.52777777777777" r="6.575526024363234" fill="#ffffff"/>
+        <circle cx="714.4722222222222" cy="170.52777777777777" r="8.921783355891883" fill="#d4ff00"/>
+        <circle cx="714.4722222222222" cy="170.52777777777777" r="2.2" fill="#ffffff"/>
 
         <!-- Soft radial glow aura -->
-        <circle cx="715.5277777777778" cy="213.97222222222223" r="47.00243632336656" fill="url(#highGlow)" filter="url(#blurHigh)"/>
+        <circle cx="715.5277777777778" cy="213.97222222222223" r="23.165604364053976" fill="url(#highGlow)" filter="url(#blurHigh)"/>
         <!-- Central glowing dot -->
-        <circle cx="715.5277777777778" cy="213.97222222222223" r="13.056232312046266" fill="#d4ff00"/>
-        <circle cx="715.5277777777778" cy="213.97222222222223" r="5.87530454042082" fill="#ffffff"/>
+        <circle cx="715.5277777777778" cy="213.97222222222223" r="8.273430130019278" fill="#d4ff00"/>
+        <circle cx="715.5277777777778" cy="213.97222222222223" r="2.2" fill="#ffffff"/>
 
         <!-- Soft radial glow aura -->
-        <circle cx="499.66666666666663" cy="106.94444444444444" r="45.06135105204873" fill="url(#highGlow)" filter="url(#blurHigh)"/>
+        <circle cx="499.66666666666663" cy="106.94444444444444" r="22.536548952052826" fill="url(#highGlow)" filter="url(#blurHigh)"/>
         <!-- Central glowing dot -->
-        <circle cx="499.66666666666663" cy="106.94444444444444" r="12.517041958902425" fill="#d4ff00"/>
-        <circle cx="499.66666666666663" cy="106.94444444444444" r="5.632668881506091" fill="#ffffff"/>
+        <circle cx="499.66666666666663" cy="106.94444444444444" r="8.04876748287601" fill="#d4ff00"/>
+        <circle cx="499.66666666666663" cy="106.94444444444444" r="2.2" fill="#ffffff"/>
 
         <!-- Soft radial glow aura -->
-        <circle cx="817.111111111111" cy="188.02777777777777" r="43.88837209302326" fill="url(#highGlow)" filter="url(#blurHigh)"/>
+        <circle cx="817.111111111111" cy="188.02777777777777" r="22.156416881998275" fill="url(#highGlow)" filter="url(#blurHigh)"/>
         <!-- Central glowing dot -->
-        <circle cx="817.111111111111" cy="188.02777777777777" r="12.191214470284237" fill="#d4ff00"/>
-        <circle cx="817.111111111111" cy="188.02777777777777" r="5.486046511627907" fill="#ffffff"/>
+        <circle cx="817.111111111111" cy="188.02777777777777" r="7.913006029285099" fill="#d4ff00"/>
+        <circle cx="817.111111111111" cy="188.02777777777777" r="2.2" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="226.38888888888889" cy="139.44444444444446" r="57.6" fill="url(#highGlow)" filter="url(#blurHigh)"/>
+      <circle cx="226.38888888888889" cy="139.44444444444446" r="26.599999999999998" fill="url(#highGlow)" filter="url(#blurHigh)"/>
       <!-- Central glowing dot -->
-      <circle cx="226.38888888888889" cy="139.44444444444446" r="16" fill="#d4ff00"/>
-      <circle cx="226.38888888888889" cy="139.44444444444446" r="7.2" fill="#ffffff"/>
+      <circle cx="226.38888888888889" cy="139.44444444444446" r="9.5" fill="#d4ff00"/>
+      <circle cx="226.38888888888889" cy="139.44444444444446" r="2.2" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="789.4444444444443" cy="150.2777777777778" r="19.456000000000003" fill="url(#medGlow)" filter="url(#blurMed)"/>
+      <circle cx="789.4444444444443" cy="150.2777777777778" r="11.844000000000001" fill="url(#medGlow)" filter="url(#blurMed)"/>
       <!-- Central glowing dot -->
-      <circle cx="789.4444444444443" cy="150.2777777777778" r="6.08" fill="#39d353"/>
-      <circle cx="789.4444444444443" cy="150.2777777777778" r="2.736" fill="#ffffff"/>
+      <circle cx="789.4444444444443" cy="150.2777777777778" r="4.23" fill="#39d353"/>
+      <circle cx="789.4444444444443" cy="150.2777777777778" r="1.4" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="719.1666666666666" cy="192.7777777777778" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="719.1666666666666" cy="192.7777777777778" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="719.1666666666666" cy="192.7777777777778" r="3.6" fill="#26a641"/>
-      <circle cx="719.1666666666666" cy="192.7777777777778" r="1.62" fill="#a3f7b5"/>
+      <circle cx="719.1666666666666" cy="192.7777777777778" r="2.24" fill="#39d353"/>
+      <circle cx="719.1666666666666" cy="192.7777777777778" r="0.8" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="788.3333333333334" cy="246.1111111111111" r="19.456000000000003" fill="url(#medGlow)" filter="url(#blurMed)"/>
+      <circle cx="788.3333333333334" cy="246.1111111111111" r="11.844000000000001" fill="url(#medGlow)" filter="url(#blurMed)"/>
       <!-- Central glowing dot -->
-      <circle cx="788.3333333333334" cy="246.1111111111111" r="6.08" fill="#39d353"/>
-      <circle cx="788.3333333333334" cy="246.1111111111111" r="2.736" fill="#ffffff"/>
+      <circle cx="788.3333333333334" cy="246.1111111111111" r="4.23" fill="#39d353"/>
+      <circle cx="788.3333333333334" cy="246.1111111111111" r="1.4" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="884.1666666666666" cy="149.44444444444443" r="19.456000000000003" fill="url(#medGlow)" filter="url(#blurMed)"/>
+      <circle cx="884.1666666666666" cy="149.44444444444443" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="884.1666666666666" cy="149.44444444444443" r="6.08" fill="#39d353"/>
-      <circle cx="884.1666666666666" cy="149.44444444444443" r="2.736" fill="#ffffff"/>
+      <circle cx="884.1666666666666" cy="149.44444444444443" r="2.24" fill="#39d353"/>
+      <circle cx="884.1666666666666" cy="149.44444444444443" r="0.8" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="836.1111111111111" cy="184.16666666666666" r="19.456000000000003" fill="url(#medGlow)" filter="url(#blurMed)"/>
+      <circle cx="836.1111111111111" cy="184.16666666666666" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="836.1111111111111" cy="184.16666666666666" r="6.08" fill="#39d353"/>
-      <circle cx="836.1111111111111" cy="184.16666666666666" r="2.736" fill="#ffffff"/>
+      <circle cx="836.1111111111111" cy="184.16666666666666" r="2.24" fill="#39d353"/>
+      <circle cx="836.1111111111111" cy="184.16666666666666" r="0.8" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="355.8333333333333" cy="289.44444444444446" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="355.8333333333333" cy="289.44444444444446" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="355.8333333333333" cy="289.44444444444446" r="3.6" fill="#26a641"/>
-      <circle cx="355.8333333333333" cy="289.44444444444446" r="1.62" fill="#a3f7b5"/>
+      <circle cx="355.8333333333333" cy="289.44444444444446" r="2.24" fill="#39d353"/>
+      <circle cx="355.8333333333333" cy="289.44444444444446" r="0.8" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="490.55555555555554" cy="96.11111111111111" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="490.55555555555554" cy="96.11111111111111" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="490.55555555555554" cy="96.11111111111111" r="3.6" fill="#26a641"/>
-      <circle cx="490.55555555555554" cy="96.11111111111111" r="1.62" fill="#a3f7b5"/>
+      <circle cx="490.55555555555554" cy="96.11111111111111" r="2.24" fill="#39d353"/>
+      <circle cx="490.55555555555554" cy="96.11111111111111" r="0.8" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="528.8888888888888" cy="107.77777777777776" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="528.8888888888888" cy="107.77777777777776" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="528.8888888888888" cy="107.77777777777776" r="3.6" fill="#26a641"/>
-      <circle cx="528.8888888888888" cy="107.77777777777776" r="1.62" fill="#a3f7b5"/>
+      <circle cx="528.8888888888888" cy="107.77777777777776" r="2.24" fill="#39d353"/>
+      <circle cx="528.8888888888888" cy="107.77777777777776" r="0.8" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="506.1111111111111" cy="121.66666666666666" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="506.1111111111111" cy="121.66666666666666" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="506.1111111111111" cy="121.66666666666666" r="3.6" fill="#26a641"/>
-      <circle cx="506.1111111111111" cy="121.66666666666666" r="1.62" fill="#a3f7b5"/>
+      <circle cx="506.1111111111111" cy="121.66666666666666" r="2.24" fill="#39d353"/>
+      <circle cx="506.1111111111111" cy="121.66666666666666" r="0.8" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="204.72222222222223" cy="94.16666666666666" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="204.72222222222223" cy="94.16666666666666" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="204.72222222222223" cy="94.16666666666666" r="3.6" fill="#26a641"/>
-      <circle cx="204.72222222222223" cy="94.16666666666666" r="1.62" fill="#a3f7b5"/>
+      <circle cx="204.72222222222223" cy="94.16666666666666" r="2.24" fill="#39d353"/>
+      <circle cx="204.72222222222223" cy="94.16666666666666" r="0.8" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="871.6666666666667" cy="320.27777777777777" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="871.6666666666667" cy="320.27777777777777" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="871.6666666666667" cy="320.27777777777777" r="3.6" fill="#26a641"/>
-      <circle cx="871.6666666666667" cy="320.27777777777777" r="1.62" fill="#a3f7b5"/>
+      <circle cx="871.6666666666667" cy="320.27777777777777" r="2.24" fill="#39d353"/>
+      <circle cx="871.6666666666667" cy="320.27777777777777" r="0.8" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="855" cy="150.2777777777778" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="855" cy="150.2777777777778" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="855" cy="150.2777777777778" r="3.6" fill="#26a641"/>
-      <circle cx="855" cy="150.2777777777778" r="1.62" fill="#a3f7b5"/>
+      <circle cx="855" cy="150.2777777777778" r="2.24" fill="#39d353"/>
+      <circle cx="855" cy="150.2777777777778" r="0.8" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="792.5" cy="79.16666666666666" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="792.5" cy="79.16666666666666" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="792.5" cy="79.16666666666666" r="3.6" fill="#26a641"/>
-      <circle cx="792.5" cy="79.16666666666666" r="1.62" fill="#a3f7b5"/>
+      <circle cx="792.5" cy="79.16666666666666" r="2.24" fill="#39d353"/>
+      <circle cx="792.5" cy="79.16666666666666" r="0.8" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="514.7222222222223" cy="105.27777777777777" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="514.7222222222223" cy="105.27777777777777" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="514.7222222222223" cy="105.27777777777777" r="3.6" fill="#26a641"/>
-      <circle cx="514.7222222222223" cy="105.27777777777777" r="1.62" fill="#a3f7b5"/>
+      <circle cx="514.7222222222223" cy="105.27777777777777" r="2.24" fill="#39d353"/>
+      
 
       <!-- Soft radial glow aura -->
-      <circle cx="816.3888888888888" cy="252.22222222222223" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="816.3888888888888" cy="252.22222222222223" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="816.3888888888888" cy="252.22222222222223" r="3.6" fill="#26a641"/>
-      <circle cx="816.3888888888888" cy="252.22222222222223" r="1.62" fill="#a3f7b5"/>
+      <circle cx="816.3888888888888" cy="252.22222222222223" r="2.24" fill="#39d353"/>
+      <circle cx="816.3888888888888" cy="252.22222222222223" r="0.8" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="597.7777777777777" cy="141.94444444444446" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="597.7777777777777" cy="141.94444444444446" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="597.7777777777777" cy="141.94444444444446" r="3.6" fill="#26a641"/>
-      <circle cx="597.7777777777777" cy="141.94444444444446" r="1.62" fill="#a3f7b5"/>
+      <circle cx="597.7777777777777" cy="141.94444444444446" r="2.24" fill="#39d353"/>
+      <circle cx="597.7777777777777" cy="141.94444444444446" r="0.8" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="692.5" cy="165.55555555555557" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="692.5" cy="165.55555555555557" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="692.5" cy="165.55555555555557" r="3.6" fill="#26a641"/>
-      <circle cx="692.5" cy="165.55555555555557" r="1.62" fill="#a3f7b5"/>
+      <circle cx="692.5" cy="165.55555555555557" r="2.24" fill="#39d353"/>
+      <circle cx="692.5" cy="165.55555555555557" r="0.8" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="800.8333333333334" cy="210.83333333333334" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="800.8333333333334" cy="210.83333333333334" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="800.8333333333334" cy="210.83333333333334" r="3.6" fill="#26a641"/>
-      <circle cx="800.8333333333334" cy="210.83333333333334" r="1.62" fill="#a3f7b5"/>
+      <circle cx="800.8333333333334" cy="210.83333333333334" r="2.24" fill="#39d353"/>
+      <circle cx="800.8333333333334" cy="210.83333333333334" r="0.8" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="535" cy="133.61111111111111" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="535" cy="133.61111111111111" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="535" cy="133.61111111111111" r="3.6" fill="#26a641"/>
-      <circle cx="535" cy="133.61111111111111" r="1.62" fill="#a3f7b5"/>
+      <circle cx="535" cy="133.61111111111111" r="2.24" fill="#39d353"/>
+      
 
       <!-- Soft radial glow aura -->
-      <circle cx="489.7222222222223" cy="137.5" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="489.7222222222223" cy="137.5" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="489.7222222222223" cy="137.5" r="3.6" fill="#26a641"/>
-      <circle cx="489.7222222222223" cy="137.5" r="1.62" fill="#a3f7b5"/>
+      <circle cx="489.7222222222223" cy="137.5" r="2.24" fill="#39d353"/>
+      
 
       <!-- Soft radial glow aura -->
-      <circle cx="215.00000000000003" cy="184.44444444444446" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="215.00000000000003" cy="184.44444444444446" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="215.00000000000003" cy="184.44444444444446" r="3.6" fill="#26a641"/>
-      <circle cx="215.00000000000003" cy="184.44444444444446" r="1.62" fill="#a3f7b5"/>
+      <circle cx="215.00000000000003" cy="184.44444444444446" r="2.24" fill="#39d353"/>
+      
 
       <!-- Soft radial glow aura -->
-      <circle cx="838.3333333333334" cy="214.16666666666666" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="838.3333333333334" cy="214.16666666666666" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="838.3333333333334" cy="214.16666666666666" r="3.6" fill="#26a641"/>
-      <circle cx="838.3333333333334" cy="214.16666666666666" r="1.62" fill="#a3f7b5"/>
+      <circle cx="838.3333333333334" cy="214.16666666666666" r="2.24" fill="#39d353"/>
+      
 
       <!-- Soft radial glow aura -->
-      <circle cx="780.2777777777777" cy="205.83333333333331" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="780.2777777777777" cy="205.83333333333331" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="780.2777777777777" cy="205.83333333333331" r="3.6" fill="#26a641"/>
-      <circle cx="780.2777777777777" cy="205.83333333333331" r="1.62" fill="#a3f7b5"/>
+      <circle cx="780.2777777777777" cy="205.83333333333331" r="2.24" fill="#39d353"/>
+      
 
       <!-- Soft radial glow aura -->
-      <circle cx="625.2777777777777" cy="183.6111111111111" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="625.2777777777777" cy="183.6111111111111" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="625.2777777777777" cy="183.6111111111111" r="3.6" fill="#26a641"/>
-      <circle cx="625.2777777777777" cy="183.6111111111111" r="1.62" fill="#a3f7b5"/>
+      <circle cx="625.2777777777777" cy="183.6111111111111" r="2.24" fill="#39d353"/>
+      
 
       <!-- Soft radial glow aura -->
-      <circle cx="585.5555555555557" cy="175.55555555555557" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="585.5555555555557" cy="175.55555555555557" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="585.5555555555557" cy="175.55555555555557" r="3.6" fill="#26a641"/>
-      <circle cx="585.5555555555557" cy="175.55555555555557" r="1.62" fill="#a3f7b5"/>
+      <circle cx="585.5555555555557" cy="175.55555555555557" r="2.24" fill="#39d353"/>
+      <circle cx="585.5555555555557" cy="175.55555555555557" r="0.8" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="563.6111111111112" cy="334.99999999999994" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="563.6111111111112" cy="334.99999999999994" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="563.6111111111112" cy="334.99999999999994" r="3.6" fill="#26a641"/>
-      <circle cx="563.6111111111112" cy="334.99999999999994" r="1.62" fill="#a3f7b5"/>
+      <circle cx="563.6111111111112" cy="334.99999999999994" r="2.24" fill="#39d353"/>
+      
 
       <!-- Soft radial glow aura -->
-      <circle cx="524.1666666666666" cy="224.72222222222223" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="524.1666666666666" cy="224.72222222222223" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="524.1666666666666" cy="224.72222222222223" r="3.6" fill="#26a641"/>
-      <circle cx="524.1666666666666" cy="224.72222222222223" r="1.62" fill="#a3f7b5"/>
+      <circle cx="524.1666666666666" cy="224.72222222222223" r="2.24" fill="#39d353"/>
+      
 
       <!-- Soft radial glow aura -->
-      <circle cx="551.6666666666666" cy="83.05555555555554" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="551.6666666666666" cy="83.05555555555554" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="551.6666666666666" cy="83.05555555555554" r="3.6" fill="#26a641"/>
-      <circle cx="551.6666666666666" cy="83.05555555555554" r="1.62" fill="#a3f7b5"/>
+      <circle cx="551.6666666666666" cy="83.05555555555554" r="2.24" fill="#39d353"/>
+      
 
       <!-- Soft radial glow aura -->
-      <circle cx="553.0555555555555" cy="105.83333333333333" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="553.0555555555555" cy="105.83333333333333" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="553.0555555555555" cy="105.83333333333333" r="3.6" fill="#26a641"/>
-      <circle cx="553.0555555555555" cy="105.83333333333333" r="1.62" fill="#a3f7b5"/>
+      <circle cx="553.0555555555555" cy="105.83333333333333" r="2.24" fill="#39d353"/>
+      
 
       <!-- Soft radial glow aura -->
-      <circle cx="586.6666666666666" cy="115.55555555555556" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="586.6666666666666" cy="115.55555555555556" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="586.6666666666666" cy="115.55555555555556" r="3.6" fill="#26a641"/>
-      <circle cx="586.6666666666666" cy="115.55555555555556" r="1.62" fill="#a3f7b5"/>
+      <circle cx="586.6666666666666" cy="115.55555555555556" r="2.24" fill="#39d353"/>
+      
 
       <!-- Soft radial glow aura -->
-      <circle cx="596.9444444444445" cy="163.88888888888889" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="596.9444444444445" cy="163.88888888888889" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="596.9444444444445" cy="163.88888888888889" r="3.6" fill="#26a641"/>
-      <circle cx="596.9444444444445" cy="163.88888888888889" r="1.62" fill="#a3f7b5"/>
+      <circle cx="596.9444444444445" cy="163.88888888888889" r="2.24" fill="#39d353"/>
+      <circle cx="596.9444444444445" cy="163.88888888888889" r="0.8" fill="#ffffff"/>
 
       <!-- Soft radial glow aura -->
-      <circle cx="323.33333333333337" cy="356.6666666666667" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="323.33333333333337" cy="356.6666666666667" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="323.33333333333337" cy="356.6666666666667" r="3.6" fill="#26a641"/>
-      <circle cx="323.33333333333337" cy="356.6666666666667" r="1.62" fill="#a3f7b5"/>
+      <circle cx="323.33333333333337" cy="356.6666666666667" r="2.24" fill="#39d353"/>
+      
 
       <!-- Soft radial glow aura -->
-      <circle cx="783.0555555555555" cy="238.33333333333331" r="10.08" fill="url(#lowGlow)" filter="url(#blurLow)"/>
+      <circle cx="783.0555555555555" cy="238.33333333333331" r="5.824000000000001" fill="url(#lowGlow)" filter="url(#blurLow)"/>
       <!-- Central glowing dot -->
-      <circle cx="783.0555555555555" cy="238.33333333333331" r="3.6" fill="#26a641"/>
-      <circle cx="783.0555555555555" cy="238.33333333333331" r="1.62" fill="#a3f7b5"/>
+      <circle cx="783.0555555555555" cy="238.33333333333331" r="2.24" fill="#39d353"/>
+      
 
       </svg>
     </g>
@@ -1258,10 +1258,10 @@
     <g transform="translate(55,508)">
       <text x="0" y="10" fill="#8b949e" font-size="9" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif">
         Fewer visitors</text>
-      <circle cx="70" cy="7" r="3" fill="#26a641"/>
-      <circle cx="83" cy="7" r="4.5" fill="#39d353"/>
-      <circle cx="97" cy="7" r="6" fill="#56d364"/>
-      <circle cx="113" cy="7" r="8" fill="#d4ff00"/>
+      <circle cx="70" cy="7" r="2.5" fill="#26a641"/>
+      <circle cx="83" cy="7" r="4" fill="#39d353"/>
+      <circle cx="97" cy="7" r="5.5" fill="#56d364"/>
+      <circle cx="113" cy="7" r="7.5" fill="#d4ff00"/>
       <text x="126" y="10" fill="#8b949e" font-size="9" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif">
         More visitors</text>
     </g>
@@ -1430,7 +1430,7 @@
         rx="3" fill="#0e4429"/><rect x="83" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="83" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="83" y="108" width="18" height="18" 
-        rx="3" fill="#006d32"/><rect x="83" y="129" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="83" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="83" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="83" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="104" y="45" width="18" height="18" 
@@ -1444,7 +1444,7 @@
         rx="3" fill="#0e4429"/><rect x="125" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="125" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="125" y="108" width="18" height="18" 
-        rx="3" fill="#21262d"/><rect x="125" y="129" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="125" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="125" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="125" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="146" y="45" width="18" height="18" 
@@ -1465,7 +1465,7 @@
         rx="3" fill="#0e4429"/><rect x="188" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="188" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="188" y="108" width="18" height="18" 
-        rx="3" fill="#006d32"/><rect x="188" y="129" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="188" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="188" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="188" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="209" y="45" width="18" height="18" 
@@ -1482,7 +1482,7 @@
         rx="3" fill="#0e4429"/><rect x="230" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="230" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="230" y="171" width="18" height="18" 
-        rx="3" fill="#26a641"/><rect x="251" y="45" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="251" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="251" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="251" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="251" y="108" width="18" height="18" 
@@ -1502,7 +1502,7 @@
         rx="3" fill="#0e4429"/><rect x="293" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="293" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="293" y="150" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="293" y="171" width="18" height="18" 
+        rx="3" fill="#26a641"/><rect x="293" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="314" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="314" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="314" y="87" width="18" height="18" 
@@ -1518,8 +1518,8 @@
         rx="3" fill="#0e4429"/><rect x="335" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="335" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="356" y="45" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="356" y="66" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="356" y="87" width="18" height="18" 
+        rx="3" fill="#39d353"/><rect x="356" y="66" width="18" height="18" 
+        rx="3" fill="#006d32"/><rect x="356" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="356" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="356" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="356" y="150" width="18" height="18" 
@@ -1530,18 +1530,18 @@
         rx="3" fill="#0e4429"/><rect x="377" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="377" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="377" y="150" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="377" y="171" width="18" height="18" 
+        rx="3" fill="#006d32"/><rect x="377" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="398" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="398" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="398" y="87" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="398" y="108" width="18" height="18" 
+        rx="3" fill="#006d32"/><rect x="398" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="398" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="398" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="398" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="419" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="419" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="419" y="87" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="419" y="108" width="18" height="18" 
+        rx="3" fill="#26a641"/><rect x="419" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="419" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="419" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="419" y="171" width="18" height="18" 
@@ -1559,7 +1559,7 @@
         rx="3" fill="#0e4429"/><rect x="461" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="461" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="461" y="171" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="482" y="45" width="18" height="18" 
+        rx="3" fill="#26a641"/><rect x="482" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="482" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="482" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="482" y="108" width="18" height="18" 
@@ -1576,8 +1576,8 @@
         rx="3" fill="#0e4429"/><rect x="524" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="524" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="524" y="87" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="524" y="108" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="524" y="129" width="18" height="18" 
+        rx="3" fill="#006d32"/><rect x="524" y="108" width="18" height="18" 
+        rx="3" fill="#39d353"/><rect x="524" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="524" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="524" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="545" y="45" width="18" height="18" 
@@ -1604,7 +1604,7 @@
         rx="3" fill="#0e4429"/><rect x="608" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="608" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="608" y="87" width="18" height="18" 
-        rx="3" fill="#006d32"/><rect x="608" y="108" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="608" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="608" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="608" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="608" y="171" width="18" height="18" 
@@ -1639,7 +1639,7 @@
         rx="3" fill="#0e4429"/><rect x="713" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="713" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="713" y="87" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="713" y="108" width="18" height="18" 
+        rx="3" fill="#21262d"/><rect x="713" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="713" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="713" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="713" y="171" width="18" height="18" 
@@ -1663,13 +1663,13 @@
         rx="3" fill="#0e4429"/><rect x="776" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="776" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="776" y="150" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="776" y="171" width="18" height="18" 
+        rx="3" fill="#26a641"/><rect x="776" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="797" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="797" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="797" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="797" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="797" y="129" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="797" y="150" width="18" height="18" 
+        rx="3" fill="#21262d"/><rect x="797" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="797" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="818" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="818" y="66" width="18" height="18" 
@@ -1677,7 +1677,7 @@
         rx="3" fill="#0e4429"/><rect x="818" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="818" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="818" y="150" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="818" y="171" width="18" height="18" 
+        rx="3" fill="#39d353"/><rect x="818" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="839" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="839" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="839" y="87" width="18" height="18" 
@@ -1688,7 +1688,7 @@
         rx="3" fill="#0e4429"/><rect x="860" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="860" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="860" y="87" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="860" y="108" width="18" height="18" 
+        rx="3" fill="#26a641"/><rect x="860" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="860" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="860" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="860" y="171" width="18" height="18" 
@@ -1697,7 +1697,7 @@
         rx="3" fill="#0e4429"/><rect x="881" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="881" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="881" y="129" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="881" y="150" width="18" height="18" 
+        rx="3" fill="#006d32"/><rect x="881" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="881" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="902" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="902" y="66" width="18" height="18" 
@@ -1706,7 +1706,7 @@
         rx="3" fill="#0e4429"/><rect x="902" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="902" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="902" y="171" width="18" height="18" 
-        rx="3" fill="#39d353"/><rect x="923" y="45" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="923" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="923" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="923" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="923" y="108" width="18" height="18" 
@@ -1723,9 +1723,9 @@
         rx="3" fill="#0e4429"/><rect x="965" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="965" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="965" y="87" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="965" y="108" width="18" height="18" 
+        rx="3" fill="#26a641"/><rect x="965" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="965" y="129" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="965" y="150" width="18" height="18" 
+        rx="3" fill="#26a641"/><rect x="965" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="965" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="986" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="986" y="66" width="18" height="18" 
@@ -1751,12 +1751,12 @@
         rx="3" fill="#0e4429"/><rect x="1049" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1049" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1049" y="87" width="18" height="18" 
-        rx="3" fill="#006d32"/><rect x="1049" y="108" width="18" height="18" 
-        rx="3" fill="#26a641"/><rect x="1049" y="129" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="1049" y="108" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="1049" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1049" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1049" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1070" y="45" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="1070" y="66" width="18" height="18" 
+        rx="3" fill="#006d32"/><rect x="1070" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1070" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1070" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1070" y="129" width="18" height="18" 
