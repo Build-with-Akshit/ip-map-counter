@@ -224,7 +224,7 @@ function renderTopCountries(countries, totalViews, x, y, width, height) {
  * Render the entire map section (full-width World Map).
  */
 export function renderMapSection(data, startX, startY, totalWidth) {
-  const sectionHeight = 380;
+  const sectionHeight = 520;
   const mapWidth = totalWidth - 40;
 
   // Section card background

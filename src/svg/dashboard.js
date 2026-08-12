@@ -42,7 +42,7 @@ export function renderDashboard(data, username, options = {}) {
   // Calculate dynamic height based on content
   const statsY = P + 45;
   const mapY = statsY + 82 + THEME.gap;
-  const bottomY = mapY + 380 + THEME.gap;
+  const bottomY = mapY + 520 + THEME.gap;
   // Visitor Distribution dynamic height (Mode 1: 1-4 large cards = 96px, Mode 2: 5-8 medium cards = 124px, Mode 3: 9+ compact badges)
   const countryCount = (data.topCountries || []).length;
   let distroHeight = 96;
