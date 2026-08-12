@@ -281,8 +281,12 @@ function renderCardUniqueNations(x, y, width, height, uniqueCountries, totalView
 /**
  * Card 4: Peak Visit Window
  */
-function renderCardPeakVisitWindow(x, y, width, height, highestDailyDate, totalViews) {
-  const peakWindow = formatPeakWindow(highestDailyDate, totalViews);
+function renderCardPeakVisitWindow(x, y, width, height, highestDailyDate, highestDailyCount, totalViews) {
+  const hasViews = totalViews > 0 && highestDailyDate;
+  const dateText = hasViews ? formatDate(highestDailyDate) : "N/A";
+  const subText = hasViews 
+    ? (highestDailyCount ? `${formatNumber(highestDailyCount)} visits in a day` : "Peak traffic record")
+    : "No visits recorded";
   const cx = width / 2;
 
   return `
@@ -293,9 +297,9 @@ function renderCardPeakVisitWindow(x, y, width, height, highestDailyDate, totalV
       <text x="${cx}" y="24" fill="#8b949e" font-size="11" font-weight="500"
         font-family="${THEME.fontFamily}" text-anchor="middle">Peak Visit Window</text>
       <text x="${cx}" y="48" fill="#f0f6fc" font-size="16" font-weight="700"
-        font-family="${THEME.fontFamily}" text-anchor="middle">${peakWindow}</text>
+        font-family="${THEME.fontFamily}" text-anchor="middle">${dateText}</text>
       <text x="${cx}" y="64" fill="#8b949e" font-size="9"
-        font-family="${THEME.fontFamily}" text-anchor="middle">${totalViews > 0 ? `e.g. ${peakWindow}` : 'No visits recorded'}</text>
+        font-family="${THEME.fontFamily}" text-anchor="middle">${subText}</text>
     </g>`;
 }
 
@@ -354,6 +358,7 @@ export function renderStatsCards(data, startX, startY, totalWidth) {
       cardWidth,
       cardHeight,
       data.highestDailyDate || data.firstSeen,
+      data.highestDailyCount,
       totalViews,
     ),
   );
