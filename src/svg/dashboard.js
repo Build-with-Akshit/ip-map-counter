@@ -116,32 +116,28 @@ export function renderDashboard(data, username, options = {}) {
   let header = "";
 
   if (showContributePill) {
-    // README Header: Top Centered Banner + Main Title Underneath
-    const pillWidth = 560;
-    const pillX = (contentWidth - pillWidth) / 2;
-
+    // README Header: Full-Width Top Banner + Centered Main Title Underneath
     header = `
       <g transform="translate(${P},${P})">
-        <!-- Top Centered Contribute Banner -->
-        <g transform="translate(${pillX}, -4)">
-          <rect x="0" y="0" width="${pillWidth}" height="42" rx="12" 
+        <!-- Full-Width Top Contribute Banner -->
+        <g transform="translate(0, -4)">
+          <rect x="0" y="0" width="${contentWidth}" height="44" rx="10" 
             fill="url(#pillGradient)" stroke="#39d353" stroke-width="1.5"/>
-          <circle cx="26" cy="21" r="11" fill="#39d353" opacity="0.35"/>
-          <circle cx="26" cy="21" r="8.5" fill="none" stroke="#39d353" stroke-width="1.2"/>
-          <circle cx="26" cy="21" r="5" fill="#39d353"/>
-          <text x="48" y="26" fill="${THEME.text}" font-size="14.5" font-weight="600" font-family="'Inter', ${THEME.fontFamily}">
-            👉 Please <tspan font-weight="900" fill="#56d364" font-size="15" text-decoration="underline">CLICK HERE</tspan> to contribute a view in my profile 🌐
-          </text>
+          <g transform="translate(${contentWidth / 2}, 0)">
+            <g transform="translate(-235, 0)">
+              <circle cx="0" cy="22" r="10" fill="#39d353" opacity="0.35"/>
+              <circle cx="0" cy="22" r="7.5" fill="none" stroke="#39d353" stroke-width="1.2"/>
+              <circle cx="0" cy="22" r="4.5" fill="#39d353"/>
+              <text x="20" y="27" fill="${THEME.text}" font-size="14.5" font-weight="600" font-family="'Inter', ${THEME.fontFamily}">
+                👉 Please <tspan font-weight="900" fill="#56d364" font-size="15" text-decoration="underline">CLICK HERE</tspan> to contribute a view in my profile 🌐
+              </text>
+            </g>
+          </g>
         </g>
 
-        <!-- Main Title Header Underneath Banner -->
-        <g transform="translate(0, 52)">
-          <g transform="translate(0,2)">
-            <rect x="0" y="4" width="4" height="14" rx="2" fill="${THEME.green}"/>
-            <rect x="7" y="0" width="4" height="22" rx="2" fill="${THEME.green}"/>
-            <rect x="14" y="8" width="4" height="10" rx="2" fill="${THEME.green}"/>
-          </g>
-          <text x="26" y="16" class="dashboard-title">${username}'s Website Analytics</text>
+        <!-- Centered Main Title Underneath Banner -->
+        <g transform="translate(${contentWidth / 2}, 68)">
+          <text x="0" y="0" class="dashboard-title" text-anchor="middle" font-size="21" font-weight="800">${username}'s Website Analytics</text>
         </g>
       </g>`;
   } else {
