@@ -18,6 +18,49 @@ function formatNumber(n) {
 
 
 /**
+ * Helper to calculate dot size, colors, and glow tier based on visitor count.
+ */
+function getDotStyle(count, maxCount) {
+  if (count <= 0) return null;
+  const ratio = Math.max(0.01, count / maxCount);
+  
+  if (ratio > 0.4 || count >= 5000) {
+    // High Intensity: Large bright yellow-green neon glowing dot
+    const radius = Math.max(10, Math.min(16, 10 + ratio * 6));
+    return {
+      radius,
+      glowRadius: radius * 3.6,
+      dotColor: "#d4ff00",
+      coreColor: "#ffffff",
+      glowId: "highGlow",
+      filterId: "blurHigh",
+    };
+  } else if (ratio > 0.05 || count >= 50) {
+    // Medium Intensity: Vibrant bright green glowing dot
+    const radius = Math.max(6, Math.min(9.5, 6 + ratio * 8));
+    return {
+      radius,
+      glowRadius: radius * 3.2,
+      dotColor: "#39d353",
+      coreColor: "#ffffff",
+      glowId: "medGlow",
+      filterId: "blurMed",
+    };
+  } else {
+    // Low Intensity: Small green dot with subtle glow
+    const radius = Math.max(3.5, Math.min(5.5, 3.5 + ratio * 10));
+    return {
+      radius,
+      glowRadius: radius * 2.8,
+      dotColor: "#26a641",
+      coreColor: "#a3f7b5",
+      glowId: "lowGlow",
+      filterId: "blurLow",
+    };
+  }
+}
+
+/**
  * Render the world map with high-contrast slate-gray land polygons and soft glowing green location nodes.
  */
 function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
@@ -27,22 +70,19 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
   // 1. Render all country land polygons — clean, accurate shapes with crisp borders
   let paths = "";
   for (const [code, pathData] of Object.entries(WORLD_MAP_PATHS)) {
-
     const isVisited = (countryMap[code] || 0) > 0;
-    const fillColor = isVisited ? "#0d2818" : "#1c2333";
-    const strokeColor = isVisited ? "#2ea043" : "#30363d";
-    const strokeWidth = isVisited ? "0.8" : "0.35";
+    const fillColor = isVisited ? "#102b1c" : "#1c2333";
+    const strokeColor = isVisited ? "#2ea043" : "#2d3748";
+    const strokeWidth = isVisited ? "0.8" : "0.4";
 
     paths += `<path id="country-${code}" d="${pathData}" 
       fill="${fillColor}" 
-      stroke="${strokeColor}" stroke-width="${strokeWidth}"/>
-`;
+      stroke="${strokeColor}" stroke-width="${strokeWidth}"/>\n`;
   }
 
   // 2. Render glowing location nodes (dots with soft, seamless radial glow)
   let dots = "";
   const renderedCoords = new Set();
-  const allDotCoords = []; // Collect all dot positions for auto-zoom
 
   // Render dots for top cities if available
   if (data.topCities && data.topCities.length > 0) {
@@ -53,17 +93,16 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
 
       const { x, y } = latLngToSvg(coords[0], coords[1]);
       renderedCoords.add(`${Math.round(x)},${Math.round(y)}`);
-      allDotCoords.push({ x, y });
 
-      const ratio = city.count / cityMax;
-      const radius = Math.max(5, Math.min(16, ratio * 20));
+      const style = getDotStyle(city.count, cityMax);
+      if (!style) continue;
 
       dots += `
-        <!-- Soft seamless radial glow aura (no hard borders) -->
-        <circle cx="${x}" cy="${y}" r="${radius * 3.5}" fill="url(#neonGlow)" filter="url(#blurGlow)"/>
-        <!-- Crisp central glowing dot -->
-        <circle cx="${x}" cy="${y}" r="${radius}" fill="#39d353"/>
-        <circle cx="${x}" cy="${y}" r="${Math.max(1.5, radius * 0.4)}" fill="#ffffff"/>\n`;
+        <!-- Soft radial glow aura -->
+        <circle cx="${x}" cy="${y}" r="${style.glowRadius}" fill="url(#${style.glowId})" filter="url(#${style.filterId})"/>
+        <!-- Central glowing dot -->
+        <circle cx="${x}" cy="${y}" r="${style.radius}" fill="${style.dotColor}"/>
+        <circle cx="${x}" cy="${y}" r="${Math.max(1.5, style.radius * 0.45)}" fill="${style.coreColor}"/>\n`;
     }
   }
 
@@ -77,82 +116,68 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
     const coordKey = `${Math.round(x)},${Math.round(y)}`;
     if (renderedCoords.has(coordKey)) continue;
     renderedCoords.add(coordKey);
-    allDotCoords.push({ x, y });
 
-    const ratio = count / maxCount;
-    const radius = Math.max(5, Math.min(18, ratio * 22));
+    const style = getDotStyle(count, maxCount);
+    if (!style) continue;
 
     dots += `
-      <!-- Soft seamless radial glow aura (no hard borders) -->
-      <circle cx="${x}" cy="${y}" r="${radius * 3.5}" fill="url(#neonGlow)" filter="url(#blurGlow)"/>
-      <!-- Crisp central glowing dot -->
-      <circle cx="${x}" cy="${y}" r="${radius}" fill="#39d353"/>
-      <circle cx="${x}" cy="${y}" r="${Math.max(1.5, radius * 0.4)}" fill="#ffffff"/>\n`;
+      <!-- Soft radial glow aura -->
+      <circle cx="${x}" cy="${y}" r="${style.glowRadius}" fill="url(#${style.glowId})" filter="url(#${style.filterId})"/>
+      <!-- Central glowing dot -->
+      <circle cx="${x}" cy="${y}" r="${style.radius}" fill="${style.dotColor}"/>
+      <circle cx="${x}" cy="${y}" r="${Math.max(1.5, style.radius * 0.45)}" fill="${style.coreColor}"/>\n`;
   }
 
-  // 3. Auto-zoom: calculate viewBox to fit visited locations
-  let viewBox = "0 0 1000 500"; // Default: full world
-  if (allDotCoords.length > 0 && allDotCoords.length <= 15) {
-    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-    for (const pt of allDotCoords) {
-      if (pt.x < minX) minX = pt.x;
-      if (pt.x > maxX) maxX = pt.x;
-      if (pt.y < minY) minY = pt.y;
-      if (pt.y > maxY) maxY = pt.y;
-    }
-    const padding = 100;
-    let vx = minX - padding;
-    let vy = minY - padding;
-    let vw = (maxX - minX) + padding * 2;
-    let vh = (maxY - minY) + padding * 2;
-    // Enforce minimum size
-    if (vw < 300) { vx -= (300 - vw) / 2; vw = 300; }
-    if (vh < 200) { vy -= (200 - vh) / 2; vh = 200; }
-    // Maintain 2:1 aspect ratio
-    const ratio = vw / vh;
-    if (ratio > 2) { const newH = vw / 2; vy -= (newH - vh) / 2; vh = newH; }
-    else { const newW = vh * 2; vx -= (newW - vw) / 2; vw = newW; }
-    // Clamp to world boundaries
-    if (vx < 0) vx = 0;
-    if (vy < 0) vy = 0;
-    if (vx + vw > 1000) vx = Math.max(0, 1000 - vw);
-    if (vy + vh > 500) vy = Math.max(0, 500 - vh);
-    if (vw > 1000) vw = 1000;
-    if (vh > 500) vh = 500;
-    // Only auto-zoom if significantly smaller than full map
-    if (vw < 850 || vh < 420) {
-      viewBox = `${Math.round(vx)} ${Math.round(vy)} ${Math.round(vw)} ${Math.round(vh)}`;
-    }
-  }
-
-  // Defs for smooth, borderless radial glow
+  // Defs for smooth, borderless radial glow for Low, Medium, and High intensities
   const defs = `
     <defs>
-      <radialGradient id="neonGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#39d353" stop-opacity="0.95"/>
-        <stop offset="20%" stop-color="#39d353" stop-opacity="0.6"/>
-        <stop offset="50%" stop-color="#2ea043" stop-opacity="0.25"/>
+      <!-- High Intensity: Lime-Yellow Glow -->
+      <radialGradient id="highGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#d4ff00" stop-opacity="0.95"/>
+        <stop offset="30%" stop-color="#39d353" stop-opacity="0.6"/>
+        <stop offset="70%" stop-color="#2ea043" stop-opacity="0.2"/>
         <stop offset="100%" stop-color="#39d353" stop-opacity="0"/>
       </radialGradient>
-      <filter id="blurGlow" x="-100%" y="-100%" width="300%" height="300%">
-        <feGaussianBlur stdDeviation="7" result="blur"/>
+
+      <!-- Medium Intensity: Bright Emerald Glow -->
+      <radialGradient id="medGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#39d353" stop-opacity="0.85"/>
+        <stop offset="40%" stop-color="#2ea043" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#39d353" stop-opacity="0"/>
+      </radialGradient>
+
+      <!-- Low Intensity: Soft Green Glow -->
+      <radialGradient id="lowGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#26a641" stop-opacity="0.75"/>
+        <stop offset="50%" stop-color="#0e4429" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#26a641" stop-opacity="0"/>
+      </radialGradient>
+
+      <filter id="blurHigh" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="8" result="blur"/>
+      </filter>
+      <filter id="blurMed" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="5" result="blur"/>
+      </filter>
+      <filter id="blurLow" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
       </filter>
     </defs>`;
 
-  // Map legend
+  // Map legend with 4 intensity levels
   const legend = `
     <g transform="translate(${mapX + 15},${mapY + mapHeight - 25})">
       <text x="0" y="10" fill="${THEME.textMuted}" font-size="9" font-family="${THEME.fontFamily}">
         Fewer visitors</text>
-      <circle cx="70" cy="7" r="4" fill="${THEME.greenScale[0]}"/>
-      <circle cx="82" cy="7" r="4" fill="${THEME.greenScale[1]}"/>
-      <circle cx="94" cy="7" r="4" fill="${THEME.greenScale[2]}"/>
-      <circle cx="106" cy="7" r="4" fill="${THEME.greenScale[3]}"/>
-      <text x="116" y="10" fill="${THEME.textMuted}" font-size="9" font-family="${THEME.fontFamily}">
+      <circle cx="70" cy="7" r="3" fill="#26a641"/>
+      <circle cx="83" cy="7" r="4.5" fill="#39d353"/>
+      <circle cx="97" cy="7" r="6" fill="#56d364"/>
+      <circle cx="113" cy="7" r="8" fill="#d4ff00"/>
+      <text x="126" y="10" fill="${THEME.textMuted}" font-size="9" font-family="${THEME.fontFamily}">
         More visitors</text>
     </g>`;
 
-  // Zoom buttons (decorative — scripts not supported in SVG-as-image)
+  // Decorative zoom buttons
   const zoomBtns = `
     <g transform="translate(${mapX + 15},${mapY + mapHeight - 85})">
       <rect x="0" y="0" width="24" height="24" rx="6" fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
@@ -163,7 +188,7 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
 
   return `
     <g transform="translate(${mapX},${mapY})">
-      <svg viewBox="${viewBox}" width="${mapWidth}" height="${mapHeight}" 
+      <svg viewBox="0 0 1000 500" width="${mapWidth}" height="${mapHeight}" 
         preserveAspectRatio="xMidYMid meet">
         ${defs}
         ${paths}
