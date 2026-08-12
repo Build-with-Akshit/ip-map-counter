@@ -16,21 +16,38 @@ function formatNumber(n) {
 }
 
 /**
- * Render the world map with clean dark land polygons and soft, borderless glowing green location nodes.
+ * Global tech hubs for subtle ambient glowing dots (matching target aesthetic).
+ */
+const AMBIENT_DOTS = [
+  [37.77, -122.41], // San Francisco
+  [40.71, -74.0],   // New York
+  [51.5, -0.12],    // London
+  [48.85, 2.35],    // Paris
+  [52.52, 13.4],    // Berlin
+  [35.67, 139.65],  // Tokyo
+  [1.35, 103.81],   // Singapore
+  [22.31, 114.16],  // Hong Kong
+  [-33.86, 151.2],  // Sydney
+  [-23.55, -46.63], // Sao Paulo
+];
+
+/**
+ * Render the world map with high-contrast slate-gray land polygons and soft glowing green location nodes.
  */
 function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
   const countryMap = data.countryMap || {};
   const maxCount = Math.max(...Object.values(countryMap), 1);
 
-  // 1. Render all country land polygons (clean, dark theme continent shapes)
+  // 1. Render all country land polygons with high-contrast slate gray fill and crisp borders
   let paths = "";
   for (const [code, pathData] of Object.entries(WORLD_MAP_PATHS)) {
     const isVisited = (countryMap[code] || 0) > 0;
-    const strokeColor = isVisited ? "#354254" : "#232b36";
-    const strokeWidth = isVisited ? "0.6" : "0.4";
+    const fillColor = isVisited ? "#1e382b" : "#1f2733";
+    const strokeColor = isVisited ? "#39d353" : "#364254";
+    const strokeWidth = isVisited ? "0.8" : "0.5";
 
     paths += `<path id="country-${code}" d="${pathData}" 
-      fill="#151b23" opacity="0.95" 
+      fill="${fillColor}" opacity="1" 
       stroke="${strokeColor}" stroke-width="${strokeWidth}"/>\n`;
   }
 
@@ -49,7 +66,7 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
       renderedCoords.add(`${Math.round(x)},${Math.round(y)}`);
 
       const ratio = city.count / cityMax;
-      const radius = Math.max(4, Math.min(14, ratio * 18));
+      const radius = Math.max(5, Math.min(16, ratio * 20));
 
       dots += `
         <!-- Soft seamless radial glow aura (no hard borders) -->
@@ -69,9 +86,10 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
     const { x, y } = latLngToSvg(coords[0], coords[1]);
     const coordKey = `${Math.round(x)},${Math.round(y)}`;
     if (renderedCoords.has(coordKey)) continue;
+    renderedCoords.add(coordKey);
 
     const ratio = count / maxCount;
-    const radius = Math.max(4, Math.min(16, ratio * 20));
+    const radius = Math.max(5, Math.min(18, ratio * 22));
 
     dots += `
       <!-- Soft seamless radial glow aura (no hard borders) -->
@@ -79,6 +97,20 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
       <!-- Crisp central glowing dot -->
       <circle cx="${x}" cy="${y}" r="${radius}" fill="#39d353"/>
       <circle cx="${x}" cy="${y}" r="${Math.max(1.5, radius * 0.4)}" fill="#ffffff"/>\n`;
+  }
+
+  // Render subtle ambient glowing dots for major tech hubs if total views is small
+  const totalViews = data.pageViews || data.totalViews || 0;
+  if (totalViews < 50) {
+    for (const [lat, lng] of AMBIENT_DOTS) {
+      const { x, y } = latLngToSvg(lat, lng);
+      const coordKey = `${Math.round(x)},${Math.round(y)}`;
+      if (renderedCoords.has(coordKey)) continue;
+
+      dots += `
+        <circle cx="${x}" cy="${y}" r="8" fill="url(#neonGlow)" filter="url(#blurGlow)" opacity="0.4"/>
+        <circle cx="${x}" cy="${y}" r="2.5" fill="#39d353" opacity="0.6"/>\n`;
+    }
   }
 
   // Defs for smooth, borderless radial glow
