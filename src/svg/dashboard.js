@@ -42,9 +42,15 @@ export function renderDashboard(data, username) {
   const statsY = P + 45;
   const mapY = statsY + 82 + THEME.gap;
   const bottomY = mapY + 380 + THEME.gap;
-  // Visitor Distribution rows + Visit Heatmap + padding
-  const distroRows = Math.min(5, Math.ceil(((data.topCountries || []).length || 1) / Math.floor((contentWidth - 24) / 124)));
-  const distroHeight = Math.max(80, 44 + distroRows * 28 + 30);
+  // Visitor Distribution dynamic height (Mode 1: 1-4 large cards = 96px, Mode 2: 5-8 medium cards = 124px, Mode 3: 9+ compact badges)
+  const countryCount = (data.topCountries || []).length;
+  let distroHeight = 96;
+  if (countryCount > 4 && countryCount <= 8) {
+    distroHeight = 124;
+  } else if (countryCount > 8) {
+    const distroRows = Math.min(5, Math.ceil(countryCount / Math.floor((contentWidth - 24) / 124)));
+    distroHeight = Math.max(80, 44 + distroRows * 28 + 30);
+  }
   const heatmapHeight = 220;
   const H = bottomY + distroHeight + THEME.gap + heatmapHeight + P + 10;
 
