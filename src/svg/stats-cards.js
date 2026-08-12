@@ -22,26 +22,27 @@ function formatDate(dateStr) {
 }
 
 /**
- * Format a peak window range string (e.g. "May 19 - May 22").
+ * Format a peak window range string (e.g. "Aug 9 - Aug 12, 2026").
  */
 function formatPeakWindow(dateStr, totalViews) {
   if (!dateStr || totalViews === 0) return "N/A";
-  const d = new Date(dateStr + "T00:00:00Z");
-  const d2 = new Date(d);
-  d2.setDate(d2.getDate() + 3);
+  const dEnd = new Date(dateStr + "T00:00:00Z");
+  const dStart = new Date(dEnd);
+  dStart.setUTCDate(dStart.getUTCDate() - 3);
 
   const months = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
   ];
 
-  const m1 = months[d.getUTCMonth()];
-  const m2 = months[d2.getUTCMonth()];
+  const m1 = months[dStart.getUTCMonth()];
+  const m2 = months[dEnd.getUTCMonth()];
+  const y = dEnd.getUTCFullYear();
 
   if (m1 === m2) {
-    return `${m1} ${d.getUTCDate()} - ${d2.getUTCDate()}`;
+    return `${m1} ${dStart.getUTCDate()} - ${dEnd.getUTCDate()}, ${y}`;
   }
-  return `${m1} ${d.getUTCDate()} - ${m2} ${d2.getUTCDate()}`;
+  return `${m1} ${dStart.getUTCDate()} - ${m2} ${dEnd.getUTCDate()}, ${y}`;
 }
 
 /**
@@ -297,9 +298,9 @@ function renderCardUniqueNations(x, y, width, height, uniqueCountries, totalView
  */
 function renderCardPeakVisitWindow(x, y, width, height, highestDailyDate, highestDailyCount, totalViews) {
   const hasViews = totalViews > 0 && highestDailyDate;
-  const dateText = hasViews ? formatDate(highestDailyDate) : "N/A";
+  const dateText = hasViews ? formatPeakWindow(highestDailyDate, totalViews) : "N/A";
   const subText = hasViews 
-    ? (highestDailyCount ? `${formatNumber(highestDailyCount)} visits in a day` : "Peak traffic record")
+    ? (highestDailyCount ? `${formatNumber(highestDailyCount)} peak daily visits` : "Peak traffic record")
     : "No visits recorded";
 
   return `
@@ -322,7 +323,7 @@ function renderCardPeakVisitWindow(x, y, width, height, highestDailyDate, highes
       <g transform="translate(70,0)">
         <text x="0" y="24" fill="#c9d1d9" font-size="13" font-weight="600"
           font-family="${THEME.fontFamily}">Peak Visit Window</text>
-        <text x="0" y="48" fill="#f0f6fc" font-size="17" font-weight="700"
+        <text x="0" y="48" fill="#f0f6fc" font-size="15" font-weight="700"
           font-family="${THEME.fontFamily}">${dateText}</text>
         <text x="0" y="66" fill="#8b949e" font-size="11" font-weight="500"
           font-family="${THEME.fontFamily}">${subText}</text>
