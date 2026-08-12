@@ -88,12 +88,6 @@ export function renderDashboard(data, username, options = {}) {
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap');
       
-      .dashboard-title {
-        font-family: 'Inter', ${THEME.fontFamily};
-        font-weight: 700;
-        font-size: 20px;
-        fill: ${THEME.text};
-      }
       .dashboard-subtitle {
         font-family: 'Inter', ${THEME.fontFamily};
         font-weight: 500;
@@ -125,7 +119,15 @@ export function renderDashboard(data, username, options = {}) {
             <rect x="10" y="0" width="5.5" height="30" rx="2.5" fill="${THEME.green}"/>
             <rect x="20" y="11" width="5.5" height="15" rx="2.5" fill="${THEME.green}"/>
           </g>
-          <text x="36" y="6" class="dashboard-title" font-size="28" font-weight="800" letter-spacing="-0.3">${username}'s Website Analytics</text>
+          <text
+            x="36"
+            y="6"
+            font-family="'Inter', ${THEME.fontFamily}"
+            font-size="28px"
+            font-weight="800"
+            letter-spacing="-0.3px"
+            fill="${THEME.text}"
+          >${username}'s Website Analytics</text>
         </g>
       </g>`;
   } else {
@@ -137,7 +139,14 @@ export function renderDashboard(data, username, options = {}) {
           <rect x="7" y="0" width="4" height="22" rx="2" fill="${THEME.green}"/>
           <rect x="14" y="8" width="4" height="10" rx="2" fill="${THEME.green}"/>
         </g>
-        <text x="26" y="20" class="dashboard-title">${username}'s Website Analytics<tspan dx="14" font-size="13" font-weight="500" fill="#8b949e">— Know your audience. Build better.</tspan></text>
+        <text
+          x="26"
+          y="20"
+          font-family="'Inter', ${THEME.fontFamily}"
+          font-size="20px"
+          font-weight="700"
+          fill="${THEME.text}"
+        >${username}'s Website Analytics<tspan dx="14" font-size="13px" font-weight="500" fill="#8b949e">— Know your audience. Build better.</tspan></text>
       </g>`;
   }
 
