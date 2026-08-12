@@ -35,9 +35,18 @@ function formatDate(dateStr) {
  */
 export function renderDashboard(data, username) {
   const W = THEME.dashboardWidth;
-  const H = THEME.dashboardHeight;
   const P = THEME.padding;
   const contentWidth = W - P * 2;
+
+  // Calculate dynamic height based on content
+  const statsY = P + 45;
+  const mapY = statsY + 82 + THEME.gap;
+  const bottomY = mapY + 380 + THEME.gap;
+  // Visitor Distribution rows + Visit Heatmap + padding
+  const distroRows = Math.min(5, Math.ceil(((data.topCountries || []).length || 1) / Math.floor((contentWidth - 24) / 124)));
+  const distroHeight = Math.max(80, 44 + distroRows * 28 + 30);
+  const heatmapHeight = 140;
+  const H = bottomY + distroHeight + THEME.gap + heatmapHeight + P + 10;
 
   // SVG definitions (gradients, filters, etc.)
   const defs = `
@@ -117,11 +126,6 @@ export function renderDashboard(data, username) {
         <text x="14" y="18" class="date-badge">📅 ${formatDate(data.firstSeen)} – Present</text>
       </g>
     </g>`;
-
-  // Layout coordinates
-  const statsY = P + 45;
-  const mapY = statsY + 82 + THEME.gap;
-  const bottomY = mapY + 380 + THEME.gap;
 
   // Render each section
   const statsCards = renderStatsCards(data, P, statsY, contentWidth);

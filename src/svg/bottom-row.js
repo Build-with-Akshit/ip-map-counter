@@ -1,5 +1,5 @@
 import THEME from "./theme.js";
-import { getCountryName, getCountryFlag } from "../geo.js";
+import { getCountryFlag } from "../geo.js";
 
 /**
  * Format a number with commas.
@@ -9,39 +9,58 @@ function formatNumber(n) {
 }
 
 /**
- * Render the "Top Cities" panel.
+ * Render a single country flag badge pill: "🇺🇸 US: 83,088"
  */
-function renderTopCities(cities, totalViews, x, y, width, height) {
-  const maxCount = cities.length > 0 ? cities[0].count : 1;
-  const barMaxWidth = 60;
+function renderFlagBadge(code, count, x, y) {
+  const flag = getCountryFlag(code);
+  const label = `${code.toUpperCase()}: ${formatNumber(count)}`;
+  const badgeW = 120;
+  const badgeH = 24;
 
-  let items = "";
-  cities.slice(0, 5).forEach((c, i) => {
-    const itemY = 28 + i * 28;
-    const pct = totalViews > 0 ? ((c.count / totalViews) * 100).toFixed(1) : "0.0";
-    const barWidth = Math.max(4, (c.count / maxCount) * barMaxWidth);
+  return `
+    <g transform="translate(${x},${y})">
+      <rect x="0" y="0" width="${badgeW}" height="${badgeH}" rx="6"
+        fill="#21262d" stroke="#30363d" stroke-width="0.5"/>
+      <text x="8" y="16" font-size="12" font-family="${THEME.fontFamily}">${flag}</text>
+      <text x="26" y="16" fill="#c9d1d9" font-size="11" font-weight="500"
+        font-family="${THEME.fontFamily}">${label}</text>
+    </g>`;
+}
 
-    // Extract country code from "City, CC"
-    const parts = c.name.split(", ");
-    const cityName = parts[0] || c.name;
-    const countryCode = parts[1] || "";
-    const flag = countryCode ? getCountryFlag(countryCode) : "📍";
+/**
+ * Render the "Visitor Distribution by Country" section.
+ * Shows a grid of country flag badges in rows, matching the target design.
+ */
+function renderVisitorDistribution(countries, x, y, width, height) {
+  const badgeW = 124;
+  const badgeH = 28;
+  const cols = Math.floor((width - 24) / badgeW);
 
-    items += `
-      <g transform="translate(0,${itemY})">
-        <text x="8" y="12" fill="${THEME.textMuted}" font-size="10" font-family="${THEME.fontFamily}">${i + 1}</text>
-        <text x="20" y="12" font-size="11" font-family="${THEME.fontFamily}">${flag}</text>
-        <text x="38" y="12" fill="${THEME.text}" font-size="11" font-family="${THEME.fontFamily}">
-          ${cityName}${countryCode ? `, ${countryCode}` : ""}</text>
-        <text x="${width - 95}" y="12" fill="${THEME.textSecondary}" font-size="11" 
-          font-family="${THEME.fontFamily}" text-anchor="end">${formatNumber(c.count)}</text>
-        <rect x="${width - 90}" y="2" width="${barWidth}" height="12" rx="3" 
-          fill="${THEME.green}" opacity="0.85"/>
-        <text x="${width - 8}" y="12" fill="${THEME.textMuted}" font-size="10" 
-          font-family="${THEME.fontFamily}" text-anchor="end">${pct}%</text>
-      </g>`;
-  });
+  let badges = "";
+  const maxBadges = Math.min(countries.length, cols * 5); // up to 5 rows
 
+  for (let i = 0; i < maxBadges; i++) {
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    const bx = 12 + col * badgeW;
+    const by = 38 + row * badgeH;
+    badges += renderFlagBadge(countries[i].code, countries[i].count, bx, by);
+  }
+
+  // "See full detailed list" link
+  const seeAllLink = countries.length > maxBadges ? `
+    <text x="${width - 20}" y="${38 + Math.ceil(maxBadges / cols) * badgeH + 6}"
+      fill="${THEME.green}" font-size="10" font-weight="500"
+      font-family="${THEME.fontFamily}" text-anchor="end">See full detailed list</text>` : "";
+
+  // "FLAG counter" branding (bottom-right, subtle)
+  const branding = `
+    <g transform="translate(${width - 110}, ${height - 22})">
+      <text x="0" y="12" fill="${THEME.textMuted}" font-size="9" font-style="italic"
+        font-family="${THEME.fontFamily}">🏳️ FLAG</text>
+      <text x="38" y="12" fill="#8b949e" font-size="9" font-style="italic"
+        font-family="${THEME.fontFamily}">counter</text>
+    </g>`;
 
   return `
     <g transform="translate(${x},${y})">
@@ -49,24 +68,19 @@ function renderTopCities(cities, totalViews, x, y, width, height) {
         fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
       
       <!-- Header -->
-      <g transform="translate(12,14)">
-        <circle cx="6" cy="4" r="5" fill="none" stroke="${THEME.green}" stroke-width="1.5"/>
-        <circle cx="6" cy="4" r="2" fill="${THEME.green}"/>
-        <text x="18" y="8" fill="${THEME.text}" font-size="13" font-weight="600" 
-          font-family="${THEME.fontFamily}">Top Cities</text>
-        <text x="${width - 32}" y="8" fill="${THEME.green}" font-size="10" 
-          font-family="${THEME.fontFamily}" text-anchor="end">View all →</text>
-      </g>
+      <text x="12" y="24" fill="${THEME.text}" font-size="14" font-weight="700"
+        font-family="${THEME.fontFamily}">Visitor Distribution by Country</text>
       
-      ${items}
+      ${badges}
+      ${seeAllLink}
+      ${branding}
     </g>`;
 }
 
 /**
- * Render the "Visitors Over Time" heatmap/contribution graph.
- * Similar to GitHub's contribution graph.
+ * Render the "Visit Heatmap" — full-width GitHub contribution-style heatmap.
  */
-function renderVisitorsOverTime(dailyHistory, x, y, width, height) {
+function renderVisitHeatmap(dailyHistory, x, y, width, height) {
   const cellSize = 10;
   const cellGap = 2;
   const totalCellSize = cellSize + cellGap;
@@ -101,23 +115,13 @@ function renderVisitorsOverTime(dailyHistory, x, y, width, height) {
 
   // Month labels
   const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
   ];
   let monthLabels = "";
   let lastMonth = -1;
   const graphStartX = 12;
-  const graphStartY = 40;
+  const graphStartY = 42;
 
   // Render cells
   let cells = "";
@@ -146,11 +150,11 @@ function renderVisitorsOverTime(dailyHistory, x, y, width, height) {
     }
   }
 
-  // Legend
+  // Legend (bottom-right)
   const legend = `
-    <g transform="translate(${width / 2 - 60},${height - 20})">
+    <g transform="translate(${width - 140},${height - 22})">
       <text x="0" y="10" fill="${THEME.textMuted}" font-size="9" font-family="${THEME.fontFamily}">Less</text>
-      <rect x="25" y="2" width="10" height="10" rx="2" fill="${THEME.borderLight}"/>
+      <text x="25" y="10" fill="${THEME.textMuted}" font-size="9" font-family="${THEME.fontFamily}">...</text>
       <rect x="38" y="2" width="10" height="10" rx="2" fill="${THEME.greenScale[0]}"/>
       <rect x="51" y="2" width="10" height="10" rx="2" fill="${THEME.greenScale[1]}"/>
       <rect x="64" y="2" width="10" height="10" rx="2" fill="${THEME.greenScale[2]}"/>
@@ -158,17 +162,24 @@ function renderVisitorsOverTime(dailyHistory, x, y, width, height) {
       <text x="95" y="10" fill="${THEME.textMuted}" font-size="9" font-family="${THEME.fontFamily}">More</text>
     </g>`;
 
+  // Footer text
+  const lastDate = dailyHistory.length > 0 ? dailyHistory[dailyHistory.length - 1].date : "N/A";
+  const footer = `
+    <text x="12" y="${height - 8}" fill="${THEME.textMuted}" font-size="8" font-style="italic"
+      font-family="${THEME.fontFamily}">Last data refresh: ${lastDate}</text>`;
+
   return `
     <g transform="translate(${x},${y})">
       <rect x="0" y="0" width="${width}" height="${height}" rx="${THEME.cardRadius}"
         fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
       
       <!-- Header -->
-      <g transform="translate(12,14)">
-        <text x="0" y="8" fill="${THEME.green}" font-size="12" font-family="${THEME.fontFamily}">📊</text>
-        <text x="18" y="8" fill="${THEME.text}" font-size="13" font-weight="600" 
-          font-family="${THEME.fontFamily}">Visitors Over Time</text>
-      </g>
+      <text x="12" y="24" fill="${THEME.text}" font-size="14" font-weight="700"
+        font-family="${THEME.fontFamily}">Visit Heatmap</text>
+
+      <!-- Subtitle -->
+      <text x="12" y="${height - 8}" fill="${THEME.textMuted}" font-size="9"
+        font-family="${THEME.fontFamily}">Pageview Activity Heatmap</text>
       
       ${monthLabels}
       ${cells}
@@ -177,78 +188,36 @@ function renderVisitorsOverTime(dailyHistory, x, y, width, height) {
 }
 
 /**
- * Render the "Quick Stats" panel.
- */
-function renderQuickStats(data, x, y, width, height) {
-  const stats = [
-    { icon: "🌍", label: "Countries", value: data.uniqueCountries },
-    { icon: "🏙️", label: "Cities", value: data.uniqueCities },
-    { icon: "📊", label: "Today", value: data.todayViews },
-    { icon: "🔥", label: "Streak", value: `${data.streak}d` },
-  ];
-
-  let items = "";
-  stats.forEach((s, i) => {
-    const itemY = 28 + i * 35;
-    items += `
-      <g transform="translate(12,${itemY})">
-        <text x="0" y="14" font-size="14" font-family="${THEME.fontFamily}">${s.icon}</text>
-        <text x="24" y="14" fill="${THEME.textMuted}" font-size="12" 
-          font-family="${THEME.fontFamily}">${s.label}</text>
-        <text x="${width - 20}" y="14" fill="${THEME.text}" font-size="14" font-weight="700" 
-          font-family="${THEME.fontFamily}" text-anchor="end">${s.value}</text>
-      </g>`;
-  });
-
-  return `
-    <g transform="translate(${x},${y})">
-      <rect x="0" y="0" width="${width}" height="${height}" rx="${THEME.cardRadius}"
-        fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
-      
-      <!-- Header -->
-      <text x="12" y="20" fill="${THEME.text}" font-size="13" font-weight="600" 
-        font-family="${THEME.fontFamily}">Quick Stats</text>
-      
-      ${items}
-    </g>`;
-}
-
-/**
- * Render the entire bottom row: Top Cities | Visitors Over Time | Quick Stats.
+ * Render the entire bottom row:
+ *   Row 1: Visitor Distribution by Country (full width)
+ *   Row 2: Visit Heatmap (full width)
  */
 export function renderBottomRow(data, startX, startY, totalWidth) {
   const gap = THEME.gap;
-  const rowHeight = 190;
 
-  // Column widths
-  const citiesWidth = Math.floor(totalWidth * 0.28);
-  const timelineWidth = Math.floor(totalWidth * 0.46);
-  const statsWidth = totalWidth - citiesWidth - timelineWidth - gap * 2;
+  // Row 1: Visitor Distribution by Country
+  const distroRows = Math.min(5, Math.ceil((data.topCountries?.length || 0) / Math.floor((totalWidth - 24) / 124)));
+  const distroHeight = Math.max(80, 44 + distroRows * 28 + 30);
 
-  const cities = renderTopCities(
-    data.topCities,
-    data.totalViews,
+  const distro = renderVisitorDistribution(
+    data.topCountries || [],
     startX,
     startY,
-    citiesWidth,
-    rowHeight,
+    totalWidth,
+    distroHeight,
   );
 
-  const timeline = renderVisitorsOverTime(
-    data.dailyHistory,
-    startX + citiesWidth + gap,
-    startY,
-    timelineWidth,
-    rowHeight,
+  // Row 2: Visit Heatmap
+  const heatmapY = startY + distroHeight + gap;
+  const heatmapHeight = 140;
+
+  const heatmap = renderVisitHeatmap(
+    data.dailyHistory || [],
+    startX,
+    heatmapY,
+    totalWidth,
+    heatmapHeight,
   );
 
-  const stats = renderQuickStats(
-    data,
-    startX + citiesWidth + timelineWidth + gap * 2,
-    startY,
-    statsWidth,
-    rowHeight,
-  );
-
-  return `${cities}\n${timeline}\n${stats}`;
+  return `${distro}\n${heatmap}`;
 }
