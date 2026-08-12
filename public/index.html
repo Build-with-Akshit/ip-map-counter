@@ -439,10 +439,10 @@
           IP Tracked
         </div>
 
-        <div class="search-box">
+        <form class="search-box" onsubmit="event.preventDefault(); loadDashboard();">
           <input type="text" id="usernameInput" class="search-input" placeholder="GitHub username..." value="Build-with-Akshit">
-          <button class="btn-primary" onclick="loadDashboard()">Analyze</button>
-        </div>
+          <button type="submit" class="btn-primary">Analyze</button>
+        </form>
       </div>
     </nav>
 
