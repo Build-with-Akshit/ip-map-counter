@@ -486,7 +486,7 @@
 
       // Update Markdown Embed Code
       const baseUrl = window.location.origin;
-      const mdSnippet = `[![Website Analytics](${baseUrl}/api/dashboard?username=${currentUsername})](${baseUrl}/?username=${currentUsername})`;
+      const mdSnippet = `[![Website Analytics](${baseUrl}/api/dashboard?username=${currentUsername})](${baseUrl}/?username=${currentUsername})\n\n👉 [**Please click here to contribute a view in my profile.**](${baseUrl}/?username=${currentUsername})`;
       document.getElementById("markdownCode").innerText = mdSnippet;
       document.getElementById("directLinkBtn").href = `${baseUrl}/api/dashboard?username=${currentUsername}`;
 
