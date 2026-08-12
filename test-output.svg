@@ -135,34 +135,54 @@
       <rect x="0" y="0" width="278" height="82" rx="12"
         fill="#161b22" stroke="#30363d" stroke-width="1"/>
       
-      <!-- Globe icon -->
-      <g transform="translate(97, 16)">
-        <circle cx="7" cy="7" r="6.5" fill="none" stroke="#39d353" stroke-width="1.1"/>
-        <ellipse cx="7" cy="7" rx="3" ry="6.5" fill="none" stroke="#39d353" stroke-width="0.8"/>
-        <line x1="0.5" y1="7" x2="13.5" y2="7" stroke="#39d353" stroke-width="0.8"/>
+      <!-- Big Globe icon -->
+      <g transform="translate(14, 16)">
+        <rect width="44" height="44" rx="8" fill="#0d2818" stroke="#39d353" stroke-width="1" stroke-opacity="0.4"/>
+        <g transform="translate(8, 8)">
+          <circle cx="14" cy="14" r="13" fill="none" stroke="#39d353" stroke-width="1.5"/>
+          <ellipse cx="14" cy="14" rx="6" ry="13" fill="none" stroke="#39d353" stroke-width="1.1"/>
+          <line x1="1" y1="14" x2="27" y2="14" stroke="#39d353" stroke-width="1.1"/>
+          <ellipse cx="14" cy="7" rx="11" ry="2.5" fill="none" stroke="#39d353" stroke-width="0.8"/>
+          <ellipse cx="14" cy="21" rx="11" ry="2.5" fill="none" stroke="#39d353" stroke-width="0.8"/>
+        </g>
       </g>
-      <text x="117" y="24" fill="#8b949e" font-size="11" font-weight="500"
-        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif">Unique Nations</text>
-      <text x="139" y="50" fill="#f0f6fc" font-size="26" font-weight="700"
-        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" text-anchor="middle">92</text>
-      <text x="139" y="65" fill="#8b949e" font-size="9"
-        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" text-anchor="middle">Across the globe</text>
+
+      <!-- Right Details -->
+      <g transform="translate(70,0)">
+        <text x="0" y="24" fill="#8b949e" font-size="11" font-weight="500"
+          font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif">Unique Nations</text>
+        <text x="0" y="48" fill="#f0f6fc" font-size="22" font-weight="700"
+          font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif">92</text>
+        <text x="0" y="64" fill="#8b949e" font-size="9"
+          font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif">Across the globe</text>
+      </g>
     </g>
 
     <g transform="translate(902,65)">
       <rect x="0" y="0" width="278" height="82" rx="12"
         fill="#161b22" stroke="#30363d" stroke-width="1"/>
       
-      <!-- Lightning bolt icon -->
-      <g transform="translate(83, 14)">
-        <polygon points="8,0 3,8 7,8 5,14 12,5 8,5 10,0" fill="#39d353" opacity="0.9"/>
+      <!-- Big Fire/Trending icon -->
+      <g transform="translate(14, 16)">
+        <rect width="44" height="44" rx="8" fill="#0d2818" stroke="#39d353" stroke-width="1" stroke-opacity="0.4"/>
+        <g transform="translate(10, 6)">
+          <!-- Flame shape -->
+          <path d="M12,28 C5,28 2,22 2,17 C2,12 5,8 8,5 C8,9 10,11 12,11 C11,8 12,3 16,0 C15,5 18,8 20,11 C22,14 22,17 22,19 C22,24 18,28 12,28 Z" 
+            fill="#39d353" opacity="0.85"/>
+          <path d="M12,28 C8,28 6,24 6,21 C6,18 8,15 10,14 C10,16 11,17 12,17 C11.5,15.5 12,13 14,12 C13.5,14 15,16 16,17 C17,18 17,20 17,21 C17,25 15,28 12,28 Z" 
+            fill="#7ee787" opacity="0.6"/>
+        </g>
       </g>
-      <text x="109" y="24" fill="#8b949e" font-size="11" font-weight="500"
-        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif">Peak Visit Window</text>
-      <text x="139" y="48" fill="#f0f6fc" font-size="16" font-weight="700"
-        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" text-anchor="middle">May 19, 2024</text>
-      <text x="139" y="64" fill="#8b949e" font-size="9"
-        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" text-anchor="middle">4,892 visits in a day</text>
+
+      <!-- Right Details -->
+      <g transform="translate(70,0)">
+        <text x="0" y="24" fill="#8b949e" font-size="11" font-weight="500"
+          font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif">Peak Visit Window</text>
+        <text x="0" y="48" fill="#f0f6fc" font-size="16" font-weight="700"
+          font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif">May 19, 2024</text>
+        <text x="0" y="64" fill="#8b949e" font-size="9"
+          font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif">4,892 visits in a day</text>
+      </g>
     </g>
     
     <rect x="20" y="163" width="1160" height="380" 
@@ -1377,7 +1397,7 @@
         rx="3" fill="#0e4429"/><rect x="41" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="41" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="41" y="171" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="62" y="45" width="18" height="18" 
+        rx="3" fill="#39d353"/><rect x="62" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="62" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="62" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="62" y="108" width="18" height="18" 
@@ -1389,8 +1409,8 @@
         rx="3" fill="#0e4429"/><rect x="83" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="83" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="83" y="129" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="83" y="150" width="18" height="18" 
-        rx="3" fill="#006d32"/><rect x="83" y="171" width="18" height="18" 
+        rx="3" fill="#006d32"/><rect x="83" y="150" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="83" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="104" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="104" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="104" y="87" width="18" height="18" 
@@ -1420,7 +1440,7 @@
         rx="3" fill="#0e4429"/><rect x="167" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="167" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="188" y="45" width="18" height="18" 
-        rx="3" fill="#39d353"/><rect x="188" y="66" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="188" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="188" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="188" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="188" y="129" width="18" height="18" 
@@ -1428,7 +1448,7 @@
         rx="3" fill="#0e4429"/><rect x="188" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="209" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="209" y="66" width="18" height="18" 
-        rx="3" fill="#006d32"/><rect x="209" y="87" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="209" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="209" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="209" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="209" y="150" width="18" height="18" 
@@ -1447,10 +1467,10 @@
         rx="3" fill="#0e4429"/><rect x="251" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="251" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="251" y="171" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="272" y="45" width="18" height="18" 
+        rx="3" fill="#39d353"/><rect x="272" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="272" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="272" y="87" width="18" height="18" 
-        rx="3" fill="#26a641"/><rect x="272" y="108" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="272" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="272" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="272" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="272" y="171" width="18" height="18" 
@@ -1471,8 +1491,8 @@
         rx="3" fill="#0e4429"/><rect x="335" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="335" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="335" y="87" width="18" height="18" 
-        rx="3" fill="#006d32"/><rect x="335" y="108" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="335" y="129" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="335" y="108" width="18" height="18" 
+        rx="3" fill="#006d32"/><rect x="335" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="335" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="335" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="356" y="45" width="18" height="18" 
@@ -1504,7 +1524,7 @@
         rx="3" fill="#0e4429"/><rect x="419" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="419" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="440" y="45" width="18" height="18" 
-        rx="3" fill="#006d32"/><rect x="440" y="66" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="440" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="440" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="440" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="440" y="129" width="18" height="18" 
@@ -1545,8 +1565,8 @@
         rx="3" fill="#0e4429"/><rect x="545" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="545" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="545" y="171" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="566" y="45" width="18" height="18" 
-        rx="3" fill="#39d353"/><rect x="566" y="66" width="18" height="18" 
+        rx="3" fill="#26a641"/><rect x="566" y="45" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="566" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="566" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="566" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="566" y="129" width="18" height="18" 
@@ -1574,9 +1594,9 @@
         rx="3" fill="#0e4429"/><rect x="629" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="629" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="650" y="45" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="650" y="66" width="18" height="18" 
+        rx="3" fill="#39d353"/><rect x="650" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="650" y="87" width="18" height="18" 
-        rx="3" fill="#26a641"/><rect x="650" y="108" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="650" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="650" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="650" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="650" y="171" width="18" height="18" 
@@ -1587,7 +1607,7 @@
         rx="3" fill="#0e4429"/><rect x="671" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="671" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="671" y="171" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="692" y="45" width="18" height="18" 
+        rx="3" fill="#39d353"/><rect x="692" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="692" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="692" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="692" y="108" width="18" height="18" 
@@ -1623,29 +1643,29 @@
         rx="3" fill="#0e4429"/><rect x="776" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="776" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="797" y="45" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="797" y="66" width="18" height="18" 
+        rx="3" fill="#006d32"/><rect x="797" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="797" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="797" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="797" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="797" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="797" y="171" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="818" y="45" width="18" height="18" 
+        rx="3" fill="#26a641"/><rect x="818" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="818" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="818" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="818" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="818" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="818" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="818" y="171" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="839" y="45" width="18" height="18" 
+        rx="3" fill="#39d353"/><rect x="839" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="839" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="839" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="839" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="839" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="839" y="150" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="839" y="171" width="18" height="18" 
+        rx="3" fill="#006d32"/><rect x="839" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="860" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="860" y="66" width="18" height="18" 
-        rx="3" fill="#39d353"/><rect x="860" y="87" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="860" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="860" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="860" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="860" y="150" width="18" height="18" 
@@ -1685,7 +1705,7 @@
         rx="3" fill="#0e4429"/><rect x="965" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="965" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="965" y="171" width="18" height="18" 
-        rx="3" fill="#006d32"/><rect x="986" y="45" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="986" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="986" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="986" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="986" y="108" width="18" height="18" 
@@ -1699,7 +1719,7 @@
         rx="3" fill="#0e4429"/><rect x="1007" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1007" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1007" y="171" width="18" height="18" 
-        rx="3" fill="#006d32"/><rect x="1028" y="45" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="1028" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1028" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1028" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1028" y="108" width="18" height="18" 
@@ -1720,18 +1740,18 @@
         rx="3" fill="#0e4429"/><rect x="1070" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1070" y="150" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1070" y="171" width="18" height="18" 
-        rx="3" fill="#0e4429"/><rect x="1091" y="45" width="18" height="18" 
+        rx="3" fill="#39d353"/><rect x="1091" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1091" y="66" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1091" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1091" y="108" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1091" y="129" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1091" y="150" width="18" height="18" 
-        rx="3" fill="#006d32"/><rect x="1091" y="171" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="1091" y="171" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1112" y="45" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1112" y="66" width="18" height="18" 
-        rx="3" fill="#39d353"/><rect x="1112" y="87" width="18" height="18" 
+        rx="3" fill="#0e4429"/><rect x="1112" y="87" width="18" height="18" 
         rx="3" fill="#0e4429"/><rect x="1112" y="108" width="18" height="18" 
-        rx="3" fill="#0e4429"/>
+        rx="3" fill="#26a641"/>
       
     <g transform="translate(1010,196)">
       <text x="0" y="10" fill="#8b949e" font-size="10" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif">Less</text>

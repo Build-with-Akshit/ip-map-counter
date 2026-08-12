@@ -262,25 +262,33 @@ function renderCardTopLocation(x, y, width, height, topCountries, totalViews) {
  */
 function renderCardUniqueNations(x, y, width, height, uniqueCountries, totalViews) {
   const count = totalViews > 0 ? (uniqueCountries || 1) : 0;
-  const cx = width / 2;
 
   return `
     <g transform="translate(${x},${y})">
       <rect x="0" y="0" width="${width}" height="${height}" rx="${THEME.cardRadius}"
         fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
       
-      <!-- Globe icon -->
-      <g transform="translate(${cx - 42}, 16)">
-        <circle cx="7" cy="7" r="6.5" fill="none" stroke="${THEME.green}" stroke-width="1.1"/>
-        <ellipse cx="7" cy="7" rx="3" ry="6.5" fill="none" stroke="${THEME.green}" stroke-width="0.8"/>
-        <line x1="0.5" y1="7" x2="13.5" y2="7" stroke="${THEME.green}" stroke-width="0.8"/>
+      <!-- Big Globe icon -->
+      <g transform="translate(14, 16)">
+        <rect width="44" height="44" rx="8" fill="#0d2818" stroke="${THEME.green}" stroke-width="1" stroke-opacity="0.4"/>
+        <g transform="translate(8, 8)">
+          <circle cx="14" cy="14" r="13" fill="none" stroke="${THEME.green}" stroke-width="1.5"/>
+          <ellipse cx="14" cy="14" rx="6" ry="13" fill="none" stroke="${THEME.green}" stroke-width="1.1"/>
+          <line x1="1" y1="14" x2="27" y2="14" stroke="${THEME.green}" stroke-width="1.1"/>
+          <ellipse cx="14" cy="7" rx="11" ry="2.5" fill="none" stroke="${THEME.green}" stroke-width="0.8"/>
+          <ellipse cx="14" cy="21" rx="11" ry="2.5" fill="none" stroke="${THEME.green}" stroke-width="0.8"/>
+        </g>
       </g>
-      <text x="${cx - 22}" y="24" fill="#8b949e" font-size="11" font-weight="500"
-        font-family="${THEME.fontFamily}">Unique Nations</text>
-      <text x="${cx}" y="50" fill="#f0f6fc" font-size="26" font-weight="700"
-        font-family="${THEME.fontFamily}" text-anchor="middle">${formatNumber(count)}</text>
-      <text x="${cx}" y="65" fill="#8b949e" font-size="9"
-        font-family="${THEME.fontFamily}" text-anchor="middle">${totalViews > 0 ? 'Across the globe' : 'No visits recorded'}</text>
+
+      <!-- Right Details -->
+      <g transform="translate(70,0)">
+        <text x="0" y="24" fill="#8b949e" font-size="11" font-weight="500"
+          font-family="${THEME.fontFamily}">Unique Nations</text>
+        <text x="0" y="48" fill="#f0f6fc" font-size="22" font-weight="700"
+          font-family="${THEME.fontFamily}">${formatNumber(count)}</text>
+        <text x="0" y="64" fill="#8b949e" font-size="9"
+          font-family="${THEME.fontFamily}">${totalViews > 0 ? 'Across the globe' : 'No visits recorded'}</text>
+      </g>
     </g>`;
 }
 
@@ -300,16 +308,27 @@ function renderCardPeakVisitWindow(x, y, width, height, highestDailyDate, highes
       <rect x="0" y="0" width="${width}" height="${height}" rx="${THEME.cardRadius}"
         fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
       
-      <!-- Lightning bolt icon -->
-      <g transform="translate(${cx - 56}, 14)">
-        <polygon points="8,0 3,8 7,8 5,14 12,5 8,5 10,0" fill="${THEME.green}" opacity="0.9"/>
+      <!-- Big Fire/Trending icon -->
+      <g transform="translate(14, 16)">
+        <rect width="44" height="44" rx="8" fill="#0d2818" stroke="${THEME.green}" stroke-width="1" stroke-opacity="0.4"/>
+        <g transform="translate(10, 6)">
+          <!-- Flame shape -->
+          <path d="M12,28 C5,28 2,22 2,17 C2,12 5,8 8,5 C8,9 10,11 12,11 C11,8 12,3 16,0 C15,5 18,8 20,11 C22,14 22,17 22,19 C22,24 18,28 12,28 Z" 
+            fill="${THEME.green}" opacity="0.85"/>
+          <path d="M12,28 C8,28 6,24 6,21 C6,18 8,15 10,14 C10,16 11,17 12,17 C11.5,15.5 12,13 14,12 C13.5,14 15,16 16,17 C17,18 17,20 17,21 C17,25 15,28 12,28 Z" 
+            fill="#7ee787" opacity="0.6"/>
+        </g>
       </g>
-      <text x="${cx - 30}" y="24" fill="#8b949e" font-size="11" font-weight="500"
-        font-family="${THEME.fontFamily}">Peak Visit Window</text>
-      <text x="${cx}" y="48" fill="#f0f6fc" font-size="16" font-weight="700"
-        font-family="${THEME.fontFamily}" text-anchor="middle">${dateText}</text>
-      <text x="${cx}" y="64" fill="#8b949e" font-size="9"
-        font-family="${THEME.fontFamily}" text-anchor="middle">${subText}</text>
+
+      <!-- Right Details -->
+      <g transform="translate(70,0)">
+        <text x="0" y="24" fill="#8b949e" font-size="11" font-weight="500"
+          font-family="${THEME.fontFamily}">Peak Visit Window</text>
+        <text x="0" y="48" fill="#f0f6fc" font-size="16" font-weight="700"
+          font-family="${THEME.fontFamily}">${dateText}</text>
+        <text x="0" y="64" fill="#8b949e" font-size="9"
+          font-family="${THEME.fontFamily}">${subText}</text>
+      </g>
     </g>`;
 }
 
