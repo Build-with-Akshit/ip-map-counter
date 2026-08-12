@@ -210,9 +210,19 @@ export function renderMapSection(data, startX, startY, totalWidth) {
   // Section header
   const header = `
     <g transform="translate(${startX + 20},${startY + 15})">
-      <circle cx="10" cy="10" r="10" fill="none" stroke="${THEME.green}" stroke-width="1.5"/>
-      <text x="10" y="14" fill="${THEME.green}" font-size="11" font-family="${THEME.fontFamily}" 
-        text-anchor="middle">⊕</text>
+      <!-- Globe icon -->
+      <g transform="translate(0,0)">
+        <!-- Outer circle -->
+        <circle cx="10" cy="10" r="9.5" fill="none" stroke="${THEME.green}" stroke-width="1.3"/>
+        <!-- Vertical ellipse (central meridian) -->
+        <ellipse cx="10" cy="10" rx="4.5" ry="9.5" fill="none" stroke="${THEME.green}" stroke-width="1.1"/>
+        <!-- Horizontal equator line -->
+        <line x1="0.5" y1="10" x2="19.5" y2="10" stroke="${THEME.green}" stroke-width="1.1"/>
+        <!-- Upper latitude line -->
+        <ellipse cx="10" cy="5.5" rx="8" ry="1.8" fill="none" stroke="${THEME.green}" stroke-width="0.9"/>
+        <!-- Lower latitude line -->
+        <ellipse cx="10" cy="14.5" rx="8" ry="1.8" fill="none" stroke="${THEME.green}" stroke-width="0.9"/>
+      </g>
       <text x="28" y="10" fill="${THEME.text}" font-size="14" font-weight="600" 
         font-family="${THEME.fontFamily}">Visitors by Location</text>
       <text x="28" y="25" fill="${THEME.textMuted}" font-size="10" 

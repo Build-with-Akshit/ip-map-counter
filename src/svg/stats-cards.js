@@ -269,8 +269,14 @@ function renderCardUniqueNations(x, y, width, height, uniqueCountries, totalView
       <rect x="0" y="0" width="${width}" height="${height}" rx="${THEME.cardRadius}"
         fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
       
-      <text x="${cx}" y="24" fill="#8b949e" font-size="11" font-weight="500"
-        font-family="${THEME.fontFamily}" text-anchor="middle">Unique Nations</text>
+      <!-- Globe icon -->
+      <g transform="translate(${cx - 42}, 16)">
+        <circle cx="7" cy="7" r="6.5" fill="none" stroke="${THEME.green}" stroke-width="1.1"/>
+        <ellipse cx="7" cy="7" rx="3" ry="6.5" fill="none" stroke="${THEME.green}" stroke-width="0.8"/>
+        <line x1="0.5" y1="7" x2="13.5" y2="7" stroke="${THEME.green}" stroke-width="0.8"/>
+      </g>
+      <text x="${cx - 22}" y="24" fill="#8b949e" font-size="11" font-weight="500"
+        font-family="${THEME.fontFamily}">Unique Nations</text>
       <text x="${cx}" y="50" fill="#f0f6fc" font-size="26" font-weight="700"
         font-family="${THEME.fontFamily}" text-anchor="middle">${formatNumber(count)}</text>
       <text x="${cx}" y="65" fill="#8b949e" font-size="9"
@@ -294,8 +300,12 @@ function renderCardPeakVisitWindow(x, y, width, height, highestDailyDate, highes
       <rect x="0" y="0" width="${width}" height="${height}" rx="${THEME.cardRadius}"
         fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
       
-      <text x="${cx}" y="24" fill="#8b949e" font-size="11" font-weight="500"
-        font-family="${THEME.fontFamily}" text-anchor="middle">Peak Visit Window</text>
+      <!-- Lightning bolt icon -->
+      <g transform="translate(${cx - 56}, 14)">
+        <polygon points="8,0 3,8 7,8 5,14 12,5 8,5 10,0" fill="${THEME.green}" opacity="0.9"/>
+      </g>
+      <text x="${cx - 30}" y="24" fill="#8b949e" font-size="11" font-weight="500"
+        font-family="${THEME.fontFamily}">Peak Visit Window</text>
       <text x="${cx}" y="48" fill="#f0f6fc" font-size="16" font-weight="700"
         font-family="${THEME.fontFamily}" text-anchor="middle">${dateText}</text>
       <text x="${cx}" y="64" fill="#8b949e" font-size="9"
