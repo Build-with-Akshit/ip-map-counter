@@ -363,8 +363,20 @@
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
+    .web-map-pan-right.is-dragging {
+      opacity: 0.85;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      border-color: var(--green);
+      cursor: grabbing;
+    }
+
+    .web-map-pan-right.is-locked {
+      border-color: rgba(255, 165, 0, 0.6);
+      box-shadow: 0 0 8px rgba(255, 165, 0, 0.25);
+    }
+
     /* Active Focus Indicator when user clicks inside Map Card */
-    .map-active-focus .web-map-pan-right {
+    .map-active-focus .web-map-pan-right:not(.is-locked) {
       border-color: var(--green);
       box-shadow: 0 0 10px rgba(57, 211, 83, 0.35);
     }
@@ -403,6 +415,11 @@
     .web-ctrl-btn:active {
       transform: scale(0.92);
     }
+
+    .web-ctrl-btn.move-btn { cursor: grab; font-size: 15px; }
+    .web-ctrl-btn.move-btn:active { cursor: grabbing; }
+    .web-ctrl-btn.lock-btn-active { color: #ffa500; border-color: rgba(255,165,0,0.5); }
+    .web-ctrl-btn.lock-btn-active:hover { color: #ffa500; border-color: #ffa500; box-shadow: 0 0 8px rgba(255,165,0,0.3); }
   </style>
 </head>
 <body>
@@ -466,7 +483,9 @@
             <button class="web-ctrl-btn" onclick="panWebMap(1, 0)" title="Pan Right">►</button>
           </div>
           <div class="pan-row">
+            <button class="web-ctrl-btn move-btn" id="moveBtn" title="Drag to move">✥</button>
             <button class="web-ctrl-btn" onclick="panWebMap(0, 1)" title="Pan Down">▼</button>
+            <button class="web-ctrl-btn" id="lockBtn" onclick="toggleWidgetLock()" title="Lock position">🔓</button>
           </div>
         </div>
       </div>
@@ -701,6 +720,118 @@
       }
     });
 
+    // Draggable and Lockable Control Box State
+    let isWidgetLocked = false;
+    let widgetOffset = null; // Stores { left, top } position when moved
+
+    function toggleWidgetLock() {
+      isWidgetLocked = !isWidgetLocked;
+      const widget = document.getElementById("panWidgetRight");
+      const lockBtn = document.getElementById("lockBtn");
+      const moveBtn = document.getElementById("moveBtn");
+      
+      if (widget && lockBtn) {
+        if (isWidgetLocked) {
+          widget.classList.add("is-locked");
+          lockBtn.innerHTML = "🔒";
+          lockBtn.classList.add("lock-btn-active");
+          lockBtn.title = "Unlock position";
+          if (moveBtn) moveBtn.style.opacity = "0.4";
+        } else {
+          widget.classList.remove("is-locked");
+          lockBtn.innerHTML = "🔓";
+          lockBtn.classList.remove("lock-btn-active");
+          lockBtn.title = "Lock position";
+          if (moveBtn) moveBtn.style.opacity = "1";
+        }
+      }
+    }
+
+    function initWidgetDrag() {
+      const widget = document.getElementById("panWidgetRight");
+      const moveBtn = document.getElementById("moveBtn");
+      if (!widget || !moveBtn) return;
+
+      // Restore position if previously dragged
+      if (widgetOffset) {
+        widget.style.position = "fixed";
+        widget.style.left = widgetOffset.left + "px";
+        widget.style.top = widgetOffset.top + "px";
+        widget.style.right = "auto";
+      }
+
+      // Restore lock state if locked
+      if (isWidgetLocked) {
+        const lockBtn = document.getElementById("lockBtn");
+        widget.classList.add("is-locked");
+        if (lockBtn) {
+          lockBtn.innerHTML = "🔒";
+          lockBtn.classList.add("lock-btn-active");
+          lockBtn.title = "Unlock position";
+        }
+        if (moveBtn) moveBtn.style.opacity = "0.4";
+      }
+
+      let isDragging = false;
+      let startX = 0, startY = 0;
+      let initialLeft = 0, initialTop = 0;
+
+      const startDrag = (e) => {
+        if (isWidgetLocked) return;
+        isDragging = true;
+        widget.classList.add("is-dragging");
+
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+        startX = clientX;
+        startY = clientY;
+
+        const rect = widget.getBoundingClientRect();
+        initialLeft = rect.left;
+        initialTop = rect.top;
+
+        widget.style.position = "fixed";
+        widget.style.left = initialLeft + "px";
+        widget.style.top = initialTop + "px";
+        widget.style.right = "auto";
+
+        e.preventDefault();
+      };
+
+      const doDrag = (e) => {
+        if (!isDragging) return;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+        const dx = clientX - startX;
+        const dy = clientY - startY;
+
+        const newLeft = initialLeft + dx;
+        const newTop = initialTop + dy;
+
+        widget.style.left = newLeft + "px";
+        widget.style.top = newTop + "px";
+        widgetOffset = { left: newLeft, top: newTop };
+      };
+
+      const stopDrag = () => {
+        if (isDragging) {
+          isDragging = false;
+          widget.classList.remove("is-dragging");
+        }
+      };
+
+      moveBtn.addEventListener("mousedown", startDrag);
+      moveBtn.addEventListener("touchstart", startDrag, { passive: false });
+
+      window.addEventListener("mousemove", doDrag);
+      window.addEventListener("touchmove", doDrag, { passive: false });
+
+      window.addEventListener("mouseup", stopDrag);
+      window.addEventListener("touchend", stopDrag);
+    }
+
     // Load Dashboard SVG & Auto-track
     async function loadDashboard() {
       const input = document.getElementById("usernameInput").value.trim();
@@ -734,10 +865,13 @@
               <button class="web-ctrl-btn" onclick="panWebMap(1, 0)" title="Pan Right">►</button>
             </div>
             <div class="pan-row">
+              <button class="web-ctrl-btn move-btn" id="moveBtn" title="Drag to move">✥</button>
               <button class="web-ctrl-btn" onclick="panWebMap(0, 1)" title="Pan Down">▼</button>
+              <button class="web-ctrl-btn" id="lockBtn" onclick="toggleWidgetLock()" title="Lock position">🔓</button>
             </div>
           </div>`;
         resetWebMap();
+        initWidgetDrag();
       } catch (err) {
         console.error("Failed to load dashboard SVG:", err);
       }
