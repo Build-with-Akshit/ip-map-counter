@@ -40,7 +40,7 @@ export function renderDashboard(data, username, options = {}) {
   const contentWidth = W - P * 2;
 
   // Calculate dynamic height based on content
-  const headerHeight = 42;
+  const headerHeight = showContributePill ? 54 : 42;
   const statsY = P + headerHeight;
   const mapY = statsY + 82 + THEME.gap;
   const bottomY = mapY + 520 + THEME.gap;
@@ -116,16 +116,16 @@ export function renderDashboard(data, username, options = {}) {
   let header = "";
 
   if (showContributePill) {
-    // README Header: Centered LeetCode Card Header Style with larger 22px title
+    // README Header: Prominent 28px Section Heading (matching GitHub ## Tech Stack / ## GitHub Stats)
     header = `
       <g transform="translate(${P},${P})">
-        <g transform="translate(${contentWidth / 2}, 10)">
-          <g transform="translate(-185, -14)">
-            <rect x="0" y="4" width="4.5" height="16" rx="2" fill="${THEME.green}"/>
-            <rect x="8" y="0" width="4.5" height="24" rx="2" fill="${THEME.green}"/>
-            <rect x="16" y="9" width="4.5" height="12" rx="2" fill="${THEME.green}"/>
+        <g transform="translate(${contentWidth / 2}, 16)">
+          <g transform="translate(-215, -18)">
+            <rect x="0" y="5" width="5.5" height="20" rx="2.5" fill="${THEME.green}"/>
+            <rect x="10" y="0" width="5.5" height="30" rx="2.5" fill="${THEME.green}"/>
+            <rect x="20" y="11" width="5.5" height="15" rx="2.5" fill="${THEME.green}"/>
           </g>
-          <text x="-155" y="5" class="dashboard-title" font-size="22" font-weight="800">${username}'s Website Analytics</text>
+          <text x="-178" y="6" class="dashboard-title" font-size="28" font-weight="800" letter-spacing="-0.3">${username}'s Website Analytics</text>
         </g>
       </g>`;
   } else {
