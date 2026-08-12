@@ -345,20 +345,10 @@
       z-index: 1000;
     }
     /* Interactive Map Zoom & Pan Control Widgets */
-    .web-map-zoom-left {
-      position: absolute;
-      top: 32.5%;
-      left: 3.2%;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      z-index: 20;
-    }
-
-    .web-map-pan-right {
+    .web-map-pan-left {
       position: absolute;
       top: 31%;
-      right: 3.5%;
+      left: 3.2%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -373,9 +363,19 @@
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
+    .web-map-zoom-right {
+      position: absolute;
+      top: 32.5%;
+      right: 3.5%;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 20;
+    }
+
     /* Active Focus Indicator when user clicks inside Map Card */
-    .map-active-focus .web-map-pan-right,
-    .map-active-focus .web-map-zoom-left .web-ctrl-btn {
+    .map-active-focus .web-map-pan-left,
+    .map-active-focus .web-map-zoom-right .web-ctrl-btn {
       border-color: var(--green);
       box-shadow: 0 0 10px rgba(57, 211, 83, 0.35);
     }
@@ -463,13 +463,7 @@
       <!-- Main Live Dashboard SVG Container with Map Controls -->
       <div class="dashboard-svg-wrapper" id="svgWrapper" style="position: relative;">
         <!-- Inline SVG rendered dynamically here -->
-        <div class="web-map-zoom-left" id="zoomWidgetLeft">
-          <button class="web-ctrl-btn" onclick="zoomWebMap(1.3)" title="Zoom In">+</button>
-          <button class="web-ctrl-btn" onclick="zoomWebMap(0.75)" title="Zoom Out">−</button>
-          <button class="web-ctrl-btn" onclick="resetWebMap()" title="Reset Map" style="font-size: 11px;">↺</button>
-        </div>
-
-        <div class="web-map-pan-right" id="panWidgetRight">
+        <div class="web-map-pan-left" id="panWidgetLeft">
           <div class="pan-row">
             <button class="web-ctrl-btn" onclick="panWebMap(0, -1)" title="Pan Up">▲</button>
           </div>
@@ -481,6 +475,12 @@
           <div class="pan-row">
             <button class="web-ctrl-btn" onclick="panWebMap(0, 1)" title="Pan Down">▼</button>
           </div>
+        </div>
+
+        <div class="web-map-zoom-right" id="zoomWidgetRight">
+          <button class="web-ctrl-btn" onclick="zoomWebMap(1.3)" title="Zoom In">+</button>
+          <button class="web-ctrl-btn" onclick="zoomWebMap(0.75)" title="Zoom Out">−</button>
+          <button class="web-ctrl-btn" onclick="resetWebMap()" title="Reset Map" style="font-size: 11px;">↺</button>
         </div>
       </div>
 
