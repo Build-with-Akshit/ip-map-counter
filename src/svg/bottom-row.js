@@ -177,19 +177,17 @@ function renderVisitHeatmap(dailyHistory, x, y, width, height) {
   }
   if (currentWeek.length > 0) weeks.push(currentWeek);
 
-  // Take up to 52 weeks
-  const displayWeeks = weeks.slice(-52);
+  const numWeeks = Math.max(weeks.length, 1);
+  const totalCellSize = Math.max(12, Math.floor(availableWidth / numWeeks));
+  const cellGap = 3;
+  const cellSize = totalCellSize - cellGap;
 
-  // Compute cell size
-  const maxWeeks = Math.max(displayWeeks.length, 1);
-  const gap = 3;
-  const cellSize = Math.min(13, Math.max(8, Math.floor((availableWidth - (maxWeeks - 1) * gap) / maxWeeks)));
+  // Find max count for color scaling
+  const maxCount = Math.max(...dailyHistory.map((d) => d.count), 1);
 
-  // Calculate max count for color scaling
-  const maxCount = Math.max(...dailyHistory.map(d => d.count), 1);
-
-  function getHeatmapColor(count) {
-    if (!count || count <= 0) return THEME.borderLight;
+  // Get color for a count value
+  function getCellColor(count) {
+    if (!count || count === 0) return THEME.borderLight;
     const ratio = count / maxCount;
     if (ratio > 0.75) return THEME.greenScale[3];
     if (ratio > 0.5) return THEME.greenScale[2];
@@ -197,54 +195,66 @@ function renderVisitHeatmap(dailyHistory, x, y, width, height) {
     return THEME.greenScale[0];
   }
 
-  // Render heatmap cells
-  let cells = "";
-  displayWeeks.forEach((week, wIndex) => {
-    const wx = 35 + wIndex * (cellSize + gap);
-    week.forEach((day) => {
-      const d = new Date(day.date + "T00:00:00Z");
-      const wy = 45 + d.getUTCDay() * (cellSize + gap);
-      const color = getHeatmapColor(day.count);
-
-      cells += `<rect x="${wx}" y="${wy}" width="${cellSize}" height="${cellSize}" rx="2" 
-        fill="${color}"><title>${day.date}: ${day.count} visits</title></rect>\n`;
-    });
-  });
-
   // Month labels
+  const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+  ];
   let monthLabels = "";
   let lastMonth = -1;
-  displayWeeks.forEach((week, wIndex) => {
-    if (week.length === 0) return;
-    const d = new Date(week[0].date + "T00:00:00Z");
-    const month = d.getUTCMonth();
-    if (month !== lastMonth && wIndex < displayWeeks.length - 2) {
-      lastMonth = month;
-      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-      const lx = 35 + wIndex * (cellSize + gap);
-      monthLabels += `<text x="${lx}" y="36" fill="${THEME.textMuted}" font-size="10" font-family="${THEME.fontFamily}">${monthNames[month]}</text>\n`;
+  const graphStartX = 20;
+  const graphStartY = 45;
+
+  // Render cells
+  let cells = "";
+  for (let wi = 0; wi < weeks.length; wi++) {
+    const week = weeks[wi];
+    const colX = graphStartX + wi * totalCellSize;
+
+    for (const day of week) {
+      const d = new Date(day.date + "T00:00:00Z");
+      const dow = d.getUTCDay();
+      const cellY = graphStartY + dow * totalCellSize;
+
+      cells += `<rect x="${colX}" y="${cellY}" width="${cellSize}" height="${cellSize}" 
+        rx="3" fill="${getCellColor(day.count)}"/>`;
+
+      // Add month label when month changes
+      const month = d.getUTCMonth();
+      if (month !== lastMonth) {
+        monthLabels += `<text x="${colX}" y="${graphStartY - 8}" fill="${THEME.textMuted}" 
+          font-size="10" font-weight="500" font-family="${THEME.fontFamily}">${months[month]}</text>`;
+        lastMonth = month;
+      }
     }
-  });
+  }
 
-  // Heatmap title & subtitle
-  const title = `<text x="12" y="24" fill="${THEME.text}" font-size="14" font-weight="700" font-family="${THEME.fontFamily}">Visit Heatmap</text>`;
-  const subtitle = `<text x="${width - 12}" y="24" fill="${THEME.textMuted}" font-size="11" font-family="${THEME.fontFamily}" text-anchor="end">Daily visitor activity over time</text>`;
+  // Legend (bottom-right)
+  const legend = `
+    <g transform="translate(${width - 150},${height - 24})">
+      <text x="0" y="10" fill="${THEME.textMuted}" font-size="10" font-family="${THEME.fontFamily}">Less</text>
+      <text x="28" y="10" fill="${THEME.textMuted}" font-size="10" font-family="${THEME.fontFamily}">...</text>
+      <rect x="42" y="1" width="12" height="12" rx="3" fill="${THEME.greenScale[0]}"/>
+      <rect x="57" y="1" width="12" height="12" rx="3" fill="${THEME.greenScale[1]}"/>
+      <rect x="72" y="1" width="12" height="12" rx="3" fill="${THEME.greenScale[2]}"/>
+      <rect x="87" y="1" width="12" height="12" rx="3" fill="${THEME.greenScale[3]}"/>
+      <text x="106" y="10" fill="${THEME.textMuted}" font-size="10" font-family="${THEME.fontFamily}">More</text>
+    </g>`;
 
-  // Legend at bottom
-  const legendX = width - 180;
-  const legendY = height - 16;
-  const legendColors = [THEME.heatmapLevel0, THEME.heatmapLevel1, THEME.heatmapLevel2, THEME.heatmapLevel3, THEME.heatmapLevel4];
-  let legend = `<text x="${legendX - 30}" y="${legendY + 9}" fill="${THEME.textMuted}" font-size="9" font-family="${THEME.fontFamily}">Less</text>`;
-  legendColors.forEach((color, i) => {
-    legend += `<rect x="${legendX + i * 14}" y="${legendY}" width="10" height="10" rx="2" fill="${color}"/>`;
-  });
-  legend += `<text x="${legendX + 5 * 14 + 4}" y="${legendY + 9}" fill="${THEME.textMuted}" font-size="9" font-family="${THEME.fontFamily}">More</text>`;
+  // Subtitle text
+  const subtitle = `
+    <text x="${width - 20}" y="24" fill="${THEME.textMuted}" font-size="11"
+      font-family="${THEME.fontFamily}" text-anchor="end">Daily visitor activity over time</text>`;
 
   return `
     <g transform="translate(${x},${y})">
       <rect x="0" y="0" width="${width}" height="${height}" rx="${THEME.cardRadius}"
         fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
-      ${title}
+      
+      <!-- Header -->
+      <text x="20" y="24" fill="${THEME.text}" font-size="14" font-weight="700"
+        font-family="${THEME.fontFamily}">Visit Heatmap</text>
+
       ${subtitle}
       ${monthLabels}
       ${cells}
