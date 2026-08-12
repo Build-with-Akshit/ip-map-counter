@@ -115,17 +115,18 @@ export function renderDashboard(data, username) {
         <rect x="14" y="8" width="4" height="10" rx="2" fill="${THEME.green}"/>
       </g>
       
-      <text x="26" y="14" class="dashboard-title">${username}'s Website Analytics</text>
-      <text x="26" y="30" class="dashboard-subtitle">Know your audience. Build better.</text>
+      <text x="26" y="15" class="dashboard-title">${username}'s Website Analytics</text>
+      <text x="26" y="31" class="dashboard-subtitle">Know your audience. Build better.</text>
       
-      <!-- Contribute View pill button (top right) -->
-      <g transform="translate(${contentWidth - 380},1)">
-        <rect x="0" y="0" width="380" height="30" rx="8" 
-          fill="#0d2818" stroke="#2ea043" stroke-width="1"/>
-        <circle cx="16" cy="15" r="4" fill="#39d353"/>
-        <circle cx="16" cy="15" r="7" fill="none" stroke="#39d353" stroke-width="0.8" opacity="0.6"/>
-        <text x="30" y="19" fill="${THEME.text}" font-size="11" font-weight="500" font-family="'Inter', ${THEME.fontFamily}">
-          👉 Please <tspan font-weight="700" fill="#39d353" text-decoration="underline">CLICK HERE</tspan> to contribute a view in my profile 🌐
+      <!-- Prominent Contribute View pill button (top right) -->
+      <g transform="translate(${contentWidth - 430}, 0)">
+        <rect x="0" y="0" width="430" height="36" rx="10" 
+          fill="#0d2818" stroke="#2ea043" stroke-width="1.2"/>
+        <circle cx="20" cy="18" r="9" fill="#39d353" opacity="0.25"/>
+        <circle cx="20" cy="18" r="7.5" fill="none" stroke="#39d353" stroke-width="1"/>
+        <circle cx="20" cy="18" r="4.5" fill="#39d353"/>
+        <text x="38" y="23" fill="${THEME.text}" font-size="12.5" font-weight="600" font-family="'Inter', ${THEME.fontFamily}">
+          👉 Please <tspan font-weight="800" fill="#39d353" text-decoration="underline">CLICK HERE</tspan> to contribute a view in my profile 🌐
         </text>
       </g>
     </g>`;
