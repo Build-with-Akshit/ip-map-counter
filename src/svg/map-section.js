@@ -19,46 +19,40 @@ function formatNumber(n) {
 
 /**
  * Helper to calculate dot size, colors, and glow tier based on visitor count.
- * Calibrated to match reference design: crisp compact dots with soft ambient glow.
+ * Clean, modern aesthetic: crisp solid node with soft Gaussian blurred light aura.
  */
 function getDotStyle(count, maxCount) {
   if (count <= 0) return null;
   const ratio = Math.max(0.01, count / maxCount);
   
-  if (ratio > 0.5 || count >= 5000) {
-    // High Intensity (Top traffic node: e.g., US / 80k+ views)
-    const radius = Math.max(7, Math.min(9.5, 7 + ratio * 2.5));
+  if (ratio > 0.4 || count >= 5000) {
+    // High Intensity (Top traffic locations)
+    const radius = Math.max(5.5, Math.min(7.5, 5.5 + ratio * 2));
     return {
       radius,
-      glowRadius: radius * 2.8,
-      dotColor: "#d4ff00",
-      coreColor: "#ffffff",
-      coreRadius: 2.2,
-      glowId: "highGlow",
+      glowRadius: radius * 3.0,
+      dotColor: "#56d364",
+      glowOpacity: 0.45,
       filterId: "blurHigh",
     };
-  } else if (ratio > 0.08 || count >= 100) {
-    // Medium Intensity (Medium traffic nodes)
-    const radius = Math.max(4.2, Math.min(6.2, 4.2 + ratio * 3));
+  } else if (ratio > 0.05 || count >= 100) {
+    // Medium Intensity (Medium traffic locations)
+    const radius = Math.max(3.8, Math.min(5.0, 3.8 + ratio * 2.2));
     return {
       radius,
       glowRadius: radius * 2.8,
       dotColor: "#39d353",
-      coreColor: "#ffffff",
-      coreRadius: 1.4,
-      glowId: "medGlow",
+      glowOpacity: 0.35,
       filterId: "blurMed",
     };
   } else {
-    // Low Intensity (Small traffic nodes / individual cities)
-    const radius = Math.max(2.2, Math.min(3.8, 2.2 + ratio * 4));
+    // Low Intensity (Small traffic locations)
+    const radius = Math.max(2.2, Math.min(3.4, 2.2 + ratio * 3));
     return {
       radius,
       glowRadius: radius * 2.6,
-      dotColor: "#39d353",
-      coreColor: count > 5 ? "#ffffff" : null,
-      coreRadius: 0.8,
-      glowId: "lowGlow",
+      dotColor: "#26a641",
+      glowOpacity: 0.25,
       filterId: "blurLow",
     };
   }
@@ -84,7 +78,7 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
       stroke="${strokeColor}" stroke-width="${strokeWidth}"/>\n`;
   }
 
-  // 2. Render glowing location nodes (dots with soft, seamless radial glow)
+  // 2. Render glowing location nodes (single solid dot + soft Gaussian light aura)
   let dots = "";
   const renderedCoords = new Set();
 
@@ -101,16 +95,11 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
       const style = getDotStyle(city.count, cityMax);
       if (!style) continue;
 
-      const coreDot = style.coreColor
-        ? `<circle cx="${x}" cy="${y}" r="${style.coreRadius}" fill="${style.coreColor}"/>`
-        : "";
-
       dots += `
-        <!-- Soft radial glow aura -->
-        <circle cx="${x}" cy="${y}" r="${style.glowRadius}" fill="url(#${style.glowId})" filter="url(#${style.filterId})"/>
-        <!-- Central glowing dot -->
-        <circle cx="${x}" cy="${y}" r="${style.radius}" fill="${style.dotColor}"/>
-        ${coreDot}\n`;
+        <!-- Soft ambient light aura -->
+        <circle cx="${x}" cy="${y}" r="${style.glowRadius}" fill="${style.dotColor}" opacity="${style.glowOpacity}" filter="url(#${style.filterId})"/>
+        <!-- Crisp solid glowing dot -->
+        <circle cx="${x}" cy="${y}" r="${style.radius}" fill="${style.dotColor}"/>\n`;
     }
   }
 
@@ -128,51 +117,24 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
     const style = getDotStyle(count, maxCount);
     if (!style) continue;
 
-    const coreDot = style.coreColor
-      ? `<circle cx="${x}" cy="${y}" r="${style.coreRadius}" fill="${style.coreColor}"/>`
-      : "";
-
     dots += `
-      <!-- Soft radial glow aura -->
-      <circle cx="${x}" cy="${y}" r="${style.glowRadius}" fill="url(#${style.glowId})" filter="url(#${style.filterId})"/>
-      <!-- Central glowing dot -->
-      <circle cx="${x}" cy="${y}" r="${style.radius}" fill="${style.dotColor}"/>
-      ${coreDot}\n`;
+      <!-- Soft ambient light aura -->
+      <circle cx="${x}" cy="${y}" r="${style.glowRadius}" fill="${style.dotColor}" opacity="${style.glowOpacity}" filter="url(#${style.filterId})"/>
+      <!-- Crisp solid glowing dot -->
+      <circle cx="${x}" cy="${y}" r="${style.radius}" fill="${style.dotColor}"/>\n`;
   }
 
-  // Defs for smooth, borderless radial glow for Low, Medium, and High intensities
+  // Defs for smooth Gaussian blur light auras
   const defs = `
     <defs>
-      <!-- High Intensity: Soft Lime Glow -->
-      <radialGradient id="highGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#d4ff00" stop-opacity="0.85"/>
-        <stop offset="30%" stop-color="#39d353" stop-opacity="0.45"/>
-        <stop offset="70%" stop-color="#2ea043" stop-opacity="0.15"/>
-        <stop offset="100%" stop-color="#39d353" stop-opacity="0"/>
-      </radialGradient>
-
-      <!-- Medium Intensity: Soft Emerald Glow -->
-      <radialGradient id="medGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#39d353" stop-opacity="0.75"/>
-        <stop offset="45%" stop-color="#2ea043" stop-opacity="0.25"/>
-        <stop offset="100%" stop-color="#39d353" stop-opacity="0"/>
-      </radialGradient>
-
-      <!-- Low Intensity: Subtle Green Glow -->
-      <radialGradient id="lowGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#39d353" stop-opacity="0.5"/>
-        <stop offset="60%" stop-color="#2ea043" stop-opacity="0.12"/>
-        <stop offset="100%" stop-color="#2ea043" stop-opacity="0"/>
-      </radialGradient>
-
       <filter id="blurHigh" x="-100%" y="-100%" width="300%" height="300%">
-        <feGaussianBlur stdDeviation="5" result="blur"/>
+        <feGaussianBlur stdDeviation="4" result="blur"/>
       </filter>
       <filter id="blurMed" x="-100%" y="-100%" width="300%" height="300%">
-        <feGaussianBlur stdDeviation="3.5" result="blur"/>
+        <feGaussianBlur stdDeviation="2.8" result="blur"/>
       </filter>
       <filter id="blurLow" x="-100%" y="-100%" width="300%" height="300%">
-        <feGaussianBlur stdDeviation="2" result="blur"/>
+        <feGaussianBlur stdDeviation="1.8" result="blur"/>
       </filter>
     </defs>`;
 
