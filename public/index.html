@@ -911,28 +911,13 @@
         const svgText = await res.text();
         const wrapper = document.getElementById("svgWrapper");
         
-        // Preserve unified zoom & pan widget inside wrapper while replacing SVG
-        wrapper.innerHTML = `
-          ${svgText}
-          <div class="web-map-pan-right" id="panWidgetRight">
-            <div class="pan-row">
-              <button class="web-ctrl-btn" onclick="zoomWebMap(0.75)" title="Zoom Out">−</button>
-              <button class="web-ctrl-btn" onclick="panWebMap(0, -1)" title="Pan Up">▲</button>
-              <button class="web-ctrl-btn" onclick="zoomWebMap(1.3)" title="Zoom In">+</button>
-            </div>
-            <div class="pan-row">
-              <button class="web-ctrl-btn" onclick="panWebMap(-1, 0)" title="Pan Left">◄</button>
-              <button class="web-ctrl-btn" onclick="resetWebMap()" title="Reset View" style="font-size: 13px;">↺</button>
-              <button class="web-ctrl-btn" onclick="panWebMap(1, 0)" title="Pan Right">►</button>
-            </div>
-            <div class="pan-row">
-              <button class="web-ctrl-btn move-btn" id="moveBtn" title="Drag to move">✥</button>
-              <button class="web-ctrl-btn" onclick="panWebMap(0, 1)" title="Pan Down">▼</button>
-              <button class="web-ctrl-btn" id="lockBtn" onclick="toggleWidgetLock()" title="Lock position">🔓</button>
-            </div>
-          </div>`;
+        // Replace only the SVG markup inside wrapper, leaving panWidgetRight persistent and untouched
+        const existingSvg = wrapper.querySelector("svg");
+        if (existingSvg) {
+          existingSvg.remove();
+        }
+        wrapper.insertAdjacentHTML("afterbegin", svgText);
         resetWebMap();
-        initWidgetDrag();
       } catch (err) {
         console.error("Failed to load dashboard SVG:", err);
       }
@@ -1044,6 +1029,7 @@
       const initialTab = params.get("tab") || "world";
 
       document.getElementById("usernameInput").value = urlUser;
+      initWidgetDrag();
       loadDashboard();
       if (initialTab && initialTab !== "world") {
         switchTab(initialTab);
