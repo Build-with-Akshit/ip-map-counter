@@ -15,21 +15,7 @@ function formatNumber(n) {
   return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-/**
- * Global tech hubs for subtle ambient glowing dots (matching target aesthetic).
- */
-const AMBIENT_DOTS = [
-  [37.77, -122.41], // San Francisco
-  [40.71, -74.0],   // New York
-  [51.5, -0.12],    // London
-  [48.85, 2.35],    // Paris
-  [52.52, 13.4],    // Berlin
-  [35.67, 139.65],  // Tokyo
-  [1.35, 103.81],   // Singapore
-  [22.31, 114.16],  // Hong Kong
-  [-33.86, 151.2],  // Sydney
-  [-23.55, -46.63], // Sao Paulo
-];
+
 
 /**
  * Render the world map with high-contrast slate-gray land polygons and soft glowing green location nodes.
@@ -38,17 +24,18 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
   const countryMap = data.countryMap || {};
   const maxCount = Math.max(...Object.values(countryMap), 1);
 
-  // 1. Render all country land polygons with high-contrast slate gray fill and crisp borders
+  // 1. Render country land polygons — clean dark fill, subtle borders
   let paths = "";
   for (const [code, pathData] of Object.entries(WORLD_MAP_PATHS)) {
     const isVisited = (countryMap[code] || 0) > 0;
-    const fillColor = isVisited ? "#1e382b" : "#1f2733";
-    const strokeColor = isVisited ? "#39d353" : "#364254";
-    const strokeWidth = isVisited ? "0.8" : "0.5";
+    const fillColor = isVisited ? "#1a3a2a" : "#1b2130";
+    const strokeColor = isVisited ? "#2ea043" : "#232d3b";
+    const strokeWidth = isVisited ? "0.6" : "0.2";
 
     paths += `<path id="country-${code}" d="${pathData}" 
-      fill="${fillColor}" opacity="1" 
-      stroke="${strokeColor}" stroke-width="${strokeWidth}"/>\n`;
+      fill="${fillColor}" 
+      stroke="${strokeColor}" stroke-width="${strokeWidth}"/>
+`;
   }
 
   // 2. Render glowing location nodes (dots with soft, seamless radial glow)
@@ -99,19 +86,7 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
       <circle cx="${x}" cy="${y}" r="${Math.max(1.5, radius * 0.4)}" fill="#ffffff"/>\n`;
   }
 
-  // Render subtle ambient glowing dots for major tech hubs if total views is small
-  const totalViews = data.pageViews || data.totalViews || 0;
-  if (totalViews < 50) {
-    for (const [lat, lng] of AMBIENT_DOTS) {
-      const { x, y } = latLngToSvg(lat, lng);
-      const coordKey = `${Math.round(x)},${Math.round(y)}`;
-      if (renderedCoords.has(coordKey)) continue;
-
-      dots += `
-        <circle cx="${x}" cy="${y}" r="8" fill="url(#neonGlow)" filter="url(#blurGlow)" opacity="0.4"/>
-        <circle cx="${x}" cy="${y}" r="2.5" fill="#39d353" opacity="0.6"/>\n`;
-    }
-  }
+  // Only show dots for actually visited locations (no ambient/fake dots)
 
   // Defs for smooth, borderless radial glow
   const defs = `
