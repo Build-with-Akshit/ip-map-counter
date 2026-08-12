@@ -105,8 +105,7 @@ export function renderDashboard(data, username) {
     <rect x="0" y="0" width="${W}" height="${H}" rx="16" 
       fill="${THEME.bg}" stroke="${THEME.border}" stroke-width="1"/>`;
 
-  // Header: Title + date badge
-  const today = new Date().toISOString().slice(0, 10);
+  // Header: Title (left) + Contribute View pill button (right)
   const header = `
     <g transform="translate(${P},${P})">
       <!-- Logo icon -->
@@ -119,11 +118,15 @@ export function renderDashboard(data, username) {
       <text x="26" y="14" class="dashboard-title">${username}'s Website Analytics</text>
       <text x="26" y="30" class="dashboard-subtitle">Know your audience. Build better.</text>
       
-      <!-- Date range badge -->
-      <g transform="translate(${contentWidth - 200},2)">
-        <rect x="0" y="0" width="200" height="28" rx="8" 
-          fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
-        <text x="14" y="18" class="date-badge">📅 ${formatDate(data.firstSeen)} – Present</text>
+      <!-- Contribute View pill button (top right) -->
+      <g transform="translate(${contentWidth - 380},1)">
+        <rect x="0" y="0" width="380" height="30" rx="8" 
+          fill="#0d2818" stroke="#2ea043" stroke-width="1"/>
+        <circle cx="16" cy="15" r="4" fill="#39d353"/>
+        <circle cx="16" cy="15" r="7" fill="none" stroke="#39d353" stroke-width="0.8" opacity="0.6"/>
+        <text x="30" y="19" fill="${THEME.text}" font-size="11" font-weight="500" font-family="'Inter', ${THEME.fontFamily}">
+          👉 Please <tspan font-weight="700" fill="#39d353" text-decoration="underline">CLICK HERE</tspan> to contribute a view in my profile 🌐
+        </text>
       </g>
     </g>`;
 
