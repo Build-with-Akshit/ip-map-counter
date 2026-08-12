@@ -113,18 +113,33 @@ export function renderDashboard(data, username, options = {}) {
     <rect x="0" y="0" width="${W}" height="${H}" rx="16" 
       fill="${THEME.bg}" stroke="${THEME.border}" stroke-width="1"/>`;
 
-  // Centered Header (LeetCode Card Header Style)
-  const header = `
-    <g transform="translate(${P},${P})">
-      <g transform="translate(${contentWidth / 2}, 10)">
-        <g transform="translate(-165, -12)">
+  let header = "";
+
+  if (showContributePill) {
+    // README Header: Centered LeetCode Card Header Style with larger 22px title
+    header = `
+      <g transform="translate(${P},${P})">
+        <g transform="translate(${contentWidth / 2}, 10)">
+          <g transform="translate(-185, -14)">
+            <rect x="0" y="4" width="4.5" height="16" rx="2" fill="${THEME.green}"/>
+            <rect x="8" y="0" width="4.5" height="24" rx="2" fill="${THEME.green}"/>
+            <rect x="16" y="9" width="4.5" height="12" rx="2" fill="${THEME.green}"/>
+          </g>
+          <text x="-155" y="5" class="dashboard-title" font-size="22" font-weight="800">${username}'s Website Analytics</text>
+        </g>
+      </g>`;
+  } else {
+    // Vercel Web App Header: Original Left-Aligned Title + Subtitle
+    header = `
+      <g transform="translate(${P},${P})">
+        <g transform="translate(0,2)">
           <rect x="0" y="4" width="4" height="14" rx="2" fill="${THEME.green}"/>
           <rect x="7" y="0" width="4" height="22" rx="2" fill="${THEME.green}"/>
           <rect x="14" y="8" width="4" height="10" rx="2" fill="${THEME.green}"/>
         </g>
-        <text x="-138" y="4" class="dashboard-title" font-size="20" font-weight="700">${username}'s Website Analytics</text>
-      </g>
-    </g>`;
+        <text x="26" y="20" class="dashboard-title">${username}'s Website Analytics<tspan dx="14" font-size="13" font-weight="500" fill="#8b949e">— Know your audience. Build better.</tspan></text>
+      </g>`;
+  }
 
   // Render each section
   const statsCards = renderStatsCards(data, P, statsY, contentWidth);
