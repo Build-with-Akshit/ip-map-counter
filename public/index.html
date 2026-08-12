@@ -344,17 +344,7 @@
       display: none;
       z-index: 1000;
     }
-    /* Interactive Map Zoom & Pan Control Widgets */
-    .web-map-zoom-left {
-      position: absolute;
-      top: 32.5%;
-      left: 3.2%;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      z-index: 20;
-    }
-
+    /* Interactive Map Control Widget */
     .web-map-pan-right {
       position: absolute;
       top: 31%;
@@ -374,8 +364,7 @@
     }
 
     /* Active Focus Indicator when user clicks inside Map Card */
-    .map-active-focus .web-map-pan-right,
-    .map-active-focus .web-map-zoom-left .web-ctrl-btn {
+    .map-active-focus .web-map-pan-right {
       border-color: var(--green);
       box-shadow: 0 0 10px rgba(57, 211, 83, 0.35);
     }
@@ -730,21 +719,18 @@
         const svgText = await res.text();
         const wrapper = document.getElementById("svgWrapper");
         
-        // Preserve zoom & pan widgets inside wrapper while replacing SVG
+        // Preserve unified zoom & pan widget inside wrapper while replacing SVG
         wrapper.innerHTML = `
           ${svgText}
-          <div class="web-map-zoom-left" id="zoomWidgetLeft">
-            <button class="web-ctrl-btn" onclick="zoomWebMap(1.3)" title="Zoom In">+</button>
-            <button class="web-ctrl-btn" onclick="zoomWebMap(0.75)" title="Zoom Out">−</button>
-            <button class="web-ctrl-btn" onclick="resetWebMap()" title="Reset Map" style="font-size: 11px;">↺</button>
-          </div>
           <div class="web-map-pan-right" id="panWidgetRight">
             <div class="pan-row">
+              <button class="web-ctrl-btn" onclick="zoomWebMap(0.75)" title="Zoom Out">−</button>
               <button class="web-ctrl-btn" onclick="panWebMap(0, -1)" title="Pan Up">▲</button>
+              <button class="web-ctrl-btn" onclick="zoomWebMap(1.3)" title="Zoom In">+</button>
             </div>
             <div class="pan-row">
               <button class="web-ctrl-btn" onclick="panWebMap(-1, 0)" title="Pan Left">◄</button>
-              <button class="web-ctrl-btn" onclick="resetWebMap()" title="Reset View" style="font-size: 11px;">•</button>
+              <button class="web-ctrl-btn" onclick="resetWebMap()" title="Reset View" style="font-size: 13px;">↺</button>
               <button class="web-ctrl-btn" onclick="panWebMap(1, 0)" title="Pan Right">►</button>
             </div>
             <div class="pan-row">
