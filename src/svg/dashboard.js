@@ -45,7 +45,7 @@ export function renderDashboard(data, username) {
   // Visitor Distribution rows + Visit Heatmap + padding
   const distroRows = Math.min(5, Math.ceil(((data.topCountries || []).length || 1) / Math.floor((contentWidth - 24) / 124)));
   const distroHeight = Math.max(80, 44 + distroRows * 28 + 30);
-  const heatmapHeight = 140;
+  const heatmapHeight = 220;
   const H = bottomY + distroHeight + THEME.gap + heatmapHeight + P + 10;
 
   // SVG definitions (gradients, filters, etc.)

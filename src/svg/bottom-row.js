@@ -83,10 +83,7 @@ function renderVisitorDistribution(countries, x, y, width, height) {
  * Render the "Visit Heatmap" — full-width GitHub contribution-style heatmap.
  */
 function renderVisitHeatmap(dailyHistory, x, y, width, height) {
-  const cellSize = 10;
-  const cellGap = 2;
-  const totalCellSize = cellSize + cellGap;
-
+  const availableWidth = width - 40;
   // Group days into weeks
   const weeks = [];
   let currentWeek = [];
@@ -101,6 +98,11 @@ function renderVisitHeatmap(dailyHistory, x, y, width, height) {
     currentWeek.push(day);
   }
   if (currentWeek.length > 0) weeks.push(currentWeek);
+
+  const numWeeks = Math.max(weeks.length, 1);
+  const totalCellSize = Math.max(12, Math.floor(availableWidth / numWeeks));
+  const cellGap = 3;
+  const cellSize = totalCellSize - cellGap;
 
   // Find max count for color scaling
   const maxCount = Math.max(...dailyHistory.map((d) => d.count), 1);
@@ -122,17 +124,14 @@ function renderVisitHeatmap(dailyHistory, x, y, width, height) {
   ];
   let monthLabels = "";
   let lastMonth = -1;
-  const graphStartX = 12;
-  const graphStartY = 42;
+  const graphStartX = 20;
+  const graphStartY = 45;
 
   // Render cells
   let cells = "";
-  const maxWeeks = Math.min(weeks.length, Math.floor((width - 30) / totalCellSize));
-  const startWeekIdx = Math.max(0, weeks.length - maxWeeks);
-
-  for (let wi = startWeekIdx; wi < weeks.length; wi++) {
+  for (let wi = 0; wi < weeks.length; wi++) {
     const week = weeks[wi];
-    const colX = graphStartX + (wi - startWeekIdx) * totalCellSize;
+    const colX = graphStartX + wi * totalCellSize;
 
     for (const day of week) {
       const d = new Date(day.date + "T00:00:00Z");
@@ -140,13 +139,13 @@ function renderVisitHeatmap(dailyHistory, x, y, width, height) {
       const cellY = graphStartY + dow * totalCellSize;
 
       cells += `<rect x="${colX}" y="${cellY}" width="${cellSize}" height="${cellSize}" 
-        rx="2" fill="${getCellColor(day.count)}"/>`;
+        rx="3" fill="${getCellColor(day.count)}"/>`;
 
       // Add month label when month changes
       const month = d.getUTCMonth();
       if (month !== lastMonth) {
-        monthLabels += `<text x="${colX}" y="${graphStartY - 5}" fill="${THEME.textMuted}" 
-          font-size="9" font-family="${THEME.fontFamily}">${months[month]}</text>`;
+        monthLabels += `<text x="${colX}" y="${graphStartY - 8}" fill="${THEME.textMuted}" 
+          font-size="10" font-weight="500" font-family="${THEME.fontFamily}">${months[month]}</text>`;
         lastMonth = month;
       }
     }
@@ -154,21 +153,20 @@ function renderVisitHeatmap(dailyHistory, x, y, width, height) {
 
   // Legend (bottom-right)
   const legend = `
-    <g transform="translate(${width - 140},${height - 22})">
-      <text x="0" y="10" fill="${THEME.textMuted}" font-size="9" font-family="${THEME.fontFamily}">Less</text>
-      <text x="25" y="10" fill="${THEME.textMuted}" font-size="9" font-family="${THEME.fontFamily}">...</text>
-      <rect x="38" y="2" width="10" height="10" rx="2" fill="${THEME.greenScale[0]}"/>
-      <rect x="51" y="2" width="10" height="10" rx="2" fill="${THEME.greenScale[1]}"/>
-      <rect x="64" y="2" width="10" height="10" rx="2" fill="${THEME.greenScale[2]}"/>
-      <rect x="77" y="2" width="10" height="10" rx="2" fill="${THEME.greenScale[3]}"/>
-      <text x="95" y="10" fill="${THEME.textMuted}" font-size="9" font-family="${THEME.fontFamily}">More</text>
+    <g transform="translate(${width - 150},${height - 24})">
+      <text x="0" y="10" fill="${THEME.textMuted}" font-size="10" font-family="${THEME.fontFamily}">Less</text>
+      <text x="28" y="10" fill="${THEME.textMuted}" font-size="10" font-family="${THEME.fontFamily}">...</text>
+      <rect x="42" y="1" width="12" height="12" rx="3" fill="${THEME.greenScale[0]}"/>
+      <rect x="57" y="1" width="12" height="12" rx="3" fill="${THEME.greenScale[1]}"/>
+      <rect x="72" y="1" width="12" height="12" rx="3" fill="${THEME.greenScale[2]}"/>
+      <rect x="87" y="1" width="12" height="12" rx="3" fill="${THEME.greenScale[3]}"/>
+      <text x="106" y="10" fill="${THEME.textMuted}" font-size="10" font-family="${THEME.fontFamily}">More</text>
     </g>`;
 
-  // Footer text
-  const lastDate = dailyHistory.length > 0 ? dailyHistory[dailyHistory.length - 1].date : "N/A";
-  const footer = `
-    <text x="12" y="${height - 8}" fill="${THEME.textMuted}" font-size="8" font-style="italic"
-      font-family="${THEME.fontFamily}">Last data refresh: ${lastDate}</text>`;
+  // Footer / Subtitle text
+  const subtitle = `
+    <text x="20" y="${height - 14}" fill="${THEME.textMuted}" font-size="10"
+      font-family="${THEME.fontFamily}">Pageview Activity Heatmap (52-Week Contributions)</text>`;
 
   return `
     <g transform="translate(${x},${y})">
@@ -176,13 +174,10 @@ function renderVisitHeatmap(dailyHistory, x, y, width, height) {
         fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
       
       <!-- Header -->
-      <text x="12" y="24" fill="${THEME.text}" font-size="14" font-weight="700"
+      <text x="20" y="24" fill="${THEME.text}" font-size="14" font-weight="700"
         font-family="${THEME.fontFamily}">Visit Heatmap</text>
 
-      <!-- Subtitle -->
-      <text x="12" y="${height - 8}" fill="${THEME.textMuted}" font-size="9"
-        font-family="${THEME.fontFamily}">Pageview Activity Heatmap</text>
-      
+      ${subtitle}
       ${monthLabels}
       ${cells}
       ${legend}
@@ -211,7 +206,7 @@ export function renderBottomRow(data, startX, startY, totalWidth) {
 
   // Row 2: Visit Heatmap
   const heatmapY = startY + distroHeight + gap;
-  const heatmapHeight = 140;
+  const heatmapHeight = 220;
 
   const heatmap = renderVisitHeatmap(
     data.dailyHistory || [],
