@@ -33,7 +33,8 @@ function formatDate(dateStr) {
  * @param {string} username - GitHub username for the title
  * @returns {string} Complete SVG markup
  */
-export function renderDashboard(data, username) {
+export function renderDashboard(data, username, options = {}) {
+  const showContributePill = options.showContributePill !== false;
   const W = THEME.dashboardWidth;
   const P = THEME.padding;
   const contentWidth = W - P * 2;
@@ -111,6 +112,19 @@ export function renderDashboard(data, username) {
     <rect x="0" y="0" width="${W}" height="${H}" rx="16" 
       fill="${THEME.bg}" stroke="${THEME.border}" stroke-width="1"/>`;
 
+  // Contribute View pill button (shown only in README SVG embeds)
+  const contributePill = showContributePill ? `
+    <g transform="translate(${contentWidth - 430}, 0)">
+      <rect x="0" y="0" width="430" height="36" rx="10" 
+        fill="#0d2818" stroke="#2ea043" stroke-width="1.2"/>
+      <circle cx="20" cy="18" r="9" fill="#39d353" opacity="0.25"/>
+      <circle cx="20" cy="18" r="7.5" fill="none" stroke="#39d353" stroke-width="1"/>
+      <circle cx="20" cy="18" r="4.5" fill="#39d353"/>
+      <text x="38" y="23" fill="${THEME.text}" font-size="12.5" font-weight="600" font-family="'Inter', ${THEME.fontFamily}">
+        👉 Please <tspan font-weight="800" fill="#39d353" text-decoration="underline">CLICK HERE</tspan> to contribute a view in my profile 🌐
+      </text>
+    </g>` : "";
+
   // Header: Title (left) + Contribute View pill button (right)
   const header = `
     <g transform="translate(${P},${P})">
@@ -124,17 +138,7 @@ export function renderDashboard(data, username) {
       <text x="26" y="15" class="dashboard-title">${username}'s Website Analytics</text>
       <text x="26" y="31" class="dashboard-subtitle">Know your audience. Build better.</text>
       
-      <!-- Prominent Contribute View pill button (top right) -->
-      <g transform="translate(${contentWidth - 430}, 0)">
-        <rect x="0" y="0" width="430" height="36" rx="10" 
-          fill="#0d2818" stroke="#2ea043" stroke-width="1.2"/>
-        <circle cx="20" cy="18" r="9" fill="#39d353" opacity="0.25"/>
-        <circle cx="20" cy="18" r="7.5" fill="none" stroke="#39d353" stroke-width="1"/>
-        <circle cx="20" cy="18" r="4.5" fill="#39d353"/>
-        <text x="38" y="23" fill="${THEME.text}" font-size="12.5" font-weight="600" font-family="'Inter', ${THEME.fontFamily}">
-          👉 Please <tspan font-weight="800" fill="#39d353" text-decoration="underline">CLICK HERE</tspan> to contribute a view in my profile 🌐
-        </text>
-      </g>
+      ${contributePill}
     </g>`;
 
   // Render each section

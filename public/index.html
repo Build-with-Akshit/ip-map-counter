@@ -629,10 +629,10 @@
       document.getElementById("currentUserText").innerText = currentUsername;
       document.getElementById("appTitle").innerText = `${currentUsername}'s Analytics`;
 
-      // Fetch inline SVG dashboard markup for interactive web controls
+      // Fetch inline SVG dashboard markup for interactive web controls (source=web hides contribute pill)
       const timestamp = Date.now();
       try {
-        const res = await fetch(`/api/dashboard?username=${encodeURIComponent(currentUsername)}&t=${timestamp}`);
+        const res = await fetch(`/api/dashboard?username=${encodeURIComponent(currentUsername)}&source=web&t=${timestamp}`);
         const svgText = await res.text();
         const wrapper = document.getElementById("svgWrapper");
         
