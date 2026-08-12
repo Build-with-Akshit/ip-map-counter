@@ -649,13 +649,35 @@
       }
     });
 
-    // Keyboard Shortcuts for Interactive Map Navigation (+, -, R, Arrow Keys)
-    // ONLY ACTIVE WHEN USER CLICKS INSIDE MAP CARD
-    window.addEventListener("keydown", (e) => {
-      if (!isMapFocused) return;
+    let currentTab = "world";
+    const tabs = ["world", "countries", "cities"];
 
+    // Keyboard Shortcuts for Interactive Navigation
+    // 1. Alt + Left / Alt + Right Arrow toggles between World, Countries, and Cities sections
+    // 2. +, -, R, Arrow Keys for Map Navigation ONLY ACTIVE WHEN USER CLICKS INSIDE MAP CARD
+    window.addEventListener("keydown", (e) => {
       const activeTag = document.activeElement ? document.activeElement.tagName.toUpperCase() : "";
       if (activeTag === "INPUT" || activeTag === "TEXTAREA") return;
+
+      // Alt + Left / Right Arrow Section Switching
+      if (e.altKey) {
+        if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          const currIdx = tabs.indexOf(currentTab);
+          const prevIdx = (currIdx - 1 + tabs.length) % tabs.length;
+          switchTab(tabs[prevIdx]);
+          return;
+        } else if (e.key === "ArrowRight") {
+          e.preventDefault();
+          const currIdx = tabs.indexOf(currentTab);
+          const nextIdx = (currIdx + 1) % tabs.length;
+          switchTab(tabs[nextIdx]);
+          return;
+        }
+      }
+
+      // Map Controls (active only when map card is clicked/focused)
+      if (!isMapFocused) return;
 
       switch (e.key) {
         case "+":
@@ -751,6 +773,7 @@
 
     // Tab switcher
     function switchTab(tabName) {
+      currentTab = tabName;
       const buttons = document.querySelectorAll(".tab-btn");
       buttons.forEach(btn => btn.classList.remove("active"));
 
