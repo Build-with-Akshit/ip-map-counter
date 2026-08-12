@@ -9,6 +9,19 @@ function formatNumber(n) {
 }
 
 /**
+ * Format a date string nicely (e.g., "2026-08-12" → "Aug 12, 2026").
+ */
+function formatDate(dateStr) {
+  if (!dateStr) return "N/A";
+  const d = new Date(dateStr + "T00:00:00Z");
+  const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+  ];
+  return `${months[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}`;
+}
+
+/**
  * Render a single country flag badge pill: "[IN] IN: 39"
  * Uses text country codes instead of emoji flags for cross-platform SVG compatibility.
  */
@@ -151,7 +164,8 @@ function renderVisitorDistribution(countries, x, y, width, height, totalViews) {
  * Render the "Visit Heatmap" — full-width GitHub contribution-style heatmap.
  */
 function renderVisitHeatmap(dailyHistory, x, y, width, height) {
-  const availableWidth = width - 40;
+  const graphStartX = 48;
+  const availableWidth = width - graphStartX - 20;
   // Group days into weeks
   const weeks = [];
   let currentWeek = [];
@@ -192,10 +206,15 @@ function renderVisitHeatmap(dailyHistory, x, y, width, height) {
   ];
   let monthLabels = "";
   let lastMonth = -1;
-  const graphStartX = 20;
   const graphStartY = 45;
 
-  // Render cells
+  // Day of week labels (Mon, Wed, Fri on left side matching GitHub standard)
+  const dayLabels = `
+    <text x="${graphStartX - 10}" y="${graphStartY + 1 * totalCellSize + cellSize - 2}" fill="${THEME.textSecondary}" font-size="11" font-weight="500" font-family="${THEME.fontFamily}" text-anchor="end">Mon</text>
+    <text x="${graphStartX - 10}" y="${graphStartY + 3 * totalCellSize + cellSize - 2}" fill="${THEME.textSecondary}" font-size="11" font-weight="500" font-family="${THEME.fontFamily}" text-anchor="end">Wed</text>
+    <text x="${graphStartX - 10}" y="${graphStartY + 5 * totalCellSize + cellSize - 2}" fill="${THEME.textSecondary}" font-size="11" font-weight="500" font-family="${THEME.fontFamily}" text-anchor="end">Fri</text>`;
+
+  // Render cells with native hover tooltips (<title>)
   let cells = "";
   for (let wi = 0; wi < weeks.length; wi++) {
     const week = weeks[wi];
@@ -205,9 +224,14 @@ function renderVisitHeatmap(dailyHistory, x, y, width, height) {
       const d = new Date(day.date + "T00:00:00Z");
       const dow = d.getUTCDay();
       const cellY = graphStartY + dow * totalCellSize;
+      const countVal = day.count || 0;
+      const visitText = `${countVal} ${countVal === 1 ? "visit" : "visits"}`;
+      const tooltipText = `${formatDate(day.date)}: ${visitText}`;
 
       cells += `<rect x="${colX}" y="${cellY}" width="${cellSize}" height="${cellSize}" 
-        rx="3" fill="${getCellColor(day.count)}"/>`;
+        rx="3" fill="${getCellColor(countVal)}">
+        <title>${tooltipText}</title>
+      </rect>`;
 
       // Add month label when month changes
       const month = d.getUTCMonth();
@@ -246,6 +270,7 @@ function renderVisitHeatmap(dailyHistory, x, y, width, height) {
         font-family="${THEME.fontFamily}">Visit Heatmap</text>
 
       ${subtitle}
+      ${dayLabels}
       ${monthLabels}
       ${cells}
       ${legend}
