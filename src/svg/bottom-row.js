@@ -228,8 +228,8 @@ function renderVisitHeatmap(dailyHistory, x, y, width, height) {
       const visitText = `${countVal} ${countVal === 1 ? "visit" : "visits"}`;
       const tooltipText = `${formatDate(day.date)}: ${visitText}`;
 
-      cells += `<rect x="${colX}" y="${cellY}" width="${cellSize}" height="${cellSize}" 
-        rx="3" fill="${getCellColor(countVal)}">
+      cells += `<rect class="heatmap-cell" data-tip="${tooltipText}" x="${colX}" y="${cellY}" width="${cellSize}" height="${cellSize}" 
+        rx="3" fill="${getCellColor(countVal)}" cursor="pointer">
         <title>${tooltipText}</title>
       </rect>`;
 
@@ -255,9 +255,9 @@ function renderVisitHeatmap(dailyHistory, x, y, width, height) {
       <text x="114" y="10" fill="${THEME.textSecondary}" font-size="12" font-weight="500" font-family="${THEME.fontFamily}">More</text>
     </g>`;
 
-  // Subtitle text
+  // Subtitle text (fitted safely inside card padding)
   const subtitle = `
-    <text x="${width - 20}" y="24" fill="${THEME.textSecondary}" font-size="13.5" font-weight="500"
+    <text x="${width - 24}" y="25" fill="${THEME.textSecondary}" font-size="12" font-weight="500"
       font-family="${THEME.fontFamily}" text-anchor="end">Daily visits over time</text>`;
 
   return `

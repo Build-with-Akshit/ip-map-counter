@@ -420,6 +420,34 @@
     .web-ctrl-btn.move-btn:active { cursor: grabbing; }
     .web-ctrl-btn.lock-btn-active { color: #ffa500; border-color: rgba(255,165,0,0.5); }
     .web-ctrl-btn.lock-btn-active:hover { color: #ffa500; border-color: #ffa500; box-shadow: 0 0 8px rgba(255,165,0,0.3); }
+
+    /* Floating Heatmap Tooltip */
+    #heatmapTooltip {
+      position: fixed;
+      pointer-events: none;
+      display: none;
+      z-index: 9999;
+      background: rgba(13, 17, 23, 0.95);
+      border: 1px solid rgba(57, 211, 83, 0.4);
+      color: var(--text);
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 6px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      white-space: nowrap;
+    }
+
+    .heatmap-cell {
+      transition: stroke 0.15s ease, stroke-width 0.15s ease, filter 0.15s ease;
+    }
+
+    .heatmap-cell:hover {
+      stroke: #39d353;
+      stroke-width: 1.5px;
+      filter: brightness(1.25);
+    }
   </style>
 </head>
 <body>
@@ -632,6 +660,39 @@
     }
 
     let isMapFocused = false;
+
+    // Instant Floating Tooltip for Visit Heatmap Boxes
+    let heatmapTooltipEl = document.getElementById("heatmapTooltip");
+    if (!heatmapTooltipEl) {
+      heatmapTooltipEl = document.createElement("div");
+      heatmapTooltipEl.id = "heatmapTooltip";
+      document.body.appendChild(heatmapTooltipEl);
+    }
+
+    document.addEventListener("mouseover", (e) => {
+      const cell = e.target.closest ? e.target.closest(".heatmap-cell") : null;
+      if (cell) {
+        const tipText = cell.getAttribute("data-tip") || (cell.querySelector("title") && cell.querySelector("title").textContent);
+        if (tipText) {
+          heatmapTooltipEl.innerText = tipText;
+          heatmapTooltipEl.style.display = "block";
+        }
+      }
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (heatmapTooltipEl && heatmapTooltipEl.style.display === "block") {
+        heatmapTooltipEl.style.left = (e.clientX + 14) + "px";
+        heatmapTooltipEl.style.top = (e.clientY + 14) + "px";
+      }
+    });
+
+    document.addEventListener("mouseout", (e) => {
+      const cell = e.target.closest ? e.target.closest(".heatmap-cell") : null;
+      if (cell) {
+        heatmapTooltipEl.style.display = "none";
+      }
+    });
 
     // Track click-to-focus on the World Map card
     document.addEventListener("click", (e) => {
