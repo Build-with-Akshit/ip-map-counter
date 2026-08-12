@@ -116,7 +116,7 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
         More visitors</text>
     </g>`;
 
-  // Zoom buttons (decorative)
+  // Zoom buttons (decorative — scripts not supported in SVG-as-image)
   const zoomBtns = `
     <g transform="translate(${mapX + 15},${mapY + mapHeight - 85})">
       <rect x="0" y="0" width="24" height="24" rx="6" fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
