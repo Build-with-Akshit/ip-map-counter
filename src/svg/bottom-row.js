@@ -1,5 +1,4 @@
 import THEME from "./theme.js";
-import { getCountryFlag } from "../geo.js";
 
 /**
  * Format a number with commas.
@@ -9,11 +8,12 @@ function formatNumber(n) {
 }
 
 /**
- * Render a single country flag badge pill: "🇺🇸 US: 83,088"
+ * Render a single country flag badge pill: "[IN] IN: 39"
+ * Uses text country codes instead of emoji flags for cross-platform SVG compatibility.
  */
 function renderFlagBadge(code, count, x, y) {
-  const flag = getCountryFlag(code);
-  const label = `${code.toUpperCase()}: ${formatNumber(count)}`;
+  const cc = code.toUpperCase();
+  const label = `${cc}: ${formatNumber(count)}`;
   const badgeW = 120;
   const badgeH = 24;
 
@@ -21,8 +21,10 @@ function renderFlagBadge(code, count, x, y) {
     <g transform="translate(${x},${y})">
       <rect x="0" y="0" width="${badgeW}" height="${badgeH}" rx="6"
         fill="#21262d" stroke="#30363d" stroke-width="0.5"/>
-      <text x="8" y="16" font-size="12" font-family="${THEME.fontFamily}">${flag}</text>
-      <text x="26" y="16" fill="#c9d1d9" font-size="11" font-weight="500"
+      <rect x="4" y="4" width="22" height="16" rx="3" fill="#1a1e24" stroke="#30363d" stroke-width="0.5"/>
+      <text x="15" y="16" fill="#58a6ff" font-size="8" font-weight="700"
+        font-family="${THEME.fontFamily}" text-anchor="middle">${cc}</text>
+      <text x="30" y="16" fill="#c9d1d9" font-size="11" font-weight="500"
         font-family="${THEME.fontFamily}">${label}</text>
     </g>`;
 }

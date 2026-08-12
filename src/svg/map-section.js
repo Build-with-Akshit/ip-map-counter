@@ -25,17 +25,41 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
   const maxCount = Math.max(...Object.values(countryMap), 1);
 
   // 1. Render country land polygons — visible borders matching target design
-  // Skip pure-Arctic territories (SJ=Svalbard) that create horizontal line artifacts
-  const skipCodes = new Set(["SJ"]);
+  // Filter out Arctic island sub-paths that create horizontal line artifacts
+  const arcticFilterCodes = new Set(["GL", "CA", "RU", "SJ"]);
+  const ARCTIC_Y_THRESHOLD = 55;
+
   let paths = "";
   for (const [code, pathData] of Object.entries(WORLD_MAP_PATHS)) {
-    if (skipCodes.has(code)) continue;
+    if (code === "SJ") continue; // Skip entirely (100% Arctic)
+
+    let finalPath = pathData;
+
+    // For GL/CA/RU, filter out sub-paths that are entirely in the Arctic zone
+    if (arcticFilterCodes.has(code)) {
+      const subPaths = pathData.split(/(?<=Z)\s*/);
+      const filtered = subPaths.filter(sp => {
+        if (!sp.trim()) return false;
+        // Extract all Y coordinates (every 2nd number in coordinate pairs)
+        const nums = sp.match(/[\d.]+/g) || [];
+        let maxY = 0;
+        for (let i = 1; i < nums.length; i += 2) {
+          const y = parseFloat(nums[i]);
+          if (y > maxY) maxY = y;
+        }
+        // Keep sub-path only if it extends below the Arctic threshold
+        return maxY > ARCTIC_Y_THRESHOLD;
+      });
+      finalPath = filtered.join(" ");
+      if (!finalPath.trim()) continue;
+    }
+
     const isVisited = (countryMap[code] || 0) > 0;
     const fillColor = isVisited ? "#1a3a2a" : "#1c2333";
     const strokeColor = isVisited ? "#2ea043" : "#2d3748";
     const strokeWidth = isVisited ? "0.7" : "0.4";
 
-    paths += `<path id="country-${code}" d="${pathData}" 
+    paths += `<path id="country-${code}" d="${finalPath}" 
       fill="${fillColor}" 
       stroke="${strokeColor}" stroke-width="${strokeWidth}"/>
 `;

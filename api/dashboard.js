@@ -26,10 +26,14 @@ export default async function handler(req, res) {
     // Render the SVG dashboard
     const svg = renderDashboard(data, username);
 
-    // Return SVG with moderate caching (5 minutes)
-    // This balances freshness with performance
+    // Return SVG with no-cache headers for instant real-time updates
     res.setHeader("Content-Type", "image/svg+xml");
-    res.setHeader("Cache-Control", "public, max-age=300, s-maxage=300, stale-while-revalidate=600");
+    res.setHeader(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+    );
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
 
     return res.status(200).send(svg);
   } catch (err) {
