@@ -676,8 +676,8 @@
         }
       }
 
-      // Map Controls (active only when map card is clicked/focused)
-      if (!isMapFocused) return;
+      // Map Controls (active only when map card is clicked/focused AND no modifier key is pressed)
+      if (!isMapFocused || e.ctrlKey || e.metaKey || e.altKey) return;
 
       switch (e.key) {
         case "+":
