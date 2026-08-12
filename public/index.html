@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website Analytics — Know Your Audience. Build Better.</title>
+  <meta name="description" content="Real-time IP map counter & analytics dashboard for GitHub profiles and websites.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card-bg: #161b22;
+      --card-hover: #1c2128;
+      --border: #30363d;
+      --text: #f0f6fc;
+      --text-secondary: #c9d1d9;
+      --text-muted: #8b949e;
+      --green: #39d353;
+      --green-dark: #1a7f37;
+      --green-bg: #0e4429;
+      --blue: #58a6ff;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px;
+      line-height: 1.5;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Top Navbar */
+    .navbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 24px;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #090d13;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 6px 4px 12px;
+    }
+
+    .search-input {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 14px;
+      font-family: var(--font);
+      outline: none;
+      width: 200px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--green-dark), var(--green));
+      color: #000;
+      font-weight: 600;
+      font-size: 13px;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(57, 211, 83, 0.1);
+      border: 1px solid rgba(57, 211, 83, 0.3);
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Dashboard Container */
+    .dashboard-preview {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      position: relative;
+    }
+
+    .dashboard-svg-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      overflow-x: auto;
+    }
+
+    .dashboard-svg-wrapper img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+    }
+
+    /* Tab Controller Bar for Web App */
+    .tabs-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .tab-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .tab-btn {
+      background: #21262d;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: var(--green-dark);
+      border-color: var(--green);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .tab-btn:hover:not(.active) {
+      background: var(--card-hover);
+      color: var(--text);
+    }
+
+    /* Interactive Data View Modal / Area */
+    .interactive-panel {
+      width: 100%;
+      display: none;
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 16px;
+    }
+
+    .interactive-panel.active {
+      display: block;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .data-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .data-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    .progress-bar-bg {
+      flex: 1;
+      height: 8px;
+      background: #21262d;
+      border-radius: 4px;
+      margin: 0 16px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green-dark), var(--green));
+      border-radius: 4px;
+    }
+
+    /* README Embed Generator Card */
+    .embed-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .embed-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .embed-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .embed-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .code-box {
+      background: #090d13;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 12px;
+      color: var(--green);
+      word-break: break-all;
+      position: relative;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #21262d;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: var(--border);
+      color: var(--text);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--green-dark);
+      color: var(--text);
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      display: none;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="10" width="4" height="12" rx="2" fill="#39d353"/>
+            <rect x="10" y="4" width="4" height="18" rx="2" fill="#39d353"/>
+            <rect x="18" y="14" width="4" height="8" rx="2" fill="#39d353"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title" id="appTitle">Website Analytics</h1>
+          <p class="brand-subtitle">Real-Time Visitor Location & Pageview Counter</p>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div class="live-badge" id="trackingStatus">
+          <span class="live-dot"></span>
+          IP Tracked
+        </div>
+
+        <div class="search-box">
+          <input type="text" id="usernameInput" class="search-input" placeholder="GitHub username..." value="Build-with-Akshit">
+          <button class="btn-primary" onclick="loadDashboard()">Analyze</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Dashboard Interactive Container -->
+    <main class="dashboard-preview">
+      <!-- Interactive Web App Tab Controller -->
+      <div class="tabs-bar">
+        <span style="font-size: 13px; font-weight: 600; color: var(--text-secondary);" id="viewingUserLabel">
+          Dashboard for: <span style="color: var(--green);" id="currentUserText">Build-with-Akshit</span>
+        </span>
+        <div class="tab-group">
+          <button class="tab-btn active" onclick="switchTab('world')">World View</button>
+          <button class="tab-btn" onclick="switchTab('countries')">Countries List</button>
+          <button class="tab-btn" onclick="switchTab('cities')">Cities Breakdown</button>
+        </div>
+      </div>
+
+      <!-- Main Live Dashboard SVG Image -->
+      <div class="dashboard-svg-wrapper" id="svgWrapper">
+        <img id="dashboardImg" src="" alt="Live Analytics Dashboard">
+      </div>
+
+      <!-- Interactive Tab Panels -->
+      <div class="interactive-panel" id="countriesPanel">
+        <h3 class="panel-title">Detailed Country Breakdown</h3>
+        <div class="data-list" id="countryList">
+          <p style="color: var(--text-muted); font-size: 13px;">Loading country metrics...</p>
+        </div>
+      </div>
+
+      <div class="interactive-panel" id="citiesPanel">
+        <h3 class="panel-title">Detailed City Breakdown</h3>
+        <div class="data-list" id="cityList">
+          <p style="color: var(--text-muted); font-size: 13px;">Loading city metrics...</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- README Embed Code Generator -->
+    <section class="embed-card">
+      <div class="embed-header">
+        <div>
+          <h2 class="embed-title">Add to your GitHub README</h2>
+          <p class="embed-desc">Copy this snippet to display your real-time analytics badge & auto-track profile visitors!</p>
+        </div>
+        <a id="directLinkBtn" href="#" target="_blank" class="btn-primary" style="text-decoration: none; display: inline-block;">Open Direct SVG</a>
+      </div>
+
+      <div class="code-box" id="markdownBox">
+        <button class="copy-btn" onclick="copyMarkdown()">Copy Markdown</button>
+        <code id="markdownCode">[![Website Analytics](https://ip-map-counter.vercel.app/api/dashboard?username=Build-with-Akshit)](https://ip-map-counter.vercel.app/?username=Build-with-Akshit)</code>
+      </div>
+      <p style="font-size: 12px; color: var(--text-muted);">
+        💡 <strong>How it works:</strong> When a visitor clicks your README dashboard image, it opens your live web app dashboard and automatically records a view for your profile!
+      </p>
+    </section>
+  </div>
+
+  <div class="toast" id="toast">Copied to clipboard!</div>
+
+  <script>
+    let currentUsername = "Build-with-Akshit";
+    let rawAnalyticsData = null;
+
+    // Parse username from URL query string ?username=XXX
+    function getUsernameFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("username") || "Build-with-Akshit";
+    }
+
+    // Auto-track visit for this user when website is opened
+    async function triggerAutoTrack(user) {
+      try {
+        const res = await fetch(`/api/track?username=${encodeURIComponent(user)}&format=json`);
+        const json = await res.json();
+        console.log("Auto-track recorded:", json);
+        document.getElementById("trackingStatus").innerHTML = `<span class="live-dot"></span> IP Recorded (${json.country || 'IN'})`;
+      } catch (err) {
+        console.error("Auto-track error:", err);
+      }
+    }
+
+    // Fetch JSON data for interactive tabs
+    async function fetchJsonData(user) {
+      try {
+        const res = await fetch(`/api/data?username=${encodeURIComponent(user)}`);
+        rawAnalyticsData = await res.json();
+        renderInteractivePanels(rawAnalyticsData);
+      } catch (err) {
+        console.error("Failed to fetch JSON data:", err);
+      }
+    }
+
+    // Load Dashboard Image & Auto-track
+    async function loadDashboard() {
+      const input = document.getElementById("usernameInput").value.trim();
+      if (input) {
+        currentUsername = input;
+      } else {
+        currentUsername = getUsernameFromUrl();
+      }
+
+      document.getElementById("currentUserText").innerText = currentUsername;
+      document.getElementById("appTitle").innerText = `${currentUsername}'s Analytics`;
+
+      // Update Dashboard Image src with cache buster
+      const img = document.getElementById("dashboardImg");
+      const timestamp = Date.now();
+      img.src = `/api/dashboard?username=${encodeURIComponent(currentUsername)}&t=${timestamp}`;
+
+      // Update Markdown Embed Code
+      const baseUrl = window.location.origin;
+      const mdSnippet = `[![Website Analytics](${baseUrl}/api/dashboard?username=${currentUsername})](${baseUrl}/?username=${currentUsername})`;
+      document.getElementById("markdownCode").innerText = mdSnippet;
+      document.getElementById("directLinkBtn").href = `${baseUrl}/api/dashboard?username=${currentUsername}`;
+
+      // Trigger auto-tracking pixel call
+      await triggerAutoTrack(currentUsername);
+
+      // Fetch JSON data for web app tabs
+      await fetchJsonData(currentUsername);
+    }
+
+    // Tab switcher
+    function switchTab(tabName) {
+      const buttons = document.querySelectorAll(".tab-btn");
+      buttons.forEach(btn => btn.classList.remove("active"));
+
+      const svgWrapper = document.getElementById("svgWrapper");
+      const cPanel = document.getElementById("countriesPanel");
+      const ciPanel = document.getElementById("citiesPanel");
+
+      svgWrapper.style.display = "none";
+      cPanel.classList.remove("active");
+      ciPanel.classList.remove("active");
+
+      if (tabName === "world") {
+        buttons[0].classList.add("active");
+        svgWrapper.style.display = "flex";
+      } else if (tabName === "countries") {
+        buttons[1].classList.add("active");
+        cPanel.classList.add("active");
+      } else if (tabName === "cities") {
+        buttons[2].classList.add("active");
+        ciPanel.classList.add("active");
+      }
+    }
+
+    // Render interactive country and city breakdown lists
+    function renderInteractivePanels(data) {
+      if (!data) return;
+
+      // Countries
+      const cList = document.getElementById("countryList");
+      if (data.topCountries && data.topCountries.length > 0) {
+        const total = data.totalViews || 1;
+        cList.innerHTML = data.topCountries.map(c => {
+          const pct = ((c.count / total) * 100).toFixed(1);
+          return `
+            <div class="data-item">
+              <span style="font-weight: 600; width: 120px;">[${c.code}] ${c.code}</span>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" style="width: ${Math.max(5, pct)}%;"></div>
+              </div>
+              <span style="font-weight: 700; width: 80px; text-align: right;">${c.count.toLocaleString()}</span>
+              <span style="color: var(--text-muted); width: 60px; text-align: right;">${pct}%</span>
+            </div>`;
+        }).join("");
+      } else {
+        cList.innerHTML = `<p style="color: var(--text-muted); font-size: 13px;">No country visits recorded yet.</p>`;
+      }
+
+      // Cities
+      const ciList = document.getElementById("cityList");
+      if (data.topCities && data.topCities.length > 0) {
+        const maxCity = data.topCities[0].count || 1;
+        ciList.innerHTML = data.topCities.map(city => {
+          const pct = ((city.count / maxCity) * 100).toFixed(1);
+          return `
+            <div class="data-item">
+              <span style="font-weight: 600; width: 180px;">📍 ${city.name}</span>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" style="width: ${Math.max(5, pct)}%;"></div>
+              </div>
+              <span style="font-weight: 700; width: 80px; text-align: right;">${city.count.toLocaleString()}</span>
+            </div>`;
+        }).join("");
+      } else {
+        ciList.innerHTML = `<p style="color: var(--text-muted); font-size: 13px;">No city visits recorded yet.</p>`;
+      }
+    }
+
+    // 1-Click Copy Markdown
+    function copyMarkdown() {
+      const code = document.getElementById("markdownCode").innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        showToast("Copied to clipboard!");
+      });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      toast.innerText = msg;
+      toast.style.display = "block";
+      setTimeout(() => {
+        toast.style.display = "none";
+      }, 2500);
+    }
+
+    // Initialize on page load
+    window.addEventListener("DOMContentLoaded", () => {
+      const urlUser = getUsernameFromUrl();
+      document.getElementById("usernameInput").value = urlUser;
+      loadDashboard();
+    });
+  </script>
+</body>
+</html>

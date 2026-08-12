@@ -40,8 +40,8 @@ export default async function handler(req, res) {
     // Record the visit asynchronously
     await recordVisit(username, country, city);
 
-    // Return transparent 1x1 GIF with aggressive no-cache headers
-    res.setHeader("Content-Type", "image/gif");
+    // Set CORS headers
+    res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader(
       "Cache-Control",
       "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
@@ -50,6 +50,12 @@ export default async function handler(req, res) {
     res.setHeader("Expires", "0");
     res.setHeader("Surrogate-Control", "no-store");
 
+    if (req.query.format === "json") {
+      return res.status(200).json({ success: true, username, country, city });
+    }
+
+    // Return transparent 1x1 GIF
+    res.setHeader("Content-Type", "image/gif");
     return res.status(200).send(TRANSPARENT_GIF);
   } catch (err) {
     // Even on error, return the GIF so the page doesn't break

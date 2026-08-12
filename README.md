@@ -17,17 +17,15 @@
 
 ## 🚀 Quick Start — Use the Public API
 
-Add these **two lines** to your GitHub README:
+Add this **1-click linked dashboard** to your GitHub README:
 
 ```markdown
-<!-- Tracking pixel (invisible, records your visitor) -->
-![](https://ip-map-counter.vercel.app/api/track?username=YOUR_GITHUB_USERNAME)
-
-<!-- Dashboard image (visible, shows the analytics) -->
-![Visitor Analytics](https://ip-map-counter.vercel.app/api/dashboard?username=YOUR_GITHUB_USERNAME)
+[![Website Analytics](https://ip-map-counter.vercel.app/api/dashboard?username=YOUR_GITHUB_USERNAME)](https://ip-map-counter.vercel.app/?username=YOUR_GITHUB_USERNAME)
 ```
 
 Replace `YOUR_GITHUB_USERNAME` with your actual GitHub username.
+
+> 💡 **How it works:** When someone clicks the dashboard image on your GitHub README, it opens the live interactive Web Application (`https://ip-map-counter.vercel.app/?username=YOUR_GITHUB_USERNAME`), triggers IP tracking in real-time, and lets them interactively view `World`, `Countries`, and `Cities` breakdowns!
 
 > **Note:** Replace `ip-map-counter.vercel.app` with your own deployment URL if you're self-hosting.
 
