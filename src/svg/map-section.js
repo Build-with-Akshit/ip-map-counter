@@ -196,12 +196,11 @@ function renderTopCountries(countries, totalViews, x, y, width, height) {
 }
 
 /**
- * Render the entire map section (map + top countries sidebar).
+ * Render the entire map section (full-width World Map).
  */
 export function renderMapSection(data, startX, startY, totalWidth) {
   const sectionHeight = 380;
-  const sidebarWidth = 330;
-  const mapWidth = totalWidth - sidebarWidth - THEME.gap;
+  const mapWidth = totalWidth - 40;
 
   // Section card background
   const bg = `
@@ -220,24 +219,14 @@ export function renderMapSection(data, startX, startY, totalWidth) {
         font-family="${THEME.fontFamily}">See where your visitors are coming from</text>
     </g>`;
 
-  // World map
+  // World map - expanded to full card width
   const map = renderWorldMap(
     data,
-    startX + 10,
+    startX + 20,
     startY + 45,
-    mapWidth - 10,
-    sectionHeight - 65,
+    mapWidth,
+    sectionHeight - 55,
   );
 
-  // Top countries sidebar
-  const sidebar = renderTopCountries(
-    data.topCountries,
-    data.totalViews,
-    startX + mapWidth + THEME.gap,
-    startY + 15,
-    sidebarWidth - THEME.gap - 10,
-    sectionHeight - 30,
-  );
-
-  return `${bg}\n${header}\n${map}\n${sidebar}`;
+  return `${bg}\n${header}\n${map}`;
 }
