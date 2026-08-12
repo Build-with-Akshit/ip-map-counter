@@ -24,9 +24,12 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
   const countryMap = data.countryMap || {};
   const maxCount = Math.max(...Object.values(countryMap), 1);
 
-  // 1. Render all country land polygons — clean, accurate shapes with crisp borders
+  // 1. Render country land polygons — clean, accurate shapes with crisp borders
+  // Skip Antarctica (AQ) as standard in web analytics dashboards to keep map focused on populated continents
   let paths = "";
   for (const [code, pathData] of Object.entries(WORLD_MAP_PATHS)) {
+    if (code === "AQ") continue; // Skip Antarctica
+
     const isVisited = (countryMap[code] || 0) > 0;
     const fillColor = isVisited ? "#1a3a2a" : "#1c2333";
     const strokeColor = isVisited ? "#2ea043" : "#2d3748";
@@ -126,7 +129,7 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
 
   return `
     <g transform="translate(${mapX},${mapY})">
-      <svg viewBox="0 0 1000 500" width="${mapWidth}" height="${mapHeight}" 
+      <svg viewBox="0 15 1000 425" width="${mapWidth}" height="${mapHeight}" 
         preserveAspectRatio="xMidYMid meet">
         ${defs}
         ${paths}
