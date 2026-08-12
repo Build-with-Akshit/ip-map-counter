@@ -42,6 +42,7 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
   // 2. Render glowing location nodes (dots with soft, seamless radial glow)
   let dots = "";
   const renderedCoords = new Set();
+  const allDotCoords = []; // Collect all dot positions for auto-zoom
 
   // Render dots for top cities if available
   if (data.topCities && data.topCities.length > 0) {
@@ -52,6 +53,7 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
 
       const { x, y } = latLngToSvg(coords[0], coords[1]);
       renderedCoords.add(`${Math.round(x)},${Math.round(y)}`);
+      allDotCoords.push({ x, y });
 
       const ratio = city.count / cityMax;
       const radius = Math.max(5, Math.min(16, ratio * 20));
@@ -75,6 +77,7 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
     const coordKey = `${Math.round(x)},${Math.round(y)}`;
     if (renderedCoords.has(coordKey)) continue;
     renderedCoords.add(coordKey);
+    allDotCoords.push({ x, y });
 
     const ratio = count / maxCount;
     const radius = Math.max(5, Math.min(18, ratio * 22));
@@ -87,7 +90,40 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
       <circle cx="${x}" cy="${y}" r="${Math.max(1.5, radius * 0.4)}" fill="#ffffff"/>\n`;
   }
 
-  // Only show dots for actually visited locations (no ambient/fake dots)
+  // 3. Auto-zoom: calculate viewBox to fit visited locations
+  let viewBox = "0 0 1000 500"; // Default: full world
+  if (allDotCoords.length > 0 && allDotCoords.length <= 15) {
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    for (const pt of allDotCoords) {
+      if (pt.x < minX) minX = pt.x;
+      if (pt.x > maxX) maxX = pt.x;
+      if (pt.y < minY) minY = pt.y;
+      if (pt.y > maxY) maxY = pt.y;
+    }
+    const padding = 100;
+    let vx = minX - padding;
+    let vy = minY - padding;
+    let vw = (maxX - minX) + padding * 2;
+    let vh = (maxY - minY) + padding * 2;
+    // Enforce minimum size
+    if (vw < 300) { vx -= (300 - vw) / 2; vw = 300; }
+    if (vh < 200) { vy -= (200 - vh) / 2; vh = 200; }
+    // Maintain 2:1 aspect ratio
+    const ratio = vw / vh;
+    if (ratio > 2) { const newH = vw / 2; vy -= (newH - vh) / 2; vh = newH; }
+    else { const newW = vh * 2; vx -= (newW - vw) / 2; vw = newW; }
+    // Clamp to world boundaries
+    if (vx < 0) vx = 0;
+    if (vy < 0) vy = 0;
+    if (vx + vw > 1000) vx = Math.max(0, 1000 - vw);
+    if (vy + vh > 500) vy = Math.max(0, 500 - vh);
+    if (vw > 1000) vw = 1000;
+    if (vh > 500) vh = 500;
+    // Only auto-zoom if significantly smaller than full map
+    if (vw < 850 || vh < 420) {
+      viewBox = `${Math.round(vx)} ${Math.round(vy)} ${Math.round(vw)} ${Math.round(vh)}`;
+    }
+  }
 
   // Defs for smooth, borderless radial glow
   const defs = `
@@ -127,7 +163,7 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
 
   return `
     <g transform="translate(${mapX},${mapY})">
-      <svg viewBox="0 0 1000 500" width="${mapWidth}" height="${mapHeight}" 
+      <svg viewBox="${viewBox}" width="${mapWidth}" height="${mapHeight}" 
         preserveAspectRatio="xMidYMid meet">
         ${defs}
         ${paths}
