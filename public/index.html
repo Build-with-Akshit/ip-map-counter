@@ -344,6 +344,39 @@
       display: none;
       z-index: 1000;
     }
+    /* Interactive Map Zoom Widget for Web App */
+    .web-zoom-widget {
+      position: absolute;
+      bottom: 30px;
+      left: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 20;
+    }
+
+    .web-zoom-btn {
+      width: 26px;
+      height: 26px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .web-zoom-btn:hover {
+      background: var(--card-hover);
+      color: var(--text);
+      border-color: var(--text-muted);
+    }
   </style>
 </head>
 <body>
@@ -391,9 +424,14 @@
         </div>
       </div>
 
-      <!-- Main Live Dashboard SVG Image -->
-      <div class="dashboard-svg-wrapper" id="svgWrapper">
-        <img id="dashboardImg" src="" alt="Live Analytics Dashboard">
+      <!-- Main Live Dashboard SVG Container with Web Zoom Overlay -->
+      <div class="dashboard-svg-wrapper" id="svgWrapper" style="position: relative;">
+        <!-- Inline SVG rendered dynamically here -->
+        <div class="web-zoom-widget" id="zoomWidget">
+          <button class="web-zoom-btn" onclick="zoomWebMap(1.3)" title="Zoom In">+</button>
+          <button class="web-zoom-btn" onclick="zoomWebMap(0.75)" title="Zoom Out">−</button>
+          <button class="web-zoom-btn" onclick="resetWebMap()" title="Reset Zoom" style="font-size: 11px;">↺</button>
+        </div>
       </div>
 
       <!-- Interactive Tab Panels -->
@@ -467,7 +505,34 @@
       }
     }
 
-    // Load Dashboard Image & Auto-track
+    let webZoomLevel = 1.0;
+
+    // Interactive Map Zoom for Web App
+    function zoomWebMap(factor) {
+      const mapSvg = document.getElementById("worldMapSvg") || document.querySelector("#svgWrapper svg svg");
+      if (!mapSvg) return;
+
+      webZoomLevel = Math.max(1.0, Math.min(4.0, webZoomLevel * factor));
+      const baseW = 1000;
+      const baseH = 500;
+      
+      const w = baseW / webZoomLevel;
+      const h = baseH / webZoomLevel;
+      const x = (baseW - w) / 2;
+      const y = (baseH - h) / 2;
+
+      mapSvg.setAttribute("viewBox", `${x.toFixed(1)} ${y.toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}`);
+    }
+
+    function resetWebMap() {
+      webZoomLevel = 1.0;
+      const mapSvg = document.getElementById("worldMapSvg") || document.querySelector("#svgWrapper svg svg");
+      if (mapSvg) {
+        mapSvg.setAttribute("viewBox", "0 0 1000 500");
+      }
+    }
+
+    // Load Dashboard SVG & Auto-track
     async function loadDashboard() {
       const input = document.getElementById("usernameInput").value.trim();
       if (input) {
@@ -479,10 +544,25 @@
       document.getElementById("currentUserText").innerText = currentUsername;
       document.getElementById("appTitle").innerText = `${currentUsername}'s Analytics`;
 
-      // Update Dashboard Image src with cache buster
-      const img = document.getElementById("dashboardImg");
+      // Fetch inline SVG dashboard markup for interactive web controls
       const timestamp = Date.now();
-      img.src = `/api/dashboard?username=${encodeURIComponent(currentUsername)}&t=${timestamp}`;
+      try {
+        const res = await fetch(`/api/dashboard?username=${encodeURIComponent(currentUsername)}&t=${timestamp}`);
+        const svgText = await res.text();
+        const wrapper = document.getElementById("svgWrapper");
+        
+        // Preserve zoomWidget inside wrapper while replacing SVG
+        wrapper.innerHTML = `
+          ${svgText}
+          <div class="web-zoom-widget" id="zoomWidget">
+            <button class="web-zoom-btn" onclick="zoomWebMap(1.3)" title="Zoom In">+</button>
+            <button class="web-zoom-btn" onclick="zoomWebMap(0.75)" title="Zoom Out">−</button>
+            <button class="web-zoom-btn" onclick="resetWebMap()" title="Reset Zoom" style="font-size: 11px;">↺</button>
+          </div>`;
+        resetWebMap();
+      } catch (err) {
+        console.error("Failed to load dashboard SVG:", err);
+      }
 
       // Update Markdown Embed Code
       const baseUrl = window.location.origin;

@@ -189,26 +189,16 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
         More visitors</text>
     </g>`;
 
-  // Decorative zoom buttons
-  const zoomBtns = `
-    <g transform="translate(${mapX + 15},${mapY + mapHeight - 85})">
-      <rect x="0" y="0" width="24" height="24" rx="6" fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
-      <text x="12" y="16" fill="${THEME.textMuted}" font-size="16" font-family="${THEME.fontFamily}" text-anchor="middle">+</text>
-      <rect x="0" y="28" width="24" height="24" rx="6" fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
-      <text x="12" y="45" fill="${THEME.textMuted}" font-size="16" font-family="${THEME.fontFamily}" text-anchor="middle">−</text>
-    </g>`;
-
   return `
     <g transform="translate(${mapX},${mapY})">
-      <svg viewBox="0 0 1000 500" width="${mapWidth}" height="${mapHeight}" 
+      <svg id="worldMapSvg" viewBox="0 0 1000 500" width="${mapWidth}" height="${mapHeight}" 
         preserveAspectRatio="xMidYMid meet">
         ${defs}
         ${paths}
         ${dots}
       </svg>
     </g>
-    ${legend}
-    ${zoomBtns}`;
+    ${legend}`;
 }
 
 /**
