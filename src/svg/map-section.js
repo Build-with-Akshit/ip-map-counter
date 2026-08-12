@@ -24,13 +24,13 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
   const countryMap = data.countryMap || {};
   const maxCount = Math.max(...Object.values(countryMap), 1);
 
-  // 1. Render country land polygons — clean dark fill, subtle borders
+  // 1. Render country land polygons — visible borders matching target design
   let paths = "";
   for (const [code, pathData] of Object.entries(WORLD_MAP_PATHS)) {
     const isVisited = (countryMap[code] || 0) > 0;
-    const fillColor = isVisited ? "#1a3a2a" : "#1b2130";
-    const strokeColor = isVisited ? "#2ea043" : "#232d3b";
-    const strokeWidth = isVisited ? "0.6" : "0.2";
+    const fillColor = isVisited ? "#1a3a2a" : "#1c2333";
+    const strokeColor = isVisited ? "#2ea043" : "#2d3748";
+    const strokeWidth = isVisited ? "0.7" : "0.4";
 
     paths += `<path id="country-${code}" d="${pathData}" 
       fill="${fillColor}" 
@@ -126,7 +126,7 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
 
   return `
     <g transform="translate(${mapX},${mapY})">
-      <svg viewBox="0 0 1000 500" width="${mapWidth}" height="${mapHeight}" 
+      <svg viewBox="0 18 1000 470" width="${mapWidth}" height="${mapHeight}" 
         preserveAspectRatio="xMidYMid meet">
         ${defs}
         ${paths}
