@@ -40,7 +40,8 @@ export function renderDashboard(data, username, options = {}) {
   const contentWidth = W - P * 2;
 
   // Calculate dynamic height based on content
-  const statsY = P + 45;
+  const headerHeight = showContributePill ? 92 : 45;
+  const statsY = P + headerHeight;
   const mapY = statsY + 82 + THEME.gap;
   const bottomY = mapY + 520 + THEME.gap;
   // Visitor Distribution dynamic height (Mode 1: 1-4 large cards = 96px, Mode 2: 5-8 medium cards = 124px, Mode 3: 9+ compact badges)
@@ -112,37 +113,49 @@ export function renderDashboard(data, username, options = {}) {
     <rect x="0" y="0" width="${W}" height="${H}" rx="16" 
       fill="${THEME.bg}" stroke="${THEME.border}" stroke-width="1"/>`;
 
-  // Prominent Contribute View pill button (shown only in README SVG embeds)
-  const contributePill = showContributePill ? `
-    <g transform="translate(${contentWidth - 485}, -3)">
-      <rect x="0" y="0" width="485" height="42" rx="12" 
-        fill="url(#pillGradient)" stroke="#39d353" stroke-width="1.5"/>
-      <circle cx="24" cy="21" r="11" fill="#39d353" opacity="0.35"/>
-      <circle cx="24" cy="21" r="8.5" fill="none" stroke="#39d353" stroke-width="1.2"/>
-      <circle cx="24" cy="21" r="5" fill="#39d353"/>
-      <text x="44" y="26" fill="${THEME.text}" font-size="14.5" font-weight="600" font-family="'Inter', ${THEME.fontFamily}">
-        👉 Please <tspan font-weight="900" fill="#56d364" font-size="15" text-decoration="underline">CLICK HERE</tspan> to contribute a view in my profile 🌐
-      </text>
-    </g>` : "";
+  let header = "";
 
-  const webSubtitle = !showContributePill
-    ? `<tspan dx="14" font-size="13" font-weight="500" fill="#8b949e">— Know your audience. Build better.</tspan>`
-    : "";
+  if (showContributePill) {
+    // README Header: Top Centered Banner + Main Title Underneath
+    const pillWidth = 560;
+    const pillX = (contentWidth - pillWidth) / 2;
 
-  // Header: Title (left) + Contribute View pill button (right)
-  const header = `
-    <g transform="translate(${P},${P})">
-      <!-- Logo icon -->
-      <g transform="translate(0,2)">
-        <rect x="0" y="4" width="4" height="14" rx="2" fill="${THEME.green}"/>
-        <rect x="7" y="0" width="4" height="22" rx="2" fill="${THEME.green}"/>
-        <rect x="14" y="8" width="4" height="10" rx="2" fill="${THEME.green}"/>
-      </g>
-      
-      <text x="26" y="20" class="dashboard-title">${username}'s Website Analytics${webSubtitle}</text>
-      
-      ${contributePill}
-    </g>`;
+    header = `
+      <g transform="translate(${P},${P})">
+        <!-- Top Centered Contribute Banner -->
+        <g transform="translate(${pillX}, -4)">
+          <rect x="0" y="0" width="${pillWidth}" height="42" rx="12" 
+            fill="url(#pillGradient)" stroke="#39d353" stroke-width="1.5"/>
+          <circle cx="26" cy="21" r="11" fill="#39d353" opacity="0.35"/>
+          <circle cx="26" cy="21" r="8.5" fill="none" stroke="#39d353" stroke-width="1.2"/>
+          <circle cx="26" cy="21" r="5" fill="#39d353"/>
+          <text x="48" y="26" fill="${THEME.text}" font-size="14.5" font-weight="600" font-family="'Inter', ${THEME.fontFamily}">
+            👉 Please <tspan font-weight="900" fill="#56d364" font-size="15" text-decoration="underline">CLICK HERE</tspan> to contribute a view in my profile 🌐
+          </text>
+        </g>
+
+        <!-- Main Title Header Underneath Banner -->
+        <g transform="translate(0, 52)">
+          <g transform="translate(0,2)">
+            <rect x="0" y="4" width="4" height="14" rx="2" fill="${THEME.green}"/>
+            <rect x="7" y="0" width="4" height="22" rx="2" fill="${THEME.green}"/>
+            <rect x="14" y="8" width="4" height="10" rx="2" fill="${THEME.green}"/>
+          </g>
+          <text x="26" y="16" class="dashboard-title">${username}'s Website Analytics</text>
+        </g>
+      </g>`;
+  } else {
+    // Vercel Web App Header: Title + Inline Subtitle
+    header = `
+      <g transform="translate(${P},${P})">
+        <g transform="translate(0,2)">
+          <rect x="0" y="4" width="4" height="14" rx="2" fill="${THEME.green}"/>
+          <rect x="7" y="0" width="4" height="22" rx="2" fill="${THEME.green}"/>
+          <rect x="14" y="8" width="4" height="10" rx="2" fill="${THEME.green}"/>
+        </g>
+        <text x="26" y="20" class="dashboard-title">${username}'s Website Analytics<tspan dx="14" font-size="13" font-weight="500" fill="#8b949e">— Know your audience. Build better.</tspan></text>
+      </g>`;
+  }
 
   // Render each section
   const statsCards = renderStatsCards(data, P, statsY, contentWidth);
