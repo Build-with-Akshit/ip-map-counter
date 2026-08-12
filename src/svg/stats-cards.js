@@ -212,9 +212,9 @@ function renderCardTotalPageviews(x, y, width, height, totalViews, firstSeen) {
       <g transform="translate(68,0)">
         <text x="0" y="32" fill="#f0f6fc" font-size="24" font-weight="700"
           font-family="${THEME.fontFamily}">${formatNumber(totalViews)}</text>
-        <text x="0" y="49" fill="#8b949e" font-size="11" font-weight="600"
+        <text x="0" y="49" fill="#c9d1d9" font-size="13" font-weight="600"
           font-family="${THEME.fontFamily}">Total Pageviews</text>
-        <text x="0" y="65" fill="#8b949e" font-size="9"
+        <text x="0" y="66" fill="#8b949e" font-size="11" font-weight="500"
           font-family="${THEME.fontFamily}">counting started from ${formatDate(firstSeen)}</text>
       </g>
     </g>`;
@@ -247,11 +247,11 @@ function renderCardTopLocation(x, y, width, height, topCountries, totalViews) {
 
       <!-- Right Details -->
       <g transform="translate(70,0)">
-        <text x="0" y="24" fill="#8b949e" font-size="11" font-weight="500"
+        <text x="0" y="24" fill="#c9d1d9" font-size="13" font-weight="600"
           font-family="${THEME.fontFamily}">Top Location</text>
-        <text x="0" y="48" fill="#f0f6fc" font-size="18" font-weight="700"
+        <text x="0" y="48" fill="#f0f6fc" font-size="19" font-weight="700"
           font-family="${THEME.fontFamily}">${mainText}</text>
-        <text x="0" y="64" fill="#8b949e" font-size="9"
+        <text x="0" y="66" fill="#8b949e" font-size="11" font-weight="500"
           font-family="${THEME.fontFamily}">${hasViews ? 'Largest contribution' : 'No visits recorded'}</text>
       </g>
     </g>`;
@@ -282,11 +282,11 @@ function renderCardUniqueNations(x, y, width, height, uniqueCountries, totalView
 
       <!-- Right Details -->
       <g transform="translate(70,0)">
-        <text x="0" y="24" fill="#8b949e" font-size="11" font-weight="500"
+        <text x="0" y="24" fill="#c9d1d9" font-size="13" font-weight="600"
           font-family="${THEME.fontFamily}">Unique Nations</text>
-        <text x="0" y="48" fill="#f0f6fc" font-size="22" font-weight="700"
+        <text x="0" y="48" fill="#f0f6fc" font-size="24" font-weight="700"
           font-family="${THEME.fontFamily}">${formatNumber(count)}</text>
-        <text x="0" y="64" fill="#8b949e" font-size="9"
+        <text x="0" y="66" fill="#8b949e" font-size="11" font-weight="500"
           font-family="${THEME.fontFamily}">${totalViews > 0 ? 'Across the globe' : 'No visits recorded'}</text>
       </g>
     </g>`;
@@ -301,7 +301,6 @@ function renderCardPeakVisitWindow(x, y, width, height, highestDailyDate, highes
   const subText = hasViews 
     ? (highestDailyCount ? `${formatNumber(highestDailyCount)} visits in a day` : "Peak traffic record")
     : "No visits recorded";
-  const cx = width / 2;
 
   return `
     <g transform="translate(${x},${y})">
@@ -312,7 +311,6 @@ function renderCardPeakVisitWindow(x, y, width, height, highestDailyDate, highes
       <g transform="translate(14, 16)">
         <rect width="44" height="44" rx="8" fill="#0d2818" stroke="${THEME.green}" stroke-width="1" stroke-opacity="0.4"/>
         <g transform="translate(10, 6)">
-          <!-- Flame shape -->
           <path d="M12,28 C5,28 2,22 2,17 C2,12 5,8 8,5 C8,9 10,11 12,11 C11,8 12,3 16,0 C15,5 18,8 20,11 C22,14 22,17 22,19 C22,24 18,28 12,28 Z" 
             fill="${THEME.green}" opacity="0.85"/>
           <path d="M12,28 C8,28 6,24 6,21 C6,18 8,15 10,14 C10,16 11,17 12,17 C11.5,15.5 12,13 14,12 C13.5,14 15,16 16,17 C17,18 17,20 17,21 C17,25 15,28 12,28 Z" 
@@ -322,11 +320,11 @@ function renderCardPeakVisitWindow(x, y, width, height, highestDailyDate, highes
 
       <!-- Right Details -->
       <g transform="translate(70,0)">
-        <text x="0" y="24" fill="#8b949e" font-size="11" font-weight="500"
+        <text x="0" y="24" fill="#c9d1d9" font-size="13" font-weight="600"
           font-family="${THEME.fontFamily}">Peak Visit Window</text>
-        <text x="0" y="48" fill="#f0f6fc" font-size="16" font-weight="700"
+        <text x="0" y="48" fill="#f0f6fc" font-size="17" font-weight="700"
           font-family="${THEME.fontFamily}">${dateText}</text>
-        <text x="0" y="64" fill="#8b949e" font-size="9"
+        <text x="0" y="66" fill="#8b949e" font-size="11" font-weight="500"
           font-family="${THEME.fontFamily}">${subText}</text>
       </g>
     </g>`;

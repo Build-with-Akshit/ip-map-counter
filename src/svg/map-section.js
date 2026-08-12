@@ -141,13 +141,13 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
   // Map legend with 4 intensity levels
   const legend = `
     <g transform="translate(${mapX + 15},${mapY + mapHeight - 25})">
-      <text x="0" y="10" fill="${THEME.textMuted}" font-size="9" font-family="${THEME.fontFamily}">
+      <text x="0" y="10" fill="${THEME.textSecondary}" font-size="11.5" font-weight="500" font-family="${THEME.fontFamily}">
         Fewer visitors</text>
-      <circle cx="70" cy="7" r="2.5" fill="#26a641"/>
-      <circle cx="83" cy="7" r="4" fill="#39d353"/>
-      <circle cx="97" cy="7" r="5.5" fill="#56d364"/>
-      <circle cx="113" cy="7" r="7.5" fill="#d4ff00"/>
-      <text x="126" y="10" fill="${THEME.textMuted}" font-size="9" font-family="${THEME.fontFamily}">
+      <circle cx="82" cy="7" r="3" fill="#26a641"/>
+      <circle cx="97" cy="7" r="4.5" fill="#39d353"/>
+      <circle cx="113" cy="7" r="6" fill="#56d364"/>
+      <circle cx="131" cy="7" r="8" fill="#d4ff00"/>
+      <text x="146" y="10" fill="${THEME.textSecondary}" font-size="11.5" font-weight="500" font-family="${THEME.fontFamily}">
         More visitors</text>
     </g>`;
 
@@ -175,7 +175,7 @@ function renderTopCountries(countries, totalViews, x, y, width, height) {
     const itemY = i * 36;
     const name = getCountryName(c.code);
     const flag = getCountryFlag(c.code);
-    const pct = totalViews > 0 ? ((c.count / totalViews) * 100).toFixed(1) : "0.0";
+    const pct = ((c.count / totalViews) * 100).toFixed(0);
     const barWidth = Math.max(4, (c.count / maxCount) * barMaxWidth);
 
     items += `
@@ -196,20 +196,20 @@ function renderTopCountries(countries, totalViews, x, y, width, height) {
   const tabs = `
     <g transform="translate(${width - 165}, 0)">
       <rect x="0" y="0" width="48" height="20" rx="5" fill="${THEME.green}" opacity="0.2"/>
-      <text x="24" y="14" fill="${THEME.green}" font-size="9" font-weight="600" font-family="${THEME.fontFamily}" 
+      <text x="24" y="14" fill="${THEME.green}" font-size="10" font-weight="600" font-family="${THEME.fontFamily}" 
         text-anchor="middle">World</text>
-      <text x="75" y="14" fill="${THEME.textMuted}" font-size="9" font-family="${THEME.fontFamily}" 
+      <text x="75" y="14" fill="${THEME.textMuted}" font-size="10" font-family="${THEME.fontFamily}" 
         text-anchor="middle">Countries</text>
-      <text x="130" y="14" fill="${THEME.textMuted}" font-size="9" font-family="${THEME.fontFamily}" 
+      <text x="130" y="14" fill="${THEME.textMuted}" font-size="10" font-family="${THEME.fontFamily}" 
         text-anchor="middle">Cities</text>
     </g>`;
 
   return `
     <g transform="translate(${x},${y})">
       <!-- Header -->
-      <text x="0" y="16" fill="${THEME.text}" font-size="14" font-weight="600" 
+      <text x="0" y="16" fill="${THEME.text}" font-size="16" font-weight="700" 
         font-family="${THEME.fontFamily}">Top Countries</text>
-      <text x="${width - 5}" y="32" fill="${THEME.green}" font-size="10" 
+      <text x="${width - 5}" y="32" fill="${THEME.green}" font-size="11" 
         font-family="${THEME.fontFamily}" text-anchor="end">View all →</text>
       ${tabs}
       
@@ -237,20 +237,15 @@ export function renderMapSection(data, startX, startY, totalWidth) {
     <g transform="translate(${startX + 20},${startY + 15})">
       <!-- Globe icon -->
       <g transform="translate(0,0)">
-        <!-- Outer circle -->
         <circle cx="10" cy="10" r="9.5" fill="none" stroke="${THEME.green}" stroke-width="1.3"/>
-        <!-- Vertical ellipse (central meridian) -->
         <ellipse cx="10" cy="10" rx="4.5" ry="9.5" fill="none" stroke="${THEME.green}" stroke-width="1.1"/>
-        <!-- Horizontal equator line -->
         <line x1="0.5" y1="10" x2="19.5" y2="10" stroke="${THEME.green}" stroke-width="1.1"/>
-        <!-- Upper latitude line -->
         <ellipse cx="10" cy="5.5" rx="8" ry="1.8" fill="none" stroke="${THEME.green}" stroke-width="0.9"/>
-        <!-- Lower latitude line -->
         <ellipse cx="10" cy="14.5" rx="8" ry="1.8" fill="none" stroke="${THEME.green}" stroke-width="0.9"/>
       </g>
-      <text x="28" y="10" fill="${THEME.text}" font-size="14" font-weight="600" 
+      <text x="28" y="11" fill="${THEME.text}" font-size="16" font-weight="700" 
         font-family="${THEME.fontFamily}">Visitors by Location</text>
-      <text x="28" y="25" fill="${THEME.textMuted}" font-size="10" 
+      <text x="28" y="27" fill="${THEME.textSecondary}" font-size="12.5" font-weight="500"
         font-family="${THEME.fontFamily}">See where your visitors are coming from</text>
     </g>`;
 

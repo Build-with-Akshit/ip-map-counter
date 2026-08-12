@@ -90,19 +90,19 @@ export function renderDashboard(data, username, options = {}) {
       .dashboard-title {
         font-family: 'Inter', ${THEME.fontFamily};
         font-weight: 700;
-        font-size: 18px;
+        font-size: 20px;
         fill: ${THEME.text};
       }
       .dashboard-subtitle {
         font-family: 'Inter', ${THEME.fontFamily};
-        font-weight: 400;
-        font-size: 11px;
-        fill: ${THEME.textMuted};
+        font-weight: 500;
+        font-size: 13px;
+        fill: ${THEME.textSecondary};
       }
       .date-badge {
         font-family: 'Inter', ${THEME.fontFamily};
         font-weight: 500;
-        font-size: 11px;
+        font-size: 12px;
         fill: ${THEME.textSecondary};
       }
     </style>`;
@@ -135,8 +135,8 @@ export function renderDashboard(data, username, options = {}) {
         <rect x="14" y="8" width="4" height="10" rx="2" fill="${THEME.green}"/>
       </g>
       
-      <text x="26" y="15" class="dashboard-title">${username}'s Website Analytics</text>
-      <text x="26" y="31" class="dashboard-subtitle">Know your audience. Build better.</text>
+      <text x="26" y="16" class="dashboard-title">${username}'s Website Analytics</text>
+      <text x="26" y="33" class="dashboard-subtitle">Know your audience. Build better.</text>
       
       ${contributePill}
     </g>`;
