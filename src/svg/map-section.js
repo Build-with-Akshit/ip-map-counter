@@ -29,9 +29,9 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
   for (const [code, pathData] of Object.entries(WORLD_MAP_PATHS)) {
 
     const isVisited = (countryMap[code] || 0) > 0;
-    const fillColor = isVisited ? "#1a3a2a" : "#1c2333";
-    const strokeColor = isVisited ? "#2ea043" : "#2d3748";
-    const strokeWidth = isVisited ? "0.7" : "0.4";
+    const fillColor = isVisited ? "#0d2818" : "#1c2333";
+    const strokeColor = isVisited ? "#2ea043" : "#30363d";
+    const strokeWidth = isVisited ? "0.8" : "0.35";
 
     paths += `<path id="country-${code}" d="${pathData}" 
       fill="${fillColor}" 
@@ -93,13 +93,13 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
   const defs = `
     <defs>
       <radialGradient id="neonGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#39d353" stop-opacity="0.85"/>
-        <stop offset="25%" stop-color="#39d353" stop-opacity="0.5"/>
-        <stop offset="60%" stop-color="#2ea043" stop-opacity="0.18"/>
+        <stop offset="0%" stop-color="#39d353" stop-opacity="0.95"/>
+        <stop offset="20%" stop-color="#39d353" stop-opacity="0.6"/>
+        <stop offset="50%" stop-color="#2ea043" stop-opacity="0.25"/>
         <stop offset="100%" stop-color="#39d353" stop-opacity="0"/>
       </radialGradient>
       <filter id="blurGlow" x="-100%" y="-100%" width="300%" height="300%">
-        <feGaussianBlur stdDeviation="8" result="blur"/>
+        <feGaussianBlur stdDeviation="7" result="blur"/>
       </filter>
     </defs>`;
 
