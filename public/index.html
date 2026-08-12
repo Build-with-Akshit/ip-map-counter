@@ -617,6 +617,46 @@
       updateMapTransform();
     }
 
+    // Keyboard Shortcuts for Interactive Map Navigation (+, -, R, Arrow Keys)
+    window.addEventListener("keydown", (e) => {
+      const activeTag = document.activeElement ? document.activeElement.tagName.toUpperCase() : "";
+      if (activeTag === "INPUT" || activeTag === "TEXTAREA") return;
+
+      switch (e.key) {
+        case "+":
+        case "=":
+          e.preventDefault();
+          zoomWebMap(1.3);
+          break;
+        case "-":
+        case "_":
+          e.preventDefault();
+          zoomWebMap(0.75);
+          break;
+        case "r":
+        case "R":
+          e.preventDefault();
+          resetWebMap();
+          break;
+        case "ArrowUp":
+          e.preventDefault();
+          panWebMap(0, -1);
+          break;
+        case "ArrowDown":
+          e.preventDefault();
+          panWebMap(0, 1);
+          break;
+        case "ArrowLeft":
+          e.preventDefault();
+          panWebMap(-1, 0);
+          break;
+        case "ArrowRight":
+          e.preventDefault();
+          panWebMap(1, 0);
+          break;
+      }
+    });
+
     // Load Dashboard SVG & Auto-track
     async function loadDashboard() {
       const input = document.getElementById("usernameInput").value.trim();
