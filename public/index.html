@@ -585,9 +585,15 @@
 
     // Initialize on page load
     window.addEventListener("DOMContentLoaded", () => {
-      const urlUser = getUsernameFromUrl();
+      const params = new URLSearchParams(window.location.search);
+      const urlUser = params.get("username") || "Build-with-Akshit";
+      const initialTab = params.get("tab") || "world";
+
       document.getElementById("usernameInput").value = urlUser;
       loadDashboard();
+      if (initialTab && initialTab !== "world") {
+        switchTab(initialTab);
+      }
     });
   </script>
 </body>
