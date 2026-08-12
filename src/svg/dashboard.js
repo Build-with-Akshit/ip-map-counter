@@ -40,7 +40,7 @@ export function renderDashboard(data, username, options = {}) {
   const contentWidth = W - P * 2;
 
   // Calculate dynamic height based on content
-  const headerHeight = showContributePill ? 98 : 45;
+  const headerHeight = 42;
   const statsY = P + headerHeight;
   const mapY = statsY + 82 + THEME.gap;
   const bottomY = mapY + 520 + THEME.gap;
@@ -113,50 +113,18 @@ export function renderDashboard(data, username, options = {}) {
     <rect x="0" y="0" width="${W}" height="${H}" rx="16" 
       fill="${THEME.bg}" stroke="${THEME.border}" stroke-width="1"/>`;
 
-  let header = "";
-
-  if (showContributePill) {
-    // README Header: Full-Width Top Banner + Vercel-Style Green Bar Logo Heading
-    header = `
-      <g transform="translate(${P},${P})">
-        <!-- Full-Width Top Contribute Banner -->
-        <g transform="translate(0, -4)">
-          <rect x="0" y="0" width="${contentWidth}" height="50" rx="12" 
-            fill="#0d2818" stroke="#2ea043" stroke-width="1.2"/>
-          <g transform="translate(${contentWidth / 2}, 0)">
-            <g transform="translate(-305, 0)">
-              <circle cx="0" cy="25" r="11" fill="#39d353" opacity="0.35"/>
-              <circle cx="0" cy="25" r="8.5" fill="none" stroke="#39d353" stroke-width="1.2"/>
-              <circle cx="0" cy="25" r="5" fill="#39d353"/>
-              <text x="24" y="31" fill="${THEME.text}" font-size="18.5" font-weight="700" font-family="'Inter', ${THEME.fontFamily}">
-                👉 Please <tspan font-weight="900" fill="#56d364" font-size="20.5" text-decoration="underline">CLICK HERE</tspan> to contribute a view in my profile 🌐
-              </text>
-            </g>
-          </g>
-        </g>
-
-        <!-- Vercel-Style Logo Heading Underneath Banner -->
-        <g transform="translate(0, 64)">
-          <g transform="translate(0,2)">
-            <rect x="0" y="4" width="4" height="14" rx="2" fill="${THEME.green}"/>
-            <rect x="7" y="0" width="4" height="22" rx="2" fill="${THEME.green}"/>
-            <rect x="14" y="8" width="4" height="10" rx="2" fill="${THEME.green}"/>
-          </g>
-          <text x="26" y="20" class="dashboard-title">${username}'s Website Analytics</text>
-        </g>
-      </g>`;
-  } else {
-    // Vercel Web App Header: Title + Inline Subtitle
-    header = `
-      <g transform="translate(${P},${P})">
-        <g transform="translate(0,2)">
+  // Centered Header (LeetCode Card Header Style)
+  const header = `
+    <g transform="translate(${P},${P})">
+      <g transform="translate(${contentWidth / 2}, 10)">
+        <g transform="translate(-165, -12)">
           <rect x="0" y="4" width="4" height="14" rx="2" fill="${THEME.green}"/>
           <rect x="7" y="0" width="4" height="22" rx="2" fill="${THEME.green}"/>
           <rect x="14" y="8" width="4" height="10" rx="2" fill="${THEME.green}"/>
         </g>
-        <text x="26" y="20" class="dashboard-title">${username}'s Website Analytics<tspan dx="14" font-size="13" font-weight="500" fill="#8b949e">— Know your audience. Build better.</tspan></text>
-      </g>`;
-  }
+        <text x="-138" y="4" class="dashboard-title" font-size="20" font-weight="700">${username}'s Website Analytics</text>
+      </g>
+    </g>`;
 
   // Render each section
   const statsCards = renderStatsCards(data, P, statsY, contentWidth);
