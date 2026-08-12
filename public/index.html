@@ -344,28 +344,28 @@
       display: none;
       z-index: 1000;
     }
-    /* Unified 3x3 Interactive Map Controller Widget (Bottom-Right of Map Card) */
+    /* Unified 3x3 Interactive Map Controller Widget */
     .web-map-ctrl-box {
       position: absolute;
-      top: 485px;
+      top: 470px;
       right: 40px;
       display: grid;
-      grid-template-columns: repeat(3, 28px);
-      grid-template-rows: repeat(3, 28px);
-      gap: 3px;
+      grid-template-columns: repeat(3, 30px);
+      grid-template-rows: repeat(3, 30px);
+      gap: 4px;
       z-index: 20;
-      background: rgba(22, 27, 34, 0.88);
+      background: rgba(22, 27, 34, 0.92);
       border: 1px solid var(--border);
-      padding: 5px;
-      border-radius: 10px;
-      backdrop-filter: blur(6px);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+      padding: 8px;
+      border-radius: 12px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .ctrl-btn-placeholder {
-      width: 28px;
-      height: 28px;
+      width: 30px;
+      height: 30px;
       visibility: hidden;
     }
 
@@ -376,14 +376,14 @@
     }
 
     .web-ctrl-btn {
-      width: 28px;
-      height: 28px;
+      width: 30px;
+      height: 30px;
       background: var(--card-bg);
       border: 1px solid var(--border);
       color: var(--text-secondary);
       font-size: 13px;
       font-weight: 600;
-      border-radius: 6px;
+      border-radius: 7px;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -458,9 +458,9 @@
           <button class="web-ctrl-btn" onclick="panWebMap(0, -1)" title="Pan Up">▲</button>
           <button class="web-ctrl-btn" onclick="zoomWebMap(1.3)" title="Zoom In">+</button>
 
-          <!-- Row 2: [ ◄ ] [ ↺ ] [ ► ] -->
+          <!-- Row 2: [ ◄ ] [ • ] [ ► ] -->
           <button class="web-ctrl-btn" onclick="panWebMap(-1, 0)" title="Pan Left">◄</button>
-          <button class="web-ctrl-btn" onclick="resetWebMap()" title="Reset Map" style="font-size: 12px;">↺</button>
+          <button class="web-ctrl-btn" onclick="resetWebMap()" title="Reset View" style="font-size: 14px; font-weight: 700;">•</button>
           <button class="web-ctrl-btn" onclick="panWebMap(1, 0)" title="Pan Right">►</button>
 
           <!-- Row 3: [ blank ] [ ▼ ] [ blank ] -->
