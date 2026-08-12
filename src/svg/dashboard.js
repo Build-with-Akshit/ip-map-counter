@@ -34,15 +34,13 @@ function formatDate(dateStr) {
  * @returns {string} Complete SVG markup
  */
 export function renderDashboard(data, username, options = {}) {
-  const showHeader = options.showHeader !== false;
   const showContributePill = options.showContributePill !== false;
   const W = THEME.dashboardWidth;
   const P = THEME.padding;
   const contentWidth = W - P * 2;
 
   // Calculate dynamic height based on content
-  const headerHeight = showHeader ? 45 : 0;
-  const statsY = P + headerHeight;
+  const statsY = P + 45;
   const mapY = statsY + 82 + THEME.gap;
   const bottomY = mapY + 380 + THEME.gap;
   // Visitor Distribution dynamic height (Mode 1: 1-4 large cards = 96px, Mode 2: 5-8 medium cards = 124px, Mode 3: 9+ compact badges)
@@ -128,7 +126,7 @@ export function renderDashboard(data, username, options = {}) {
     </g>` : "";
 
   // Header: Title (left) + Contribute View pill button (right)
-  const header = showHeader ? `
+  const header = `
     <g transform="translate(${P},${P})">
       <!-- Logo icon -->
       <g transform="translate(0,2)">
@@ -141,7 +139,7 @@ export function renderDashboard(data, username, options = {}) {
       <text x="26" y="33" class="dashboard-subtitle">Know your audience. Build better.</text>
       
       ${contributePill}
-    </g>` : "";
+    </g>`;
 
   // Render each section
   const statsCards = renderStatsCards(data, P, statsY, contentWidth);
