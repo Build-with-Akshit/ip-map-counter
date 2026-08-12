@@ -75,17 +75,17 @@ export function renderDashboard(data, username, options = {}) {
         <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000000" flood-opacity="0.3"/>
       </filter>
 
-      <!-- Green gradient for accents -->
-      <linearGradient id="greenGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" style="stop-color:${THEME.greenDark}"/>
-        <stop offset="100%" style="stop-color:${THEME.green}"/>
+      <!-- Pill gradient for contribute button -->
+      <linearGradient id="pillGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" style="stop-color:#0b2917"/>
+        <stop offset="100%" style="stop-color:#124424"/>
       </linearGradient>
     </defs>`;
 
   // Embedded styles
   const styles = `
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap');
       
       .dashboard-title {
         font-family: 'Inter', ${THEME.fontFamily};
@@ -112,16 +112,16 @@ export function renderDashboard(data, username, options = {}) {
     <rect x="0" y="0" width="${W}" height="${H}" rx="16" 
       fill="${THEME.bg}" stroke="${THEME.border}" stroke-width="1"/>`;
 
-  // Contribute View pill button (shown only in README SVG embeds)
+  // Prominent Contribute View pill button (shown only in README SVG embeds)
   const contributePill = showContributePill ? `
-    <g transform="translate(${contentWidth - 430}, 0)">
-      <rect x="0" y="0" width="430" height="36" rx="10" 
-        fill="#0d2818" stroke="#2ea043" stroke-width="1.2"/>
-      <circle cx="20" cy="18" r="9" fill="#39d353" opacity="0.25"/>
-      <circle cx="20" cy="18" r="7.5" fill="none" stroke="#39d353" stroke-width="1"/>
-      <circle cx="20" cy="18" r="4.5" fill="#39d353"/>
-      <text x="38" y="23" fill="${THEME.text}" font-size="12.5" font-weight="600" font-family="'Inter', ${THEME.fontFamily}">
-        👉 Please <tspan font-weight="800" fill="#39d353" text-decoration="underline">CLICK HERE</tspan> to contribute a view in my profile 🌐
+    <g transform="translate(${contentWidth - 485}, -3)">
+      <rect x="0" y="0" width="485" height="42" rx="12" 
+        fill="url(#pillGradient)" stroke="#39d353" stroke-width="1.5"/>
+      <circle cx="24" cy="21" r="11" fill="#39d353" opacity="0.35"/>
+      <circle cx="24" cy="21" r="8.5" fill="none" stroke="#39d353" stroke-width="1.2"/>
+      <circle cx="24" cy="21" r="5" fill="#39d353"/>
+      <text x="44" y="26" fill="${THEME.text}" font-size="14.5" font-weight="600" font-family="'Inter', ${THEME.fontFamily}">
+        👉 Please <tspan font-weight="900" fill="#56d364" font-size="15" text-decoration="underline">CLICK HERE</tspan> to contribute a view in my profile 🌐
       </text>
     </g>` : "";
 
