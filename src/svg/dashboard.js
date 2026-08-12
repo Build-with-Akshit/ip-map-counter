@@ -40,7 +40,7 @@ export function renderDashboard(data, username, options = {}) {
   const contentWidth = W - P * 2;
 
   // Calculate dynamic height based on content
-  const headerHeight = showContributePill ? 104 : 45;
+  const headerHeight = showContributePill ? 98 : 45;
   const statsY = P + headerHeight;
   const mapY = statsY + 82 + THEME.gap;
   const bottomY = mapY + 520 + THEME.gap;
@@ -116,7 +116,7 @@ export function renderDashboard(data, username, options = {}) {
   let header = "";
 
   if (showContributePill) {
-    // README Header: Full-Width Top Banner (Large Text) + Centered Main Title Underneath
+    // README Header: Full-Width Top Banner + Vercel-Style Green Bar Logo Heading
     header = `
       <g transform="translate(${P},${P})">
         <!-- Full-Width Top Contribute Banner -->
@@ -135,9 +135,14 @@ export function renderDashboard(data, username, options = {}) {
           </g>
         </g>
 
-        <!-- Centered Main Title Underneath Banner -->
-        <g transform="translate(${contentWidth / 2}, 78)">
-          <text x="0" y="0" class="dashboard-title" text-anchor="middle" font-size="24" font-weight="800">${username}'s Website Analytics</text>
+        <!-- Vercel-Style Logo Heading Underneath Banner -->
+        <g transform="translate(0, 64)">
+          <g transform="translate(0,2)">
+            <rect x="0" y="4" width="4" height="14" rx="2" fill="${THEME.green}"/>
+            <rect x="7" y="0" width="4" height="22" rx="2" fill="${THEME.green}"/>
+            <rect x="14" y="8" width="4" height="10" rx="2" fill="${THEME.green}"/>
+          </g>
+          <text x="26" y="20" class="dashboard-title">${username}'s Website Analytics</text>
         </g>
       </g>`;
   } else {
