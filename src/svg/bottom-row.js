@@ -68,10 +68,10 @@ function renderVisitorDistribution(countries, x, y, width, height, totalViews) {
             font-family="${THEME.fontFamily}" text-anchor="middle">${cc}</text>
           
           <!-- Country Name + View count -->
-          <text x="52" y="22" fill="${THEME.text}" font-size="13.5" font-weight="700"
+          <text x="52" y="22" fill="${THEME.text}" font-size="14.5" font-weight="700"
             font-family="${THEME.fontFamily}">${name}</text>
-          <text x="52" y="37" fill="${THEME.textSecondary}" font-size="11.5" font-weight="500"
-            font-family="${THEME.fontFamily}">${formatNumber(c.count)} views (${pct}%)</text>
+          <text x="52" y="38" fill="${THEME.textSecondary}" font-size="12.5" font-weight="500"
+            font-family="${THEME.fontFamily}">${formatNumber(c.count)} visits (${pct}%)</text>
           
           <!-- Progress bar -->
           <rect x="10" y="${cardH - 5}" width="${cardW - 20}" height="3" rx="1.5" fill="#21262d"/>
@@ -133,27 +133,17 @@ function renderVisitorDistribution(countries, x, y, width, height, totalViews) {
       fill="${THEME.green}" font-size="11" font-weight="600"
       font-family="${THEME.fontFamily}" text-anchor="end">See full detailed list</text>` : "";
 
-  // "FLAG counter" branding (bottom-right, subtle)
-  const branding = `
-    <g transform="translate(${width - 110}, ${height - 22})">
-      <text x="0" y="12" fill="${THEME.textMuted}" font-size="10" font-style="italic"
-        font-family="${THEME.fontFamily}">🏳️ FLAG</text>
-      <text x="38" y="12" fill="#8b949e" font-size="10" font-style="italic"
-        font-family="${THEME.fontFamily}">counter</text>
-    </g>`;
-
   return `
     <g transform="translate(${x},${y})">
       <rect x="0" y="0" width="${width}" height="${height}" rx="${THEME.cardRadius}"
         fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
       
       <!-- Header -->
-      <text x="12" y="24" fill="${THEME.text}" font-size="16" font-weight="700"
-        font-family="${THEME.fontFamily}">Visitor Distribution by Country</text>
+      <text x="12" y="25" fill="${THEME.text}" font-size="18" font-weight="700"
+        font-family="${THEME.fontFamily}">Visits by Country</text>
       
       ${badges}
       ${seeAllLink}
-      ${branding}
     </g>`;
 }
 
@@ -223,7 +213,7 @@ function renderVisitHeatmap(dailyHistory, x, y, width, height) {
       const month = d.getUTCMonth();
       if (month !== lastMonth) {
         monthLabels += `<text x="${colX}" y="${graphStartY - 8}" fill="${THEME.textSecondary}" 
-          font-size="11.5" font-weight="500" font-family="${THEME.fontFamily}">${months[month]}</text>`;
+          font-size="12" font-weight="500" font-family="${THEME.fontFamily}">${months[month]}</text>`;
         lastMonth = month;
       }
     }
@@ -232,19 +222,19 @@ function renderVisitHeatmap(dailyHistory, x, y, width, height) {
   // Legend (bottom-right)
   const legend = `
     <g transform="translate(${width - 160},${height - 24})">
-      <text x="0" y="10" fill="${THEME.textSecondary}" font-size="11.5" font-weight="500" font-family="${THEME.fontFamily}">Less</text>
-      <text x="32" y="10" fill="${THEME.textSecondary}" font-size="11.5" font-family="${THEME.fontFamily}">...</text>
+      <text x="0" y="10" fill="${THEME.textSecondary}" font-size="12" font-weight="500" font-family="${THEME.fontFamily}">Less</text>
+      <text x="32" y="10" fill="${THEME.textSecondary}" font-size="12" font-family="${THEME.fontFamily}">...</text>
       <rect x="48" y="1" width="12" height="12" rx="3" fill="${THEME.greenScale[0]}"/>
       <rect x="63" y="1" width="12" height="12" rx="3" fill="${THEME.greenScale[1]}"/>
       <rect x="78" y="1" width="12" height="12" rx="3" fill="${THEME.greenScale[2]}"/>
       <rect x="93" y="1" width="12" height="12" rx="3" fill="${THEME.greenScale[3]}"/>
-      <text x="114" y="10" fill="${THEME.textSecondary}" font-size="11.5" font-weight="500" font-family="${THEME.fontFamily}">More</text>
+      <text x="114" y="10" fill="${THEME.textSecondary}" font-size="12" font-weight="500" font-family="${THEME.fontFamily}">More</text>
     </g>`;
 
   // Subtitle text
   const subtitle = `
-    <text x="${width - 20}" y="24" fill="${THEME.textSecondary}" font-size="12.5" font-weight="500"
-      font-family="${THEME.fontFamily}" text-anchor="end">Daily visitor activity over time</text>`;
+    <text x="${width - 20}" y="24" fill="${THEME.textSecondary}" font-size="13.5" font-weight="500"
+      font-family="${THEME.fontFamily}" text-anchor="end">Daily visits over time</text>`;
 
   return `
     <g transform="translate(${x},${y})">
@@ -252,7 +242,7 @@ function renderVisitHeatmap(dailyHistory, x, y, width, height) {
         fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
       
       <!-- Header -->
-      <text x="20" y="24" fill="${THEME.text}" font-size="16" font-weight="700"
+      <text x="20" y="25" fill="${THEME.text}" font-size="18" font-weight="700"
         font-family="${THEME.fontFamily}">Visit Heatmap</text>
 
       ${subtitle}
@@ -284,7 +274,7 @@ export function renderBottomRow(data, startX, startY, totalWidth) {
 
   // Row 2: Visit Heatmap
   const heatmapY = startY + distroHeight + gap;
-  const heatmapHeight = 220;
+  const heatmapHeight = 205;
 
   const heatmap = renderVisitHeatmap(
     data.dailyHistory || [],

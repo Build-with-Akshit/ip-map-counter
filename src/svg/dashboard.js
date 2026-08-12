@@ -42,18 +42,22 @@ export function renderDashboard(data, username, options = {}) {
   // Calculate dynamic height based on content
   const headerHeight = showContributePill ? 54 : 42;
   const statsY = P + headerHeight;
-  const mapY = statsY + 82 + THEME.gap;
-  const bottomY = mapY + 520 + THEME.gap;
-  // Visitor Distribution dynamic height (Mode 1: 1-4 large cards = 96px, Mode 2: 5-8 medium cards = 124px, Mode 3: 9+ compact badges)
+  const statsHeight = 82;
+  const mapHeight = 470;
+  const heatmapHeight = 205;
+
+  const mapY = statsY + statsHeight + THEME.gap;
+  const bottomY = mapY + mapHeight + THEME.gap;
+
+  // Visitor Distribution dynamic height
   const countryCount = (data.topCountries || []).length;
-  let distroHeight = 96;
+  let distroHeight = 100;
   if (countryCount > 4 && countryCount <= 8) {
     distroHeight = 124;
   } else if (countryCount > 8) {
     const distroRows = Math.min(5, Math.ceil(countryCount / Math.floor((contentWidth - 24) / 124)));
-    distroHeight = Math.max(80, 44 + distroRows * 28 + 30);
+    distroHeight = Math.max(90, 44 + distroRows * 28 + 30);
   }
-  const heatmapHeight = 220;
   const H = bottomY + distroHeight + THEME.gap + heatmapHeight + P + 10;
 
   // SVG definitions (gradients, filters, etc.)
@@ -110,7 +114,7 @@ export function renderDashboard(data, username, options = {}) {
   let header = "";
 
   if (showContributePill) {
-    // README Header: Prominent 28px Left-Aligned Section Heading
+    // README Header: Prominent 30px Left-Aligned Section Heading
     header = `
       <g transform="translate(${P},${P})">
         <g transform="translate(0, 16)">
@@ -123,9 +127,9 @@ export function renderDashboard(data, username, options = {}) {
             x="36"
             y="6"
             font-family="'Inter', ${THEME.fontFamily}"
-            font-size="28px"
+            font-size="30px"
             font-weight="800"
-            letter-spacing="-0.3px"
+            letter-spacing="-0.5px"
             fill="${THEME.text}"
           >${username}'s Website Analytics</text>
         </g>

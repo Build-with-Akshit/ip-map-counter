@@ -141,14 +141,14 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
   // Map legend with 4 intensity levels
   const legend = `
     <g transform="translate(${mapX + 15},${mapY + mapHeight - 25})">
-      <text x="0" y="10" fill="${THEME.textSecondary}" font-size="11.5" font-weight="500" font-family="${THEME.fontFamily}">
-        Fewer visitors</text>
+      <text x="0" y="10" fill="${THEME.textSecondary}" font-size="12" font-weight="500" font-family="${THEME.fontFamily}">
+        Fewer visits</text>
       <circle cx="82" cy="7" r="3" fill="#26a641"/>
       <circle cx="97" cy="7" r="4.5" fill="#39d353"/>
       <circle cx="113" cy="7" r="6" fill="#56d364"/>
       <circle cx="131" cy="7" r="8" fill="#d4ff00"/>
-      <text x="146" y="10" fill="${THEME.textSecondary}" font-size="11.5" font-weight="500" font-family="${THEME.fontFamily}">
-        More visitors</text>
+      <text x="146" y="10" fill="${THEME.textSecondary}" font-size="12" font-weight="500" font-family="${THEME.fontFamily}">
+        More visits</text>
     </g>`;
 
   return `
@@ -224,7 +224,7 @@ function renderTopCountries(countries, totalViews, x, y, width, height) {
  * Render the entire map section (full-width World Map).
  */
 export function renderMapSection(data, startX, startY, totalWidth) {
-  const sectionHeight = 520;
+  const sectionHeight = 470;
   const mapWidth = totalWidth - 40;
 
   // Section card background
@@ -243,9 +243,9 @@ export function renderMapSection(data, startX, startY, totalWidth) {
         <ellipse cx="10" cy="5.5" rx="8" ry="1.8" fill="none" stroke="${THEME.green}" stroke-width="0.9"/>
         <ellipse cx="10" cy="14.5" rx="8" ry="1.8" fill="none" stroke="${THEME.green}" stroke-width="0.9"/>
       </g>
-      <text x="28" y="11" fill="${THEME.text}" font-size="16" font-weight="700" 
+      <text x="28" y="12" fill="${THEME.text}" font-size="18" font-weight="700" 
         font-family="${THEME.fontFamily}">Visitors by Location</text>
-      <text x="28" y="27" fill="${THEME.textSecondary}" font-size="12.5" font-weight="500"
+      <text x="28" y="30" fill="${THEME.textSecondary}" font-size="13.5" font-weight="500"
         font-family="${THEME.fontFamily}">See where your visitors are coming from</text>
     </g>`;
 

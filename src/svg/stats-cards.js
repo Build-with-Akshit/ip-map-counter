@@ -211,11 +211,11 @@ function renderCardTotalPageviews(x, y, width, height, totalViews, firstSeen) {
       
       <!-- Right text details -->
       <g transform="translate(68,0)">
-        <text x="0" y="32" fill="#f0f6fc" font-size="24" font-weight="700"
+        <text x="0" y="32" fill="#f0f6fc" font-size="26" font-weight="700"
           font-family="${THEME.fontFamily}">${formatNumber(totalViews)}</text>
-        <text x="0" y="49" fill="#c9d1d9" font-size="13" font-weight="600"
+        <text x="0" y="51" fill="#c9d1d9" font-size="14" font-weight="600"
           font-family="${THEME.fontFamily}">Total Pageviews</text>
-        <text x="0" y="66" fill="#8b949e" font-size="11" font-weight="500"
+        <text x="0" y="69" fill="#8b949e" font-size="12" font-weight="500"
           font-family="${THEME.fontFamily}">counting started from ${formatDate(firstSeen)}</text>
       </g>
     </g>`;
@@ -248,18 +248,18 @@ function renderCardTopLocation(x, y, width, height, topCountries, totalViews) {
 
       <!-- Right Details -->
       <g transform="translate(70,0)">
-        <text x="0" y="24" fill="#c9d1d9" font-size="13" font-weight="600"
+        <text x="0" y="24" fill="#c9d1d9" font-size="14" font-weight="600"
           font-family="${THEME.fontFamily}">Top Location</text>
-        <text x="0" y="48" fill="#f0f6fc" font-size="19" font-weight="700"
+        <text x="0" y="49" fill="#f0f6fc" font-size="21" font-weight="700"
           font-family="${THEME.fontFamily}">${mainText}</text>
-        <text x="0" y="66" fill="#8b949e" font-size="11" font-weight="500"
-          font-family="${THEME.fontFamily}">${hasViews ? 'Largest contribution' : 'No visits recorded'}</text>
+        <text x="0" y="69" fill="#8b949e" font-size="12" font-weight="500"
+          font-family="${THEME.fontFamily}">${hasViews ? 'Most visits' : 'No visits recorded'}</text>
       </g>
     </g>`;
 }
 
 /**
- * Card 3: Unique Nations
+ * Card 3: Unique Countries
  */
 function renderCardUniqueNations(x, y, width, height, uniqueCountries, totalViews) {
   const count = totalViews > 0 ? (uniqueCountries || 1) : 0;
@@ -283,12 +283,12 @@ function renderCardUniqueNations(x, y, width, height, uniqueCountries, totalView
 
       <!-- Right Details -->
       <g transform="translate(70,0)">
-        <text x="0" y="24" fill="#c9d1d9" font-size="13" font-weight="600"
-          font-family="${THEME.fontFamily}">Unique Nations</text>
-        <text x="0" y="48" fill="#f0f6fc" font-size="24" font-weight="700"
+        <text x="0" y="24" fill="#c9d1d9" font-size="14" font-weight="600"
+          font-family="${THEME.fontFamily}">Unique Countries</text>
+        <text x="0" y="49" fill="#f0f6fc" font-size="26" font-weight="700"
           font-family="${THEME.fontFamily}">${formatNumber(count)}</text>
-        <text x="0" y="66" fill="#8b949e" font-size="11" font-weight="500"
-          font-family="${THEME.fontFamily}">${totalViews > 0 ? 'Across the globe' : 'No visits recorded'}</text>
+        <text x="0" y="69" fill="#8b949e" font-size="12" font-weight="500"
+          font-family="${THEME.fontFamily}">${totalViews > 0 ? 'From around the world' : 'No visits recorded'}</text>
       </g>
     </g>`;
 }
@@ -321,11 +321,11 @@ function renderCardPeakVisitWindow(x, y, width, height, highestDailyDate, highes
 
       <!-- Right Details -->
       <g transform="translate(70,0)">
-        <text x="0" y="24" fill="#c9d1d9" font-size="13" font-weight="600"
+        <text x="0" y="24" fill="#c9d1d9" font-size="14" font-weight="600"
           font-family="${THEME.fontFamily}">Peak Visit Window</text>
-        <text x="0" y="48" fill="#f0f6fc" font-size="15" font-weight="700"
+        <text x="0" y="49" fill="#f0f6fc" font-size="20" font-weight="700"
           font-family="${THEME.fontFamily}">${dateText}</text>
-        <text x="0" y="66" fill="#8b949e" font-size="11" font-weight="500"
+        <text x="0" y="69" fill="#8b949e" font-size="12" font-weight="500"
           font-family="${THEME.fontFamily}">${subText}</text>
       </g>
     </g>`;

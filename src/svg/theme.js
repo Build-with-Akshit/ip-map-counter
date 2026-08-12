@@ -41,7 +41,7 @@ const THEME = {
   fontMono: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace",
 
   // Layout
-  dashboardWidth: 1200,
+  dashboardWidth: 1000,
   dashboardHeight: 820,
   cardRadius: 12,
   padding: 20,
