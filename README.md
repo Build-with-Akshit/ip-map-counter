@@ -20,9 +20,9 @@
 Add this **1-click linked dashboard** to your GitHub README:
 
 ```markdown
-[![Website Analytics](https://ip-map-counter.vercel.app/api/dashboard?username=YOUR_GITHUB_USERNAME)](https://ip-map-counter.vercel.app/?username=YOUR_GITHUB_USERNAME)
-
 👉 [**Please click here to contribute a view in my profile.**](https://ip-map-counter.vercel.app/?username=YOUR_GITHUB_USERNAME)
+
+[![Website Analytics](https://ip-map-counter.vercel.app/api/dashboard?username=YOUR_GITHUB_USERNAME)](https://ip-map-counter.vercel.app/?username=YOUR_GITHUB_USERNAME)
 ```
 
 Replace `YOUR_GITHUB_USERNAME` with your actual GitHub username.
