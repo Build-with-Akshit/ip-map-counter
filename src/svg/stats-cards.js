@@ -230,7 +230,12 @@ function renderCardTopLocation(x, y, width, height, topCountries, totalViews) {
   const count = top ? top.count : 0;
   const mainText = hasViews ? `${codeName}: ${formatNumber(count)}` : "N/A";
 
-  const flagBadge = renderSvgFlag(codeName, 14, 26, 44, 30);
+  const flagBadge = hasViews
+    ? renderSvgFlag(codeName, 14, 26, 44, 30)
+    : `<g transform="translate(14,26)">
+        <rect width="44" height="30" rx="5" fill="#21262d" stroke="#30363d" stroke-width="1"/>
+        <text x="22" y="19" fill="#8b949e" font-weight="700" font-size="12" font-family="${THEME.fontFamily}" text-anchor="middle">N/A</text>
+      </g>`;
 
   return `
     <g transform="translate(${x},${y})">
