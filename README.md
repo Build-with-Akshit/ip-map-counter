@@ -20,7 +20,8 @@
 Add this **1-click linked dashboard** to your GitHub README:
 
 ```markdown
-👉 Please [**click here**](https://ip-map-counter.vercel.app/?username=YOUR_GITHUB_USERNAME) to contribute a view in my profile.
+<!-- Option A: Crazy Glowing Badge Button (Recommended) -->
+[![Contribute View](https://ip-map-counter.vercel.app/api/badge?username=YOUR_GITHUB_USERNAME)](https://ip-map-counter.vercel.app/?username=YOUR_GITHUB_USERNAME)
 
 [![Website Analytics](https://ip-map-counter.vercel.app/api/dashboard?username=YOUR_GITHUB_USERNAME)](https://ip-map-counter.vercel.app/?username=YOUR_GITHUB_USERNAME)
 ```
