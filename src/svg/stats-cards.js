@@ -22,7 +22,7 @@ function formatDate(dateStr) {
 }
 
 /**
- * Format a peak window range string (e.g. "Aug 9 - Aug 12, 2026").
+ * Format a peak window range string (e.g. "Aug 9–12, 2026").
  */
 function formatPeakWindow(dateStr, totalViews) {
   if (!dateStr || totalViews === 0) return "N/A";
@@ -40,9 +40,9 @@ function formatPeakWindow(dateStr, totalViews) {
   const y = dEnd.getUTCFullYear();
 
   if (m1 === m2) {
-    return `${m1} ${dStart.getUTCDate()} - ${dEnd.getUTCDate()}, ${y}`;
+    return `${m1} ${dStart.getUTCDate()}–${dEnd.getUTCDate()}, ${y}`;
   }
-  return `${m1} ${dStart.getUTCDate()} - ${m2} ${dEnd.getUTCDate()}, ${y}`;
+  return `${m1} ${dStart.getUTCDate()}–${m2} ${dEnd.getUTCDate()}, ${y}`;
 }
 
 /**
@@ -191,9 +191,9 @@ function renderSvgFlag(code, x, y, w = 44, h = 30) {
  * Card 1: Total Pageviews (with circular ring)
  */
 function renderCardTotalPageviews(x, y, width, height, totalViews, firstSeen) {
-  const cx = 35;
+  const cx = 30;
   const cy = height / 2;
-  const r = 20;
+  const r = 18;
 
   return `
     <g transform="translate(${x},${y})">
@@ -202,21 +202,21 @@ function renderCardTotalPageviews(x, y, width, height, totalViews, firstSeen) {
       
       <!-- Left circular progress ring -->
       <circle cx="${cx}" cy="${cy}" r="${r}" fill="none"
-        stroke="${THEME.borderLight}" stroke-width="4"/>
+        stroke="${THEME.borderLight}" stroke-width="3.5"/>
       <circle cx="${cx}" cy="${cy}" r="${r}" fill="none"
-        stroke="${THEME.green}" stroke-width="4"
-        stroke-dasharray="${totalViews > 0 ? '100 126' : '0 126'}"
+        stroke="${THEME.green}" stroke-width="3.5"
+        stroke-dasharray="${totalViews > 0 ? '90 114' : '0 114'}"
         stroke-linecap="round"
         transform="rotate(-90 ${cx} ${cy})"/>
       
       <!-- Right text details -->
-      <g transform="translate(68,0)">
-        <text x="0" y="32" fill="#f0f6fc" font-size="26" font-weight="700"
+      <g transform="translate(60,0)">
+        <text x="0" y="32" fill="#f0f6fc" font-size="24" font-weight="700"
           font-family="${THEME.fontFamily}">${formatNumber(totalViews)}</text>
-        <text x="0" y="51" fill="#c9d1d9" font-size="14" font-weight="600"
+        <text x="0" y="50" fill="#c9d1d9" font-size="13" font-weight="600"
           font-family="${THEME.fontFamily}">Total Pageviews</text>
-        <text x="0" y="69" fill="#8b949e" font-size="12" font-weight="500"
-          font-family="${THEME.fontFamily}">counting started from ${formatDate(firstSeen)}</text>
+        <text x="0" y="67" fill="#8b949e" font-size="11" font-weight="500"
+          font-family="${THEME.fontFamily}">since ${formatDate(firstSeen)}</text>
       </g>
     </g>`;
 }
@@ -232,10 +232,10 @@ function renderCardTopLocation(x, y, width, height, topCountries, totalViews) {
   const mainText = hasViews ? `${codeName}: ${formatNumber(count)}` : "N/A";
 
   const flagBadge = hasViews
-    ? renderSvgFlag(codeName, 14, 26, 44, 30)
-    : `<g transform="translate(14,26)">
-        <rect width="44" height="30" rx="5" fill="#21262d" stroke="#30363d" stroke-width="1"/>
-        <text x="22" y="19" fill="#8b949e" font-weight="700" font-size="12" font-family="${THEME.fontFamily}" text-anchor="middle">N/A</text>
+    ? renderSvgFlag(codeName, 12, 26, 40, 28)
+    : `<g transform="translate(12,26)">
+        <rect width="40" height="28" rx="5" fill="#21262d" stroke="#30363d" stroke-width="1"/>
+        <text x="20" y="18" fill="#8b949e" font-weight="700" font-size="11" font-family="${THEME.fontFamily}" text-anchor="middle">N/A</text>
       </g>`;
 
   return `
@@ -247,12 +247,12 @@ function renderCardTopLocation(x, y, width, height, topCountries, totalViews) {
       ${flagBadge}
 
       <!-- Right Details -->
-      <g transform="translate(70,0)">
-        <text x="0" y="24" fill="#c9d1d9" font-size="14" font-weight="600"
+      <g transform="translate(60,0)">
+        <text x="0" y="24" fill="#c9d1d9" font-size="13" font-weight="600"
           font-family="${THEME.fontFamily}">Top Location</text>
-        <text x="0" y="49" fill="#f0f6fc" font-size="21" font-weight="700"
+        <text x="0" y="48" fill="#f0f6fc" font-size="20" font-weight="700"
           font-family="${THEME.fontFamily}">${mainText}</text>
-        <text x="0" y="69" fill="#8b949e" font-size="12" font-weight="500"
+        <text x="0" y="67" fill="#8b949e" font-size="11" font-weight="500"
           font-family="${THEME.fontFamily}">${hasViews ? 'Most visits' : 'No visits recorded'}</text>
       </g>
     </g>`;
@@ -270,9 +270,9 @@ function renderCardUniqueNations(x, y, width, height, uniqueCountries, totalView
         fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
       
       <!-- Big Globe icon -->
-      <g transform="translate(14, 16)">
-        <rect width="44" height="44" rx="8" fill="#0d2818" stroke="${THEME.green}" stroke-width="1" stroke-opacity="0.4"/>
-        <g transform="translate(8, 8)">
+      <g transform="translate(12, 18)">
+        <rect width="40" height="40" rx="8" fill="#0d2818" stroke="${THEME.green}" stroke-width="1" stroke-opacity="0.4"/>
+        <g transform="translate(6, 6)">
           <circle cx="14" cy="14" r="13" fill="none" stroke="${THEME.green}" stroke-width="1.5"/>
           <ellipse cx="14" cy="14" rx="6" ry="13" fill="none" stroke="${THEME.green}" stroke-width="1.1"/>
           <line x1="1" y1="14" x2="27" y2="14" stroke="${THEME.green}" stroke-width="1.1"/>
@@ -282,12 +282,12 @@ function renderCardUniqueNations(x, y, width, height, uniqueCountries, totalView
       </g>
 
       <!-- Right Details -->
-      <g transform="translate(70,0)">
-        <text x="0" y="24" fill="#c9d1d9" font-size="14" font-weight="600"
+      <g transform="translate(60,0)">
+        <text x="0" y="24" fill="#c9d1d9" font-size="13" font-weight="600"
           font-family="${THEME.fontFamily}">Unique Countries</text>
-        <text x="0" y="49" fill="#f0f6fc" font-size="26" font-weight="700"
+        <text x="0" y="48" fill="#f0f6fc" font-size="24" font-weight="700"
           font-family="${THEME.fontFamily}">${formatNumber(count)}</text>
-        <text x="0" y="69" fill="#8b949e" font-size="12" font-weight="500"
+        <text x="0" y="67" fill="#8b949e" font-size="11" font-weight="500"
           font-family="${THEME.fontFamily}">${totalViews > 0 ? 'From around the world' : 'No visits recorded'}</text>
       </g>
     </g>`;
@@ -309,9 +309,9 @@ function renderCardPeakVisitWindow(x, y, width, height, highestDailyDate, highes
         fill="${THEME.cardBg}" stroke="${THEME.border}" stroke-width="1"/>
       
       <!-- Big Fire/Trending icon -->
-      <g transform="translate(14, 16)">
-        <rect width="44" height="44" rx="8" fill="#0d2818" stroke="${THEME.green}" stroke-width="1" stroke-opacity="0.4"/>
-        <g transform="translate(10, 6)">
+      <g transform="translate(12, 18)">
+        <rect width="40" height="40" rx="8" fill="#0d2818" stroke="${THEME.green}" stroke-width="1" stroke-opacity="0.4"/>
+        <g transform="translate(8, 4)">
           <path d="M12,28 C5,28 2,22 2,17 C2,12 5,8 8,5 C8,9 10,11 12,11 C11,8 12,3 16,0 C15,5 18,8 20,11 C22,14 22,17 22,19 C22,24 18,28 12,28 Z" 
             fill="${THEME.green}" opacity="0.85"/>
           <path d="M12,28 C8,28 6,24 6,21 C6,18 8,15 10,14 C10,16 11,17 12,17 C11.5,15.5 12,13 14,12 C13.5,14 15,16 16,17 C17,18 17,20 17,21 C17,25 15,28 12,28 Z" 
@@ -320,12 +320,12 @@ function renderCardPeakVisitWindow(x, y, width, height, highestDailyDate, highes
       </g>
 
       <!-- Right Details -->
-      <g transform="translate(70,0)">
-        <text x="0" y="24" fill="#c9d1d9" font-size="14" font-weight="600"
+      <g transform="translate(60,0)">
+        <text x="0" y="24" fill="#c9d1d9" font-size="13" font-weight="600"
           font-family="${THEME.fontFamily}">Peak Visit Window</text>
-        <text x="0" y="49" fill="#f0f6fc" font-size="20" font-weight="700"
+        <text x="0" y="47" fill="#f0f6fc" font-size="16" font-weight="700"
           font-family="${THEME.fontFamily}">${dateText}</text>
-        <text x="0" y="69" fill="#8b949e" font-size="12" font-weight="500"
+        <text x="0" y="67" fill="#8b949e" font-size="11" font-weight="500"
           font-family="${THEME.fontFamily}">${subText}</text>
       </g>
     </g>`;
