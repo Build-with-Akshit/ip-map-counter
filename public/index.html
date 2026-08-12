@@ -659,8 +659,8 @@
       const activeTag = document.activeElement ? document.activeElement.tagName.toUpperCase() : "";
       if (activeTag === "INPUT" || activeTag === "TEXTAREA") return;
 
-      // Alt + Left / Right Arrow Section Switching
-      if (e.altKey) {
+      // Ctrl + Shift + Left / Right Arrow Section Switching
+      if (e.ctrlKey && e.shiftKey) {
         if (e.key === "ArrowLeft") {
           e.preventDefault();
           const currIdx = tabs.indexOf(currentTab);
