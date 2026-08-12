@@ -25,8 +25,11 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
   const maxCount = Math.max(...Object.values(countryMap), 1);
 
   // 1. Render country land polygons — visible borders matching target design
+  // Skip pure-Arctic territories (SJ=Svalbard) that create horizontal line artifacts
+  const skipCodes = new Set(["SJ"]);
   let paths = "";
   for (const [code, pathData] of Object.entries(WORLD_MAP_PATHS)) {
+    if (skipCodes.has(code)) continue;
     const isVisited = (countryMap[code] || 0) > 0;
     const fillColor = isVisited ? "#1a3a2a" : "#1c2333";
     const strokeColor = isVisited ? "#2ea043" : "#2d3748";
@@ -126,7 +129,7 @@ function renderWorldMap(data, mapX, mapY, mapWidth, mapHeight) {
 
   return `
     <g transform="translate(${mapX},${mapY})">
-      <svg viewBox="0 18 1000 470" width="${mapWidth}" height="${mapHeight}" 
+      <svg viewBox="0 42 1000 450" width="${mapWidth}" height="${mapHeight}" 
         preserveAspectRatio="xMidYMid meet">
         ${defs}
         ${paths}
