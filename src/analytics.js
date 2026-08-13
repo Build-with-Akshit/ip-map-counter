@@ -87,115 +87,87 @@ async function updateHighestDaily(username, today) {
 }
 
 /**
- * Calculate the current consecutive-day visit streak.
- */
-async function calculateStreak(username) {
-  const redis = getRedis();
-  const today = new Date();
-  let streak = 0;
-
-  // Check backwards from today
-  for (let i = 0; i < 365; i++) {
-    const d = new Date(today);
-    d.setDate(d.getDate() - i);
-    const dateStr = d.toISOString().slice(0, 10);
-    const count = await redis.get(key(username, `daily:${dateStr}`));
-    if (count && parseInt(count, 10) > 0) {
-      streak++;
-    } else {
-      break;
-    }
-  }
-
-  return streak;
-}
-
-/**
- * Get daily visit data for the past N months (for the heatmap/timeline).
- * Returns an array of { date, count } objects.
- */
-async function getDailyHistory(username, months = 12) {
-  const redis = getRedis();
-  const today = new Date();
-  const startDate = new Date(today);
-  startDate.setMonth(startDate.getMonth() - months);
-
-  const days = [];
-  const pipe = redis.pipeline();
-  const dateKeys = [];
-
-  const current = new Date(startDate);
-  while (current <= today) {
-    const dateStr = current.toISOString().slice(0, 10);
-    dateKeys.push(dateStr);
-    pipe.get(key(username, `daily:${dateStr}`));
-    current.setDate(current.getDate() + 1);
-  }
-
-  const results = await pipe.exec();
-
-  for (let i = 0; i < dateKeys.length; i++) {
-    days.push({
-      date: dateKeys[i],
-      count: parseInt(results[i], 10) || 0,
-    });
-  }
-
-  return days;
-}
-
-/**
  * Fetch all analytics data for a username.
- * Called by the /api/dashboard endpoint.
+ * Called by the /api/dashboard and /api/data endpoints.
+ *
+ * OPTIMIZED: Uses 1 pipeline with MGET for 365 days of history,
+ * reducing Redis command overhead from ~370 commands down to ~10 commands per request!
  *
  * @param {string} username - GitHub username
  * @returns {object} Complete analytics object for SVG rendering
  */
 export async function getAnalytics(username) {
   const redis = getRedis();
-
-  // Fetch core metrics
-  const [totalViews, pageViews, firstSeen, highestDaily] = await Promise.all([
-    redis.get(key(username, "total_views")),
-    redis.get(key(username, "page_views")),
-    redis.get(key(username, "first_seen")),
-    redis.get(key(username, "highest_daily")),
-  ]);
-
-  // Fetch top countries (sorted set, descending)
-  const topCountries = await redis.zrange(key(username, "countries"), 0, 9, {
-    rev: true,
-    withScores: true,
-  });
-
-  // Fetch top cities (sorted set, descending)
-  const topCities = await redis.zrange(key(username, "cities"), 0, 4, {
-    rev: true,
-    withScores: true,
-  });
-
-  // Fetch unique counts
-  const [uniqueCountries, uniqueCities] = await Promise.all([
-    redis.scard(key(username, "unique_countries")),
-    redis.scard(key(username, "unique_cities")),
-  ]);
-
-  // Fetch all country codes for the map highlighting
-  const allCountries = await redis.zrange(key(username, "countries"), 0, -1, {
-    rev: true,
-    withScores: true,
-  });
-
-  // Calculate streak
-  const streak = await calculateStreak(username);
-
-  // Get daily history for the heatmap
-  const dailyHistory = await getDailyHistory(username, 12);
-
-  // Get today's views
   const today = todayStr();
-  const todayViews =
-    (await redis.get(key(username, `daily:${today}`))) || 0;
+
+  // Generate date keys for the past 12 months (~365 days)
+  const dateObj = new Date();
+  const startDate = new Date(dateObj);
+  startDate.setMonth(startDate.getMonth() - 12);
+
+  const dateKeys = [];
+  const dateStrings = [];
+  const current = new Date(startDate);
+  while (current <= dateObj) {
+    const dateStr = current.toISOString().slice(0, 10);
+    dateStrings.push(dateStr);
+    dateKeys.push(key(username, `daily:${dateStr}`));
+    current.setDate(current.getDate() + 1);
+  }
+
+  // Single pipeline round-trip for ALL metrics
+  const pipe = redis.pipeline();
+  pipe.get(key(username, "total_views"));                                        // 0
+  pipe.get(key(username, "page_views"));                                         // 1
+  pipe.get(key(username, "first_seen"));                                         // 2
+  pipe.get(key(username, "highest_daily"));                                     // 3
+  pipe.zrange(key(username, "countries"), 0, 9, { rev: true, withScores: true }); // 4
+  pipe.zrange(key(username, "cities"), 0, 4, { rev: true, withScores: true });    // 5
+  pipe.scard(key(username, "unique_countries"));                                 // 6
+  pipe.scard(key(username, "unique_cities"));                                    // 7
+  pipe.zrange(key(username, "countries"), 0, -1, { rev: true, withScores: true });// 8
+  if (dateKeys.length > 0) {
+    pipe.mget(...dateKeys);                                                      // 9 (1 MGET command for 365 days)
+  }
+
+  const results = await pipe.exec();
+
+  const totalViews = results[0];
+  const pageViews = results[1];
+  const firstSeen = results[2];
+  const highestDaily = results[3];
+  const topCountries = results[4] || [];
+  const topCities = results[5] || [];
+  const uniqueCountries = results[6] || 0;
+  const uniqueCities = results[7] || 0;
+  const allCountries = results[8] || [];
+  const rawDailyCounts = dateKeys.length > 0 ? (results[9] || []) : [];
+
+  // Build dailyHistory and index counts by date in-memory
+  const dailyHistory = [];
+  const countByDate = {};
+  for (let i = 0; i < dateStrings.length; i++) {
+    const dateStr = dateStrings[i];
+    const cnt = parseInt(rawDailyCounts[i], 10) || 0;
+    dailyHistory.push({ date: dateStr, count: cnt });
+    countByDate[dateStr] = cnt;
+  }
+
+  // Calculate consecutive streak in-memory (0 extra Redis calls)
+  let streak = 0;
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(dateObj);
+    d.setDate(d.getDate() - i);
+    const dateStr = d.toISOString().slice(0, 10);
+    const count = countByDate[dateStr] || 0;
+    if (count > 0) {
+      streak++;
+    } else {
+      break;
+    }
+  }
+
+  const todayViews = countByDate[today] || 0;
 
   // Parse highest daily
   let highestDailyCount = 0;
@@ -207,7 +179,6 @@ export async function getAnalytics(username) {
   }
 
   // Parse countries into a cleaner format
-  // topCountries from zrange with withScores returns [member, score, member, score, ...]
   const countries = [];
   for (let i = 0; i < topCountries.length; i += 2) {
     countries.push({
