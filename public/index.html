@@ -904,7 +904,10 @@
 
       document.getElementById("currentUserText").innerText = currentUsername;
 
-      // Fetch inline SVG dashboard markup for interactive web controls (source=web hides contribute pill)
+      // 1. Track the visit FIRST so it's counted before dashboard renders
+      await triggerAutoTrack(currentUsername);
+
+      // 2. Now fetch the dashboard SVG (will include the visit we just recorded)
       const timestamp = Date.now();
       try {
         const res = await fetch(`/api/dashboard?username=${encodeURIComponent(currentUsername)}&source=web&t=${timestamp}`);
@@ -928,10 +931,7 @@
       document.getElementById("markdownCode").innerText = mdSnippet;
       document.getElementById("directLinkBtn").href = `${baseUrl}/api/dashboard?username=${currentUsername}`;
 
-      // Trigger auto-tracking pixel call
-      await triggerAutoTrack(currentUsername);
-
-      // Fetch JSON data for web app tabs
+      // 3. Fetch JSON data for web app tabs
       await fetchJsonData(currentUsername);
     }
 
