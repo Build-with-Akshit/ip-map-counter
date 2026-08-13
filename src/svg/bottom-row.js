@@ -230,7 +230,6 @@ function renderVisitHeatmap(dailyHistory, x, y, width, height) {
 
       cells += `<rect class="heatmap-cell" data-tip="${tooltipText}" x="${colX}" y="${cellY}" width="${cellSize}" height="${cellSize}" 
         rx="3" fill="${getCellColor(countVal)}" cursor="pointer">
-        // <title>${tooltipText}</title>
       </rect>`;
 
       // Add month label when month changes
